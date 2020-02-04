@@ -1,0 +1,18 @@
+@import 'variables';
+@import 'mixins';
+
+.auth {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__container {
+    width: 334px;
+    height: 662px;
+    flex-basis: 334px;
+    background-color: $bg-color-primary;
+    box-shadow: $box-shadow-simple;
+  }
+}

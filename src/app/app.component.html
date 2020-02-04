@@ -1,0 +1,15 @@
+<div class="main-container">
+  <header class="main-container__header">
+    <main-header></main-header>
+  </header>
+  <main class="main-container__content">
+    <aside
+      class="main-container__aside"
+      *ngIf="isLoggedIn"
+    >
+    </aside>
+    <section class="main-container__section">
+      <auth></auth>
+    </section>
+  </main>
+</div>

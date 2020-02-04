@@ -4,11 +4,11 @@
 $bg-color-primary: #272e48;
 $bg-color-light: #3b425c;
 $bg-color-dark: #182139;
-$bg-accent-color: #004deb;
+$bg-color-accent: #004deb;
 
 // text
 $text-color-primary: #c7c7c7;
-$text-color-light: rgba(255,255,255,.8);
+$text-color-light: rgba(255, 255, 255, 0.8);
 $text-color-accent: #007bff;
 $text-color-done: #10b759;
 
@@ -16,10 +16,16 @@ $text-color-done: #10b759;
 $error-color: #ff3f3f;
 $info-color: #22b9ff;
 $warning-color: #ffb822;
-$success-color: #10b759; 
+$success-color: #10b759;
 
 // fonts
 $primary-font-family: 'Yanone Kaffeesatz', sans-serif;
 $simple-font-family: 'Oswald', sans-serif;
 $primary-font: Yanone Kaffeesatz;
 $simple-font: Oswald;
+
+// box shadow
+$box-shadow-simple: 15px 2px 15px -4px rgba(0, 0, 0, 0.15);
+
+// transitions
+$fill-transition: all 150ms linear;

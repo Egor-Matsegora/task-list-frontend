@@ -1,0 +1,51 @@
+@import 'variables';
+@import 'mixins';
+
+.main-header {
+  background-color: $bg-color-primary;
+  height: 70px;
+  line-height: 40px;
+  position: relative;
+  display: flex;
+
+  &__item {
+    padding: 15px 0;
+  }
+
+  &__logo {
+    flex: 1 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  &__btn {
+    flex: 0 0 70px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: $fill-transition;
+    overflow: hidden;
+
+    &:hover {
+      background-color: $bg-color-light;
+    }
+  }
+
+  &__btn_active {
+    &:hover {
+      background-color: $bg-color-primary;
+    }
+
+    & path {
+      transition: $fill-transition;
+      fill: $bg-color-accent;
+    }
+  }
+
+  &__btn-img {
+    display: block;
+    height: 25px;
+    width: 25px;
+  }
+}
