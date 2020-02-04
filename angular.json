@@ -31,6 +31,9 @@
               "node_modules/reset-css/sass/_reset.scss",
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src/scss/"]
+            },
             "scripts": []
           },
           "configurations": {

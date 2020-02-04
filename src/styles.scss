@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'mixins';
+@import 'variables';
+@import 'fonts';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+body {
+  font-family: $simple-font-family;
+  color: $text-color-primary;
+  font-size: 15px;
+  font-weight: 200;
+}
+
+@for $i from 1 to 6 {
+  h#{$i} {
+    font-family: $simple-font-family;
+    font-weight: 700;
+  }
+}

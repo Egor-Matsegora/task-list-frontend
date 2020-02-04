@@ -1,0 +1,19 @@
+@import 'mixins';
+@import 'variables';
+
+// Yanone Kaffeesatz import
+@include font-face($primary-font, 'assets/fonts/yanone_kaffeesatz/YanoneKaffeesatz-Bold.ttf', 700);
+@include font-face($primary-font, 'assets/fonts/yanone_kaffeesatz/YanoneKaffeesatz-SemiBold.ttf', 600);
+@include font-face($primary-font, 'assets/fonts/yanone_kaffeesatz/YanoneKaffeesatz-Medium.ttf', 500);
+@include font-face($primary-font, 'assets/fonts/yanone_kaffeesatz/YanoneKaffeesatz-Regular.ttf', 400);
+@include font-face($primary-font, 'assets/fonts/yanone_kaffeesatz/YanoneKaffeesatz-Light.ttf', 300);
+@include font-face($primary-font, 'assets/fonts/yanone_kaffeesatz/YanoneKaffeesatz-ExtraLight.ttf', 200);
+
+//  Oswald import
+@include font-face($simple-font, 'assets/fonts/oswald/Oswald-ExtraLight.ttf', 200);
+@include font-face($simple-font, 'assets/fonts/oswald/Oswald-Light.ttf', 300);
+@include font-face($simple-font, 'assets/fonts/oswald/Oswald-Regular.ttf', 400);
+@include font-face($simple-font, 'assets/fonts/oswald/Oswald-Medium.ttf', 500);
+@include font-face($simple-font, 'assets/fonts/oswald/Oswald-SemiBold.ttf', 600);
+@include font-face($simple-font, 'assets/fonts/oswald/Oswald-Bold.ttf', 700);
+
