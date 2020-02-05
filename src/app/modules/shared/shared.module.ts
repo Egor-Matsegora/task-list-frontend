@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
@@ -7,7 +8,7 @@ import { MutatedPasswordInputDirective } from '../../directives/mutated-password
 
 @NgModule({
   declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective],
-  imports: [CommonModule, BrowserAnimationsModule],
+  imports: [CommonModule, BrowserAnimationsModule, RouterModule],
   exports: [BrowserAnimationsModule, HeaderComponent, LogoComponent, MutatedPasswordInputDirective]
 })
 export class SharedModule {}
