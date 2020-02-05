@@ -1,5 +1,8 @@
 // colors
 
+// border-color
+$border-color-simple: rgba(155, 155, 155, 0.1);
+
 // background
 $bg-color-primary: #272e48;
 $bg-color-light: #3b425c;
@@ -25,7 +28,20 @@ $primary-font: Yanone Kaffeesatz;
 $simple-font: Oswald;
 
 // box shadow
-$box-shadow-simple: 15px 2px 15px -4px rgba(0, 0, 0, 0.15);
+$box-shadow-simple: 15px 2px 15px -4px rgba(0, 0, 0, 0.3);
+$box-shadow-focus: 4px 4px 15px -4px rgba(0, 123, 255, 0.4);
 
 // transitions
 $fill-transition: all 150ms linear;
+
+// brakepoints
+$bp-mobile-s: 320px;
+$bp-mobile-m: 375px;
+$bp-mobile-l: 425px;
+$bp-tablet: 768px;
+$bp-laptop: 1024px;
+$bp-laptop-l: 1440px;
+$bp-laptop-4k: 2560px;
+
+// border radius
+$border-radius-simple: 2px;

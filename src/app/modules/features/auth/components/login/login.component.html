@@ -1,1 +1,37 @@
-<p>login пашет"!</p>
+<div class="auth-form">
+  <div class="auth-form__header">
+  <p>{{ formHeader }}</p>
+  </div>
+  <form class="auth-form__form">
+    <div class="auth-form__control">
+      <div class="control">
+        <input
+          id="auth-email"
+          type="email"
+          class="control__input"
+          autocomplete="off"
+        >
+        <label for="auth-email" class="control__label">E-mail</label>
+      </div>
+    </div>
+    <div class="auth-form__control">
+      <div class="control">
+        <input
+          id="auth-password"
+          mutatedPasswordInput
+          class="control__input"
+          type="password"
+          autocomplete="off"
+        >
+        <label for="auth-password" class="control__label">Пароль</label>
+      </div>
+    </div>
+    <div class="auth-form__buttons">
+      <button type="submit" class="button button_submit button_block">Войти</button>
+    </div>
+  </form>
+  <div class="auth-form__footer">
+    Еще нет аккаунта? <a href="#" class="auth-form__link">Пройдите регистрацию!</a>
+  </div>
+</div>
+

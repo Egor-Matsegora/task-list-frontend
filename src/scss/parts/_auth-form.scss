@@ -1,0 +1,44 @@
+@import 'variables';
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &__header {
+    text-align: center;
+    padding-bottom: 20px;
+    font-weight: 300;
+    font-size: 1.3em;
+  }
+
+  &__control {
+    padding-bottom: 20px;
+  }
+
+  &__footer {
+    padding-top: 33px;
+    text-align: center;
+  }
+
+  &__link {
+    color: $text-color-accent;
+    text-decoration: none;
+    transition: $fill-transition;
+
+    &:visited {
+      @extend .auth-form__link;
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      outline: none;
+      text-shadow: 2px 2px 8px rgba(0, 123, 255, 0.4);
+    }
+  }
+
+  &__buttons {
+    padding-top: 10px;
+  }
+}

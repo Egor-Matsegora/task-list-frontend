@@ -6,13 +6,28 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
   &__container {
     width: 334px;
-    height: 662px;
     flex-basis: 334px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     background-color: $bg-color-primary;
     box-shadow: $box-shadow-simple;
+    margin-top: 3vh;
+  }
+
+  &__header {
+    flex-basis: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 33px 0;
+  }
+
+  &__content {
+    padding: 0 2vw 4vh;
   }
 }

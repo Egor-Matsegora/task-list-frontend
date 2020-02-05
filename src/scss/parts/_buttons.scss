@@ -1,0 +1,44 @@
+@import 'variables';
+
+.button {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  min-width: 100px;
+  padding: 0 15px;
+  text-align: center;
+  border: 0;
+  font-family: $simple-font-family;
+  letter-spacing: 0.3px;
+  font-size: 1em;
+  font-weight: 300;
+  color: $text-color-primary;
+  border-radius: $border-radius-simple;
+  cursor: pointer;
+  transition: $fill-transition;
+  background-color: $bg-color-light;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+
+  &:hover,
+  &:focus {
+    box-shadow: $box-shadow-simple;
+  }
+
+  &_block {
+    width: 100%;
+  }
+
+  &_submit {
+    color: $text-color-light;
+    background-color: $bg-color-accent;
+
+    &:hover,
+    &:focus {
+      box-shadow: $box-shadow-focus;
+    }
+  }
+}

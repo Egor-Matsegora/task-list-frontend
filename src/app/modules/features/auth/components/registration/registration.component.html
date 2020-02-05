@@ -1,1 +1,79 @@
-<p>registration works!</p>
+<div class="auth-form">
+  <div class="auth-form__header">
+    <p>{{ formHeader }}</p>
+  </div>
+
+  <form class="auth-form__form">
+
+    <div class="auth-form__control">
+      <div class="control">
+        <input
+          id="firstName"
+          type="text"
+          class="control__input"
+          autocomplete="off"
+        >
+        <label for="firstName" class="control__label">Имя</label>
+      </div>
+    </div>
+
+    <div class="auth-form__control">
+      <div class="control">
+        <input
+          id="lastName"
+          type="text"
+          class="control__input"
+          autocomplete="off"
+        >
+        <label for="lastName" class="control__label">Фамилия</label>
+      </div>
+    </div>
+
+    <div class="auth-form__control">
+      <div class="control">
+        <input
+          id="registration-email"
+          type="email"
+          class="control__input"
+          autocomplete="off"
+        >
+        <label for="registration-email" class="control__label">E-mail</label>
+      </div>
+    </div>
+
+    <div class="auth-form__control">
+      <div class="control">
+        <input
+          id="registration-password"
+          mutatedPasswordInput
+          class="control__input"
+          type="password"
+          autocomplete="off"
+        >
+        <label for="registration-password" class="control__label">Пароль</label>
+      </div>
+    </div>
+
+    <div class="auth-form__control">
+      <div class="control">
+        <input
+          id="confirm-password"
+          mutatedPasswordInput
+          class="control__input"
+          type="password"
+          autocomplete="off"
+        >
+        <label for="confirm-password" class="control__label">Повторите пароль</label>
+      </div>
+    </div>
+
+    <div class="auth-form__buttons">
+      <button type="submit" class="button button_submit button_block">Зарегистрироваться</button>
+    </div>
+
+  </form>
+
+  <div class="auth-form__footer">
+    Уже есть аккаунт? <a href="#" class="auth-form__link">Войдите!</a>
+  </div>
+</div>

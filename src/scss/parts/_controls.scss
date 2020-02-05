@@ -1,0 +1,90 @@
+@import 'variables';
+
+.control {
+  position: relative;
+
+  &__input {
+    z-index: 10;
+    background-color: transparent;
+    border: 2px solid $border-color-simple;
+    overflow: hidden;
+    padding: 0 15px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    outline: none;
+    color: $text-color-primary;
+    font-family: $simple-font-family;
+    font-size: 1em;
+    font-weight: 200;
+    letter-spacing: 0.3px;
+    transition: $fill-transition;
+    border-radius: $border-radius-simple;
+
+    &:hover,
+    &:focus,
+    &:active {
+      box-shadow: $box-shadow-focus;
+    }
+
+    &:focus,
+    &:active {
+      border-color: $bg-color-accent;
+    }
+
+    &_mutable {
+      padding-right: 53px;
+    }
+  }
+
+  &__label {
+    position: absolute;
+    padding: 0 5px;
+    font-size: 0.85em;
+    top: -10px;
+    left: 10px;
+    z-index: 20;
+    transition: $fill-transition;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      height: 2px;
+      width: calc(100% + 10px);
+      top: 10px;
+      left: 0;
+      background-color: $bg-color-primary;
+      z-index: -1;
+    }
+  }
+
+  // styles for MutatedPasswordInputDirective
+  &__mutable-btn {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    border-radius: 0 2px 2px 0;
+    height: 36px;
+    width: 38px;
+    border-left: 1px solid $border-color-simple;
+    cursor: pointer;
+    background-image: url('/assets/images/invisible.png');
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    background-position: center center;
+    z-index: 30;
+
+    // styles for MutatedPasswordInputDirective
+    &_visible {
+      background-image: url('/assets/images/visibility.png');
+    }
+  }
+}
+
+.control__input:focus + .control__label,
+.control__input:active + .control__label {
+  color: $text-color-accent;
+}
