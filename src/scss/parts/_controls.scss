@@ -61,11 +61,21 @@
     }
   }
 
+  &__error-text {
+    font-size: 0.8em;
+    padding: 0 15px;
+    margin-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    color: $error-color;
+  }
+
   // styles for MutatedPasswordInputDirective
   &__mutable-btn {
     position: absolute;
     right: 2px;
-    bottom: 2px;
+    top: 2px;
     border-radius: 0 2px 2px 0;
     height: 36px;
     width: 38px;
@@ -80,6 +90,25 @@
     // styles for MutatedPasswordInputDirective
     &_visible {
       background-image: url('/assets/images/visibility.png');
+    }
+  }
+
+  &_error {
+    .control__label {
+      color: $error-color;
+    }
+
+    .control__input {
+      border-color: $error-color;
+
+      &:hover {
+        box-shadow: $box-shadow-error;
+      }
+    }
+
+    .control__input:focus + .control__label,
+    .control__input:active + .control__label {
+      color: $error-color;
     }
   }
 }

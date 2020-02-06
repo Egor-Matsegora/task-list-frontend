@@ -2,32 +2,78 @@
   <div class="auth-form__header">
   <p>{{ formHeader }}</p>
   </div>
-  <form class="auth-form__form">
+  <form
+    class="auth-form__form"
+    [formGroup]="form"
+    (ngSubmit)="login()"
+  >
     <div class="auth-form__control">
-      <div class="control">
+      <div 
+        class="control"
+        [ngClass]="{'control_error': email.invalid && email.touched}"
+      >
         <input
           id="auth-email"
           type="email"
           class="control__input"
-          autocomplete="off"
+          formControlName="email"
         >
         <label for="auth-email" class="control__label">E-mail</label>
+        <div
+          class="control__error-text"
+          *ngIf="email.touched && email.errors && email.errors.required"
+        >
+          поле не должно быть пустым
+        </div>
+        <div
+          class="control__error-text"
+          *ngIf="email.touched && email.errors && email.errors.email"
+        >
+          введите правильный e-mail
+        </div>
       </div>
     </div>
     <div class="auth-form__control">
-      <div class="control">
+      <div
+        class="control"
+        [ngClass]="{'control_error': password.invalid && password.touched}"
+      >
         <input
           id="auth-password"
           mutatedPasswordInput
           class="control__input"
           type="password"
-          autocomplete="off"
+          formControlName="password"
         >
         <label for="auth-password" class="control__label">Пароль</label>
+        <div
+          class="control__error-text"
+          *ngIf="password.touched && password.errors && password.errors.required"
+        >
+          поле не должно быть пустым
+        </div>
+        <div
+          class="control__error-text"
+          *ngIf="password.touched && password.errors && password.errors.minlength"
+        >
+          Пароль не должен быть менее {{ password.errors.minlength.requiredLength }} символов, сейчас {{ password.errors.minlength.actualLength }}
+        </div>
+        <div
+          class="control__error-text"
+          *ngIf="password.touched && password.errors && password.errors.maxlength"
+        >
+          Пароль не должен быть более {{ password.errors.maxlength.requiredLength }} символов, сейчас {{ password.errors.maxlength.actualLength }}
+        </div>
       </div>
     </div>
     <div class="auth-form__buttons">
-      <button type="submit" class="button button_submit button_block">Войти</button>
+      <button
+        type="submit"
+        class="button button_submit button_block"
+        [disabled]="form.invalid"
+      >
+        Войти
+      </button>
     </div>
   </form>
   <div class="auth-form__footer">

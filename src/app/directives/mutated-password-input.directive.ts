@@ -1,6 +1,4 @@
-import { Directive, ElementRef, Renderer2, AfterViewInit, OnDestroy } from '@angular/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { tap, debounceTime, map, filter } from 'rxjs/operators';
+import { Directive, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 
 /**
  * Директива изменяет стили путем добавления или удаления классов
@@ -10,22 +8,15 @@ import { tap, debounceTime, map, filter } from 'rxjs/operators';
 @Directive({
   selector: '[mutatedPasswordInput]'
 })
-export class MutatedPasswordInputDirective implements AfterViewInit, OnDestroy {
+export class MutatedPasswordInputDirective implements AfterViewInit {
   element: HTMLInputElement = this.elementRef.nativeElement;
   button: HTMLDivElement = this.renderer.createElement('div');
-  private inputSub: Subscription;
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   ngAfterViewInit() {
     this.createBtn();
     this.changeType();
-  }
-
-  ngOnDestroy() {
-    if (this.inputSub) {
-      this.inputSub.unsubscribe();
-    }
   }
 
   /**

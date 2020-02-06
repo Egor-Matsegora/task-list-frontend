@@ -16,7 +16,7 @@ $text-color-accent: #007bff;
 $text-color-done: #10b759;
 
 // actions
-$error-color: #ff3f3f;
+$error-color: rgb(255, 63, 63);
 $info-color: #22b9ff;
 $warning-color: #ffb822;
 $success-color: #10b759;
@@ -30,6 +30,7 @@ $simple-font: Oswald;
 // box shadow
 $box-shadow-simple: 15px 2px 15px -4px rgba(0, 0, 0, 0.3);
 $box-shadow-focus: 4px 4px 15px -4px rgba(0, 123, 255, 0.4);
+$box-shadow-error: 4px 4px 15px -4px rgba(255, 63, 63, 0.4);
 
 // transitions
 $fill-transition: all 150ms linear;
