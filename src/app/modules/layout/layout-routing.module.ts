@@ -3,7 +3,13 @@ import { AuthComponent } from './../features/auth/layouts/auth/auth.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [{ path: 'auth', component: AuthComponent }];
+const routes: Routes = [
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [{ path: '', component: AuthComponent }]
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

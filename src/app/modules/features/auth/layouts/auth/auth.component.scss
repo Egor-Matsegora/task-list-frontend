@@ -17,6 +17,7 @@
     background-color: $bg-color-primary;
     box-shadow: $box-shadow-simple;
     margin-top: 3vh;
+    position: relative;
   }
 
   &__header {
@@ -29,5 +30,25 @@
 
   &__content {
     padding: 0 2vw 4vh;
+  }
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 15px;
+    width: 15px;
+    overflow: hidden;
+  }
+
+  &__close-img {
+    display: block;
+    height: 15px;
+    width: 15px;
+
+    &:hover path {
+      transition: $fill-transition;
+      fill: $text-color-accent;
+    }
   }
 }

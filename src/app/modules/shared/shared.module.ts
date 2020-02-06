@@ -9,6 +9,6 @@ import { MutatedPasswordInputDirective } from '../../directives/mutated-password
 @NgModule({
   declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective],
   imports: [CommonModule, BrowserAnimationsModule, RouterModule],
-  exports: [BrowserAnimationsModule, HeaderComponent, LogoComponent, MutatedPasswordInputDirective]
+  exports: [BrowserAnimationsModule, RouterModule, HeaderComponent, LogoComponent, MutatedPasswordInputDirective]
 })
 export class SharedModule {}

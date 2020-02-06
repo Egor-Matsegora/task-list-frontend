@@ -1,4 +1,6 @@
-import { Directive, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
+import { Directive, ElementRef, Renderer2, AfterViewInit, OnDestroy } from '@angular/core';
+import { fromEvent, Subscription } from 'rxjs';
+import { tap, debounceTime, map, filter } from 'rxjs/operators';
 
 /**
  * Директива изменяет стили путем добавления или удаления классов
@@ -8,15 +10,22 @@ import { Directive, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 @Directive({
   selector: '[mutatedPasswordInput]'
 })
-export class MutatedPasswordInputDirective implements AfterViewInit {
+export class MutatedPasswordInputDirective implements AfterViewInit, OnDestroy {
   element: HTMLInputElement = this.elementRef.nativeElement;
   button: HTMLDivElement = this.renderer.createElement('div');
+  private inputSub: Subscription;
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   ngAfterViewInit() {
     this.createBtn();
     this.changeType();
+  }
+
+  ngOnDestroy() {
+    if (this.inputSub) {
+      this.inputSub.unsubscribe();
+    }
   }
 
   /**
@@ -37,17 +46,15 @@ export class MutatedPasswordInputDirective implements AfterViewInit {
    * Изменяет тип инпута, если в него что-то введено
    */
   private changeType(): void {
-    this.renderer.listen(this.element, 'input', () => {
+    this.renderer.listen(this.button, 'click', () => {
       if (this.element.value) {
-        this.renderer.listen(this.button, 'click', () => {
-          this.button.classList.toggle('control__mutable-btn_visible');
-          const type = this.element.getAttribute('type');
-          if (type === 'password') {
-            this.element.setAttribute('type', 'text');
-          } else {
-            this.element.setAttribute('type', 'password');
-          }
-        });
+        this.button.classList.toggle('control__mutable-btn_visible');
+        const type = this.element.getAttribute('type');
+        if (type === 'password') {
+          this.renderer.setAttribute(this.element, 'type', 'text');
+        } else {
+          this.renderer.setAttribute(this.element, 'type', 'password');
+        }
       }
     });
   }

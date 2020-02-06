@@ -1,6 +1,9 @@
 import { enterAnimation, liveAnimation } from './../../../../animations/header-btn.animation';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';
+import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'main-header',
@@ -13,10 +16,42 @@ import { trigger, transition, useAnimation } from '@angular/animations';
     ])
   ]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnDestroy, OnInit {
+  private routerEventsSub: Subscription;
   isLoggedIn: boolean = false;
+  isAuth: boolean = false;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.changeLinnksVisibility();
+  }
+
+  ngOnDestroy() {
+    if (this.routerEventsSub) {
+      this.routerEventsSub.unsubscribe();
+    }
+  }
+
+  private changeLinnksVisibility(): void {
+    const url = this.router.url;
+
+    if (url.startsWith('/auth')) {
+      this.isAuth = true;
+    } else {
+      this.isAuth = false;
+    }
+    this.routerEventsSub = this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationStart),
+        tap((e: NavigationStart) => {
+          if (e.url.startsWith('/auth')) {
+            this.isAuth = true;
+          } else {
+            this.isAuth = false;
+          }
+        })
+      )
+      .subscribe();
+  }
 }
