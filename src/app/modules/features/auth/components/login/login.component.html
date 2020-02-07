@@ -8,7 +8,7 @@
     (ngSubmit)="login()"
   >
     <div class="auth-form__control">
-      <div 
+      <div
         class="control"
         [ngClass]="{'control_error': email.invalid && email.touched}"
       >
@@ -29,7 +29,7 @@
           class="control__error-text"
           *ngIf="email.touched && email.errors && email.errors.email"
         >
-          введите правильный e-mail
+          поле должно содержать e-mail
         </div>
       </div>
     </div>
@@ -72,7 +72,8 @@
         class="button button_submit button_block"
         [disabled]="form.invalid"
       >
-        Войти
+        <span *ngIf="!loading">Войти</span>
+        <loader *ngIf="loading"></loader>
       </button>
     </div>
   </form>

@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 })
 export class LoginComponent implements OnInit {
   formHeader: string = 'Вход';
+  loading: boolean = false;
   form: FormGroup;
   email: FormControl;
   password: FormControl;
@@ -33,10 +34,13 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log(this.password.errors);
     if (this.form.valid) {
+      this.form.disable();
+      this.loading = true;
       this.authService.login(this.form.value).subscribe();
       this.form.reset();
+      this.loading = false;
+      this.form.enable();
     }
   }
 }

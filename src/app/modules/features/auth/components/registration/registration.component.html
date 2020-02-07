@@ -3,72 +3,167 @@
     <p>{{ formHeader }}</p>
   </div>
 
-  <form class="auth-form__form">
+  <form
+    class="auth-form__form"
+    [formGroup]="form"
+  >
 
-    <div class="auth-form__control">
-      <div class="control">
-        <input
-          id="firstName"
-          type="text"
-          class="control__input"
-          autocomplete="off"
+  <ng-container formGroupName='user'>
+
+      <div class="auth-form__control">
+        <div
+          class="control"
+          [ngClass]="{'control_error': firstName.touched && firstName.invalid}"
         >
-        <label for="firstName" class="control__label">Имя</label>
-      </div>
-    </div>
-
-    <div class="auth-form__control">
-      <div class="control">
-        <input
-          id="lastName"
-          type="text"
-          class="control__input"
-          autocomplete="off"
+          <input
+            id="firstName"
+            type="text"
+            class="control__input"
+            autocomplete="off"
+            formControlName="firstName"
+          >
+          <label for="firstName" class="control__label">Имя</label>
+          <div
+            class="control__error-text"
+            *ngIf="firstName.touched && firstName.errors.required"
+          >
+            поле не должно быть пустым
+          </div>
+        </div
         >
-        <label for="lastName" class="control__label">Фамилия</label>
       </div>
-    </div>
 
-    <div class="auth-form__control">
-      <div class="control">
-        <input
-          id="registration-email"
-          type="email"
-          class="control__input"
-          autocomplete="off"
+      <div class="auth-form__control">
+        <div
+          class="control"
+          [ngClass]="{'control_error': lastName.touched && lastName.invalid}"
         >
-        <label for="registration-email" class="control__label">E-mail</label>
+          <input
+            id="lastName"
+            type="text"
+            class="control__input"
+            autocomplete="off"
+            formControlName="lastName"
+          >
+          <label for="lastName" class="control__label">Фамилия</label>
+          <div
+            class="control__error-text"
+            *ngIf="lastName.touched && lastName.errors.required"
+          >
+            поле не должно быть пустым
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="auth-form__control">
-      <div class="control">
-        <input
-          id="registration-password"
-          mutatedPasswordInput
-          class="control__input"
-          type="password"
-          autocomplete="off"
+      <div class="auth-form__control">
+        <div
+          class="control"
+          [ngClass]="{'control_error': email.touched && email.invalid}"
         >
-        <label for="registration-password" class="control__label">Пароль</label>
+          <input
+            id="registration-email"
+            type="email"
+            class="control__input"
+            autocomplete="off"
+            formControlName="email"
+          >
+          <label for="registration-email" class="control__label">E-mail</label>
+          <div
+            class="control__error-text"
+            *ngIf="email.touched && email.errors.required"
+          >
+            поле не должно быть пустым
+          </div>
+          <div
+            class="control__error-text"
+            *ngIf="email.touched && email.errors.email"
+          >
+            поле должно содержать e-mail
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div class="auth-form__control">
+        <div
+          class="control"
+          [ngClass]="{'control_error': password.touched && password.invalid}"
+        >
+          <input
+            id="registration-password"
+            mutatedPasswordInput
+            class="control__input"
+            type="password"
+            autocomplete="off"
+            formControlName="password"
+          >
+          <label for="registration-password" class="control__label">Пароль</label>
+          <div
+            class="control__error-text"
+            *ngIf="password.touched && password.errors.required"
+          >
+            поле не должно быть пустым
+          </div>
+          <div
+            class="control__error-text"
+            *ngIf="password.touched && password.errors && password.errors.minlength"
+          >
+            Пароль не должен быть менее {{ password.errors.minlength.requiredLength }} символов, сейчас {{ password.errors.minlength.actualLength }}
+          </div>
+          <div
+            class="control__error-text"
+            *ngIf="password.touched && password.errors && password.errors.maxlength"
+          >
+            Пароль не должен быть более {{ password.errors.maxlength.requiredLength }} символов, сейчас {{ password.errors.maxlength.actualLength }}
+          </div>
+        </div>
+      </div>
+
+    </ng-container>
 
     <div class="auth-form__control">
-      <div class="control">
+      <div
+          class="control"
+          [ngClass]="{'control_error': replayPassword.touched && replayPassword.invalid}"
+        >
         <input
           id="confirm-password"
           mutatedPasswordInput
           class="control__input"
           type="password"
           autocomplete="off"
+          formControlName="replayPassword"
         >
         <label for="confirm-password" class="control__label">Повторите пароль</label>
+        <div
+          class="control__error-text"
+          *ngIf="replayPassword.touched && replayPassword.errors.required"
+        >
+          поле не должно быть пустым
+        </div>
+        <div
+          class="control__error-text"
+          *ngIf="replayPassword.touched && replayPassword.errors && replayPassword.errors.minlength"
+        >
+          Пароль не должен быть менее {{ replayPassword.errors.minlength.requiredLength }} символов, сейчас {{ replayPassword.errors.minlength.actualLength }}
+        </div>
+        <div
+          class="control__error-text"
+          *ngIf="replayPassword.touched && replayPassword.errors && replayPassword.errors.maxlength"
+        >
+          Пароль не должен быть более {{ replayPassword.errors.maxlength.requiredLength }} символов, сейчас {{ replayPassword.errors.maxlength.actualLength }}
+        </div>
       </div>
     </div>
 
     <div class="auth-form__buttons">
-      <button type="submit" class="button button_submit button_block">Зарегистрироваться</button>
+      <button
+        type="submit"
+        class="button button_submit button_block"
+        [disabled]="form.invalid"
+      >
+        <span *ngIf="!loading">Зарегистрироваться</span>
+        <loader *ngIf="loading"></loader>
+      </button>
     </div>
 
   </form>

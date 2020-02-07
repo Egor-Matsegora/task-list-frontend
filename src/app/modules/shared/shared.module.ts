@@ -7,9 +7,10 @@ import { LogoComponent } from './components/logo/logo.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MutatedPasswordInputDirective } from '../../directives/mutated-password-input.directive';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
-  declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective],
+  declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective, LoaderComponent],
   imports: [CommonModule, BrowserAnimationsModule, RouterModule, FormsModule, ReactiveFormsModule],
   exports: [
     BrowserAnimationsModule,
@@ -18,7 +19,8 @@ import { MutatedPasswordInputDirective } from '../../directives/mutated-password
     LogoComponent,
     MutatedPasswordInputDirective,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoaderComponent
   ]
 })
 export class SharedModule {}

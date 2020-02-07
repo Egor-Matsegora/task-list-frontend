@@ -1,3 +1,4 @@
+import { AuthService } from './../../../core/services/auth.service';
 import { enterAnimation, liveAnimation } from './../../../../animations/header-btn.animation';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';
@@ -21,10 +22,11 @@ export class HeaderComponent implements OnDestroy, OnInit {
   isLoggedIn: boolean = false;
   isAuth: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     this.changeLinnksVisibility();
+    this.setIsLoggedIn();
   }
 
   ngOnDestroy() {
@@ -53,5 +55,9 @@ export class HeaderComponent implements OnDestroy, OnInit {
         })
       )
       .subscribe();
+  }
+
+  private setIsLoggedIn() {
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
 }
