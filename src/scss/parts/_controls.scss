@@ -34,6 +34,23 @@
       border-color: $bg-color-accent;
     }
 
+    &:disabled,
+    &:disabled:active,
+    &:disabled:focus,
+    &:disabled:hover {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    &:disabled:hover {
+      box-shadow: none;
+    }
+
+    &:disabled:active {
+      border-color: $border-color-simple;
+    }
+
+    // styles for MutatedPasswordInputDirective
     &_mutable {
       padding-right: 53px;
     }
@@ -116,4 +133,10 @@
 .control__input:focus + .control__label,
 .control__input:active + .control__label {
   color: $text-color-accent;
+}
+
+.control__input:disabled + .control__label,
+.control__input:disabled + .control__label {
+  color: $text-color-primary;
+  opacity: 0.7;
 }

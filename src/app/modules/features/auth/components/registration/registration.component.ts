@@ -1,12 +1,16 @@
+import { ExistingEmailValidator } from './../../../../../validators/existing-email.validator';
+import { Router } from '@angular/router';
 import { RegistretionUser } from './../../../../../interfaces/registration-user.inerface';
 import { AuthService } from './../../../../core/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { passwordMatchValidator } from 'src/app/validators/replay-password.validator';
 
 @Component({
   selector: 'registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.scss']
+  styleUrls: ['./registration.component.scss'],
+  providers: [ExistingEmailValidator]
 })
 export class RegistrationComponent implements OnInit {
   formHeader: string = 'Регистрация';
@@ -19,11 +23,17 @@ export class RegistrationComponent implements OnInit {
   replayPassword: FormControl;
   private user: FormGroup;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private router: Router,
+    private existingEmailValidator: ExistingEmailValidator
+  ) {}
 
   ngOnInit() {
     this.initForm();
     this.initFormVars();
+    this.replayPasswordChangeAcces();
   }
 
   private initForm() {
@@ -31,11 +41,19 @@ export class RegistrationComponent implements OnInit {
       user: this.fb.group({
         firstName: this.fb.control('', Validators.required),
         lastName: this.fb.control('', Validators.required),
-        email: this.fb.control('', [Validators.required, Validators.email]),
+        email: this.fb.control(
+          '',
+          [Validators.required, Validators.email],
+          this.existingEmailValidator.validate.bind(this.existingEmailValidator)
+        ),
         password: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)])
       }),
-      replayPassword: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)])
-    });
+      replayPassword: this.fb.control({value: '', disabled: true}, [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(20)
+      ])
+    }, { validators: passwordMatchValidator });
   }
 
   private initFormVars() {
@@ -45,12 +63,38 @@ export class RegistrationComponent implements OnInit {
     this.email = this.user.get('email') as FormControl;
     this.password = this.user.get('password') as FormControl;
     this.replayPassword = this.form.get('replayPassword') as FormControl;
-    console.log(user, firstName, LastName, email, password, replayPassword);
+  }
+
+  private replayPasswordChangeAcces() {
+    this.password.valueChanges.subscribe(val => {
+      if (val) {
+        this.replayPassword.enable();
+      } else {
+        this.replayPassword.reset();
+        this.replayPassword.disable();
+      }
+    })
   }
 
   registration(): void {
     if (this.form.valid) {
-      console.log(this.user.value);
+      this.form.disable();
+      this.loading = true;
+      this.authService.registration(this.user.value)
+        .subscribe(res => {
+          if (res && res.success) {
+            this.form.enable();
+            this.form.reset();
+            this.loading = false;
+            this.router.navigate(['auth', 'login']);
+          }
+        },
+        (err) => {
+          this.form.enable();
+          this.loading = false;
+          console.error(err);
+        }
+      );
     }
   }
 }

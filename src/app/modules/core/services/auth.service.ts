@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { handleHttpError } from './../../../helpers/handle-http-error';
 
 @Injectable()
 export class AuthService {
@@ -18,13 +19,15 @@ export class AuthService {
         if (token) {
           localStorage.setItem('token', token.token);
         }
-      })
-      // catchError()
+      }),
+      catchError(error => handleHttpError(error))
     );
   }
 
   registration(user: RegistretionUser): Observable<any> {
-    return this.http.post(`${this.url}registration`, user);
+    return this.http.post(`${this.url}registration`, user).pipe(
+      catchError(error => handleHttpError(error))
+    );
   }
 
   setToken(token) {
@@ -41,6 +44,6 @@ export class AuthService {
 
   logout() {
     this.setToken(null);
-    localStorage.clear();
+    localStorage.removeItem('token');
   }
 }

@@ -6,6 +6,7 @@
   <form
     class="auth-form__form"
     [formGroup]="form"
+    (ngSubmit)="registration()"
   >
 
   <ng-container formGroupName='user'>
@@ -25,7 +26,7 @@
           <label for="firstName" class="control__label">Имя</label>
           <div
             class="control__error-text"
-            *ngIf="firstName.touched && firstName.errors.required"
+            *ngIf="firstName.touched && firstName.errors && firstName.errors.required"
           >
             поле не должно быть пустым
           </div>
@@ -48,7 +49,7 @@
           <label for="lastName" class="control__label">Фамилия</label>
           <div
             class="control__error-text"
-            *ngIf="lastName.touched && lastName.errors.required"
+            *ngIf="lastName.touched && lastName.errors && lastName.errors.required"
           >
             поле не должно быть пустым
           </div>
@@ -70,15 +71,21 @@
           <label for="registration-email" class="control__label">E-mail</label>
           <div
             class="control__error-text"
-            *ngIf="email.touched && email.errors.required"
+            *ngIf="email.touched && email.errors && email.errors.required"
           >
             поле не должно быть пустым
           </div>
           <div
             class="control__error-text"
-            *ngIf="email.touched && email.errors.email"
+            *ngIf="email.touched && email.errors && email.errors.email"
           >
             поле должно содержать e-mail
+          </div>
+          <div
+            class="control__error-text"
+            *ngIf="email.touched && email.errors && email.errors.existingEmail"
+          >
+            такой e-mail уже существует
           </div>
         </div>
       </div>
@@ -99,7 +106,7 @@
           <label for="registration-password" class="control__label">Пароль</label>
           <div
             class="control__error-text"
-            *ngIf="password.touched && password.errors.required"
+            *ngIf="password.touched && password.errors && password.errors.required"
           >
             поле не должно быть пустым
           </div>
@@ -123,7 +130,7 @@
     <div class="auth-form__control">
       <div
           class="control"
-          [ngClass]="{'control_error': replayPassword.touched && replayPassword.invalid}"
+          [ngClass]="{'control_error': (replayPassword.touched && replayPassword.invalid) || (replayPassword.touched && form.errors && form.errors.passwordMatch) }"
         >
         <input
           id="confirm-password"
@@ -136,7 +143,7 @@
         <label for="confirm-password" class="control__label">Повторите пароль</label>
         <div
           class="control__error-text"
-          *ngIf="replayPassword.touched && replayPassword.errors.required"
+          *ngIf="replayPassword.touched && replayPassword.errors && replayPassword.errors.required"
         >
           поле не должно быть пустым
         </div>
@@ -144,13 +151,19 @@
           class="control__error-text"
           *ngIf="replayPassword.touched && replayPassword.errors && replayPassword.errors.minlength"
         >
-          Пароль не должен быть менее {{ replayPassword.errors.minlength.requiredLength }} символов, сейчас {{ replayPassword.errors.minlength.actualLength }}
+          пароль не должен быть менее {{ replayPassword.errors.minlength.requiredLength }} символов, сейчас {{ replayPassword.errors.minlength.actualLength }}
         </div>
         <div
           class="control__error-text"
           *ngIf="replayPassword.touched && replayPassword.errors && replayPassword.errors.maxlength"
         >
-          Пароль не должен быть более {{ replayPassword.errors.maxlength.requiredLength }} символов, сейчас {{ replayPassword.errors.maxlength.actualLength }}
+          пароль не должен быть более {{ replayPassword.errors.maxlength.requiredLength }} символов, сейчас {{ replayPassword.errors.maxlength.actualLength }}
+        </div>
+        <div
+          class="control__error-text"
+          *ngIf="replayPassword.touched && form.errors && form.errors.passwordMatch"
+        >
+          пароли должны совпадать
         </div>
       </div>
     </div>
