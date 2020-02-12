@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { AuthService } from './modules/core/services/auth.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +7,14 @@ import { Component } from '@angular/core';
     <router-outlet></router-outlet>
   `
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.authService.setToken(token);
+    }
+  }
+}

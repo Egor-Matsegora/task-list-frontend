@@ -8,9 +8,11 @@ import { MutatedPasswordInputDirective } from '../../directives/mutated-password
 import { LoaderComponent } from './components/loader/loader.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { HeaderComponent } from './components/header/header.component';
+import { StartPageComponent } from './components/start-page/start-page.component';
+import { SystemComponent } from './components/system/system.component';
 
 @NgModule({
-  declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective, LoaderComponent],
+  declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective, LoaderComponent, StartPageComponent, SystemComponent],
   imports: [
     CommonModule,
     BrowserAnimationsModule,

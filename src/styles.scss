@@ -19,11 +19,20 @@ body {
   color: $text-color-primary;
   font-size: 17px;
   font-weight: 200;
+  line-height: 1.5em;
+  letter-spacing: 0.4px;
 }
 
-@for $i from 1 to 6 {
+@for $i from 1 to 5 {
   h#{$i} {
     font-family: $simple-font-family;
     font-weight: 700;
+    line-height: initial;
+    font-size: 2.5em - (($i - 1) * 0.5);
+    margin: 0.5em 0 0.3em;
   }
+}
+
+p {
+  margin: 0.5em 0;
 }

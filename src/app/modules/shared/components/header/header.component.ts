@@ -54,10 +54,14 @@ export class HeaderComponent implements OnDestroy, OnInit {
           }
         })
       )
-      .subscribe();
+      .subscribe(() => this.setIsLoggedIn());
   }
 
   private setIsLoggedIn() {
     this.isLoggedIn = this.authService.isLoggedIn();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

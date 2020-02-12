@@ -1,6 +1,7 @@
 import { AuthService } from './../../../../core/services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   email: FormControl;
   password: FormControl;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.initForm();
@@ -37,10 +38,18 @@ export class LoginComponent implements OnInit {
     if (this.form.valid) {
       this.form.disable();
       this.loading = true;
-      this.authService.login(this.form.value).subscribe();
-      this.form.reset();
-      this.loading = false;
-      this.form.enable();
+      this.authService.login(this.form.value).subscribe(req => {
+        if (req.success) {
+          this.form.reset();
+          this.loading = false;
+          this.form.enable();
+          this.router.navigate(['system']);
+        } else {
+          this.form.reset();
+          this.loading = false;
+          this.form.enable();
+        }
+      });
     }
   }
 }
