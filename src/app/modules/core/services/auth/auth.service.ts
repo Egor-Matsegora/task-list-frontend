@@ -1,11 +1,11 @@
-import { LoginRequest } from './../../../interfaces/login-request.interface';
-import { RegistretionUser } from './../../../interfaces/registration-user.inerface';
-import { LoginUser } from '../../../interfaces/login-user.interface';
+import { LoginRequest } from '../../../../interfaces/login-request.interface';
+import { RegistretionUser } from '../../../../interfaces/registration-user.inerface';
+import { LoginUser } from '../../../../interfaces/login-user.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap, catchError, map } from 'rxjs/operators';
-import { handleHttpError } from './../../../helpers/handle-http-error';
+import { handleHttpError } from '../../../../helpers/handle-http-error';
 import { Router } from '@angular/router';
 
 @Injectable()

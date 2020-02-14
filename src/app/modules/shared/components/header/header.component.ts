@@ -1,4 +1,4 @@
-import { AuthService } from './../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth/auth.service';
 import { enterAnimation, liveAnimation } from './../../../../animations/header-btn.animation';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';

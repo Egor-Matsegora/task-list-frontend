@@ -1,7 +1,7 @@
 import { ExistingEmailValidator } from './../../../../../validators/existing-email.validator';
 import { Router } from '@angular/router';
 import { RegistretionUser } from './../../../../../interfaces/registration-user.inerface';
-import { AuthService } from './../../../../core/services/auth.service';
+import { AuthService } from '../../../../core/services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { passwordMatchValidator } from 'src/app/validators/replay-password.validator';
@@ -37,23 +37,26 @@ export class RegistrationComponent implements OnInit {
   }
 
   private initForm() {
-    this.form = this.fb.group({
-      user: this.fb.group({
-        firstName: this.fb.control('', Validators.required),
-        lastName: this.fb.control('', Validators.required),
-        email: this.fb.control(
-          '',
-          [Validators.required, Validators.email],
-          this.existingEmailValidator.validate.bind(this.existingEmailValidator)
-        ),
-        password: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)])
-      }),
-      replayPassword: this.fb.control({value: '', disabled: true}, [
-        Validators.required,
-        Validators.minLength(6),
-        Validators.maxLength(20)
-      ])
-    }, { validators: passwordMatchValidator });
+    this.form = this.fb.group(
+      {
+        user: this.fb.group({
+          firstName: this.fb.control('', Validators.required),
+          lastName: this.fb.control('', Validators.required),
+          email: this.fb.control(
+            '',
+            [Validators.required, Validators.email],
+            this.existingEmailValidator.validate.bind(this.existingEmailValidator)
+          ),
+          password: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)])
+        }),
+        replayPassword: this.fb.control({ value: '', disabled: true }, [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(20)
+        ])
+      },
+      { validators: passwordMatchValidator }
+    );
   }
 
   private initFormVars() {
@@ -73,15 +76,15 @@ export class RegistrationComponent implements OnInit {
         this.replayPassword.reset();
         this.replayPassword.disable();
       }
-    })
+    });
   }
 
   registration(): void {
     if (this.form.valid) {
       this.form.disable();
       this.loading = true;
-      this.authService.registration(this.user.value)
-        .subscribe(res => {
+      this.authService.registration(this.user.value).subscribe(
+        res => {
           if (res && res.success) {
             this.form.enable();
             this.form.reset();
@@ -89,7 +92,7 @@ export class RegistrationComponent implements OnInit {
             this.router.navigate(['auth', 'login']);
           }
         },
-        (err) => {
+        err => {
           this.form.enable();
           this.loading = false;
           console.error(err);
