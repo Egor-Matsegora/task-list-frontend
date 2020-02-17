@@ -18,7 +18,6 @@ export class AuthService {
   login(user: LoginUser): Observable<LoginRequest> {
     return this.http.post<LoginRequest>(`${this.url}login`, user).pipe(
       map(req => {
-        console.log(req);
         if (req && req.token) {
           localStorage.setItem('token', req.token);
           this.setToken(req.token);
@@ -50,5 +49,13 @@ export class AuthService {
     this.setToken(null);
     localStorage.removeItem('token');
     this.router.navigate(['']);
+  }
+
+  checkToken() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.setToken(token);
+    }
   }
 }

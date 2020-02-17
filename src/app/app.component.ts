@@ -11,10 +11,6 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      this.authService.setToken(token);
-    }
+    this.authService.checkToken();
   }
 }

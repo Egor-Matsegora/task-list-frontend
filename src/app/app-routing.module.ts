@@ -14,22 +14,6 @@ const routes: Routes = [
     path: '',
     component: LayoutComponent,
     loadChildren: () => import('./modules/features/layout/layout.module').then(m => m.LayoutModule)
-    // component: LayoutComponent,
-    // children: [
-    //   { path: '', redirectTo: 'about', pathMatch: 'full' },
-    //   { path: 'about', component: StartPageComponent, canActivate: [SystemGuard] },
-    //   { path: 'auth', redirectTo: 'auth/login', pathMatch: 'full' },
-    //   {
-    //     path: 'auth',
-    //     component: AuthComponent,
-    //     canActivate: [SystemGuard],
-    //     children: [
-    //       { path: 'login', component: LoginComponent },
-    //       { path: 'registration', component: RegistrationComponent }
-    //     ]
-    //   },
-    //   { path: 'system', component: SystemComponent, canActivate: [AuthGuard] }
-    // ]
   }
 ];
 
