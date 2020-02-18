@@ -8,9 +8,10 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { LogoComponent } from './components/logo/logo.component';
 import { HeaderComponent } from './components/header/header.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
+import { AsideNavComponent } from './components/aside-nav/aside-nav.component';
 
 @NgModule({
-  declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective, LoaderComponent, StartPageComponent],
+  declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective, LoaderComponent, StartPageComponent, AsideNavComponent],
   imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, RouterModule],
   exports: [
     RouterModule,

@@ -50,6 +50,11 @@
       border-color: $border-color-simple;
     }
 
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px $bg-color-primary inset !important;
+      -webkit-text-fill-color: $text-color-primary !important;
+    }
+
     // styles for MutatedPasswordInputDirective
     &_mutable {
       padding-right: 53px;
