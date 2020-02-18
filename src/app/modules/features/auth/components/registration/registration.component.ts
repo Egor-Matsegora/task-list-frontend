@@ -5,6 +5,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { passwordMatchValidator } from 'src/app/validators/replay-password.validator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'registration',
@@ -27,7 +28,8 @@ export class RegistrationComponent implements OnInit {
     private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    private existingEmailValidator: ExistingEmailValidator
+    private existingEmailValidator: ExistingEmailValidator,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -86,6 +88,7 @@ export class RegistrationComponent implements OnInit {
       this.authService.registration(this.user.value).subscribe(
         res => {
           if (res && res.success) {
+            this.toastr.success('Вы успешно зарегестрировались, можете войти');
             this.form.enable();
             this.form.reset();
             this.loading = false;
@@ -93,6 +96,7 @@ export class RegistrationComponent implements OnInit {
           }
         },
         err => {
+          this.toastr.error('Ошибка регистрации');
           this.form.enable();
           this.loading = false;
           console.error(err);

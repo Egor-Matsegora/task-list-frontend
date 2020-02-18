@@ -9,12 +9,30 @@ import { LogoComponent } from './components/logo/logo.component';
 import { HeaderComponent } from './components/header/header.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
 import { AsideNavComponent } from './components/aside-nav/aside-nav.component';
+import { ToastrModule } from 'ngx-toastr';
+
+import { ToastrOptions } from '../../helpers/toastr-options';
 
 @NgModule({
-  declarations: [HeaderComponent, LogoComponent, MutatedPasswordInputDirective, LoaderComponent, StartPageComponent, AsideNavComponent],
-  imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, RouterModule],
+  declarations: [
+    HeaderComponent,
+    LogoComponent,
+    MutatedPasswordInputDirective,
+    LoaderComponent,
+    StartPageComponent,
+    AsideNavComponent
+  ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    ToastrModule.forRoot(ToastrOptions)
+  ],
   exports: [
     RouterModule,
+    ToastrModule,
     HeaderComponent,
     LogoComponent,
     MutatedPasswordInputDirective,

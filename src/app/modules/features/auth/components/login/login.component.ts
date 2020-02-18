@@ -2,6 +2,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'login',
@@ -15,7 +16,12 @@ export class LoginComponent implements OnInit {
   email: FormControl;
   password: FormControl;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit() {
     this.initForm();
@@ -40,11 +46,13 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.authService.login(this.form.value).subscribe(req => {
         if (req.success) {
+          this.toastr.info('Добро пожаловать');
           this.form.reset();
           this.loading = false;
           this.form.enable();
           this.router.navigate(['system']);
         } else {
+          this.toastr.error('Ошибка авторизации, попробуйте еще');
           this.form.reset();
           this.loading = false;
           this.form.enable();
