@@ -1,0 +1,19 @@
+@import 'variables';
+@import 'mixins';
+
+.system {
+  height: 100vh;
+  padding-top: 70px;
+  margin-top: -70px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+
+  &__aside {
+    flex: 0 0 auto;
+  }
+
+  &__content {
+    flex: 1 0 auto;
+  }
+}

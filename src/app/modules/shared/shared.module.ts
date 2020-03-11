@@ -1,27 +1,21 @@
+import { AsideStateService } from './services/aside-state/aside-state.service';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { MutatedPasswordInputDirective } from '../../directives/mutated-password-input.directive';
+// external modules
+import { ToastrModule } from 'ngx-toastr';
+// components
 import { LoaderComponent } from './components/loader/loader.component';
 import { LogoComponent } from './components/logo/logo.component';
-import { HeaderComponent } from './components/header/header.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
-import { AsideNavComponent } from './components/aside-nav/aside-nav.component';
-import { ToastrModule } from 'ngx-toastr';
-
+// directives
+import { MutatedPasswordInputDirective } from '../../directives/mutated-password-input.directive';
+// helpers
 import { ToastrOptions } from '../../helpers/toastr-options';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    LogoComponent,
-    MutatedPasswordInputDirective,
-    LoaderComponent,
-    StartPageComponent,
-    AsideNavComponent
-  ],
+  declarations: [LogoComponent, LoaderComponent, StartPageComponent, MutatedPasswordInputDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -30,10 +24,10 @@ import { ToastrOptions } from '../../helpers/toastr-options';
     RouterModule,
     ToastrModule.forRoot(ToastrOptions)
   ],
+  providers: [AsideStateService],
   exports: [
     RouterModule,
     ToastrModule,
-    HeaderComponent,
     LogoComponent,
     MutatedPasswordInputDirective,
     FormsModule,

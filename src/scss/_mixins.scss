@@ -6,3 +6,7 @@
     src: url('#{$path}');
   }
 }
+
+@mixin simple-transition($var: all) {
+  transition: $var 250ms ease-in-out 30ms;
+}

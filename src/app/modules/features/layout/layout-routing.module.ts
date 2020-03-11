@@ -1,9 +1,8 @@
-import { SystemGuard } from './../../core/guards/system/system.guard';
-import { AuthGuard } from './../../core/guards/auth/auth.guard';
-import { StartPageComponent } from './../../shared/components/start-page/start-page.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SystemComponent } from '../system/components/system/system.component';
+import { StartPageComponent } from './../../shared/components/start-page/start-page.component';
+import { SystemGuard } from './../../core/guards/system/system.guard';
+import { AuthGuard } from './../../core/guards/auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'about', pathMatch: 'full' },
@@ -16,10 +15,9 @@ const routes: Routes = [
   },
   {
     path: 'system',
-    component: SystemComponent,
     data: { state: 'system' },
-    canActivate: [AuthGuard]
-    // loadChildren: () => import('../system/system.module').then(m => m.SystemModule)
+    canActivate: [AuthGuard],
+    loadChildren: () => import('../system/system.module').then(m => m.SystemModule)
   }
 ];
 
