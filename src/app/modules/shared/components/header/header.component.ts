@@ -2,7 +2,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { enterAnimation, liveAnimation } from './../../../../animations/header-btn.animation';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';
-import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 

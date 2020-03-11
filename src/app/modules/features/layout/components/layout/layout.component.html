@@ -3,6 +3,8 @@
     <main-header></main-header>
   </header>
   <main class="main-container__content">
-      <router-outlet></router-outlet>
+    <div [@routeAnimation]="routeState(animatedOutlet)">
+      <router-outlet #animatedOutlet="outlet"></router-outlet>
+    </div>
   </main>
 </div>

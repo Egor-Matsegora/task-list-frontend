@@ -7,15 +7,17 @@ import { SystemComponent } from '../system/components/system/system.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'about', pathMatch: 'full' },
-  { path: 'about', component: StartPageComponent, canActivate: [SystemGuard] },
+  { path: 'about', component: StartPageComponent, data: { state: 'home' }, canActivate: [SystemGuard] },
   {
     path: 'auth',
+    data: { state: 'auth' },
     canActivate: [SystemGuard],
     loadChildren: () => import('../auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: 'system',
     component: SystemComponent,
+    data: { state: 'system' },
     canActivate: [AuthGuard]
     // loadChildren: () => import('../system/system.module').then(m => m.SystemModule)
   }
