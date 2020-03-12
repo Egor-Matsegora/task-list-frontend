@@ -8,5 +8,5 @@
 }
 
 @mixin simple-transition($var: all) {
-  transition: $var 250ms ease-in-out 30ms;
+  transition: $var 150ms ease-in-out 30ms;
 }

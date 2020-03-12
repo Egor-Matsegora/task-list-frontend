@@ -3,8 +3,14 @@
     <main-header></main-header>
   </header>
   <main class="main-container__content">
-    <div [@routeAnimation]="routeState(animatedOutlet)">
+    <div [@routeAnimation]="routeState(animatedOutlet)" [@.disabled]="disableAnimation">
       <router-outlet #animatedOutlet="outlet"></router-outlet>
     </div>
   </main>
 </div>
+
+<!-- logout modal -->
+
+<ngx-smart-modal identifier="authModal" [customClass]="'auth-modal'">
+  <logout></logout>
+</ngx-smart-modal>

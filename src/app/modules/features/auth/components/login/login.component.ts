@@ -44,20 +44,24 @@ export class LoginComponent implements OnInit {
     if (this.form.valid) {
       this.form.disable();
       this.loading = true;
-      this.authService.login(this.form.value).subscribe(req => {
-        if (req.success) {
-          this.toastr.info('Добро пожаловать');
-          this.form.reset();
-          this.loading = false;
-          this.form.enable();
-          this.router.navigate(['system']);
-        } else {
-          this.toastr.error('Ошибка авторизации, попробуйте еще');
+      this.authService.login(this.form.value).subscribe(
+        req => {
+          if (req.success) {
+            const userName = req.user.firstName + ' ' + req.user.lastName;
+            this.toastr.info(`Добро пожаловать ${userName}`);
+            this.form.reset();
+            this.loading = false;
+            this.form.enable();
+            this.router.navigate(['system']);
+          } else [];
+        },
+        error => {
+          this.toastr.error(`Ошибка авторизации: ${error}`);
           this.form.reset();
           this.loading = false;
           this.form.enable();
         }
-      });
+      );
     }
   }
 }

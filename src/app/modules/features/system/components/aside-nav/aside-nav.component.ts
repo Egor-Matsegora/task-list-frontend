@@ -1,4 +1,4 @@
-import { AsideStateService } from './../../../../shared/services/aside-state/aside-state.service';
+import { AsideStateService } from './../../../../core/services/aside-state/aside-state.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
@@ -18,6 +18,10 @@ export class AsideNavComponent implements OnInit {
   }
 
   private subToAsideState() {
-    this.subscriptions.add(this.asideService.asideState$.subscribe(state => (this.asideState = state)));
+    this.subscriptions.add(
+      this.asideService.asideState$.subscribe(state => {
+        this.asideState = state;
+      })
+    );
   }
 }

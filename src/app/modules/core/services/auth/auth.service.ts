@@ -1,19 +1,24 @@
-import { LoginRequest } from '../../../../interfaces/login-request.interface';
-import { RegistretionUser } from '../../../../interfaces/registration-user.inerface';
-import { LoginUser } from '../../../../interfaces/login-user.interface';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap, catchError, map } from 'rxjs/operators';
-import { handleHttpError } from '../../../../helpers/handle-http-error';
 import { Router } from '@angular/router';
+// rxjs
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+// services
+import { AsideStateService } from './../aside-state/aside-state.service';
+// helpers
+import { handleHttpError } from '../../../../helpers/handle-http-error';
+// interfaces
+import { RegistretionUser } from '../../../../interfaces/registration-user.inerface';
+import { LoginUser } from '../../../../interfaces/login-user.interface';
+import { LoginRequest } from '../../../../interfaces/login-request.interface';
 
 @Injectable()
 export class AuthService {
   private url = 'http://localhost:5000/auth/';
   private token: string = null;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private asideState: AsideStateService) {}
 
   login(user: LoginUser): Observable<LoginRequest> {
     return this.http.post<LoginRequest>(`${this.url}login`, user).pipe(
@@ -21,7 +26,8 @@ export class AuthService {
         if (req && req.token) {
           localStorage.setItem('token', req.token);
           this.setToken(req.token);
-          return { success: req.success };
+          this.asideState.setDefaultState();
+          return { success: req.success, user: req.user };
         }
         return { success: req.success, message: req.message };
       }),
@@ -49,6 +55,7 @@ export class AuthService {
     this.setToken(null);
     localStorage.removeItem('token');
     this.router.navigate(['']);
+    this.asideState.removeAsideStorageState();
   }
 
   checkToken() {

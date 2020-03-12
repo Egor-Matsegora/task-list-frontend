@@ -1,10 +1,10 @@
-import { AsideStateService } from './services/aside-state/aside-state.service';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // external modules
 import { ToastrModule } from 'ngx-toastr';
+import { NgxSmartModalModule } from 'ngx-smart-modal';
 // components
 import { LoaderComponent } from './components/loader/loader.component';
 import { LogoComponent } from './components/logo/logo.component';
@@ -22,9 +22,9 @@ import { ToastrOptions } from '../../helpers/toastr-options';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    ToastrModule.forRoot(ToastrOptions)
+    ToastrModule.forRoot(ToastrOptions),
+    NgxSmartModalModule.forRoot()
   ],
-  providers: [AsideStateService],
   exports: [
     RouterModule,
     ToastrModule,
@@ -32,7 +32,8 @@ import { ToastrOptions } from '../../helpers/toastr-options';
     MutatedPasswordInputDirective,
     FormsModule,
     ReactiveFormsModule,
-    LoaderComponent
+    LoaderComponent,
+    NgxSmartModalModule
   ]
 })
 export class SharedModule {}

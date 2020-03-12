@@ -35,10 +35,6 @@
   }
 
   &__btn_active {
-    &:hover {
-      background-color: $bg-color-primary;
-    }
-
     & path {
       transition: $fill-transition;
       fill: $bg-color-accent;

@@ -1,13 +1,13 @@
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth/auth.service';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private toastr: ToastrService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
     if (this.authService.isLoggedIn()) {
@@ -19,8 +19,9 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handleAuthError(err: HttpErrorResponse): Observable<HttpErrorResponse> {
-    if (err.status === 401) {
+    if (err.status === 401 && this.authService.isLoggedIn()) {
       this.authService.logout();
+      this.toastr.warning('Время сессии истекло, авторизируйтесь еще раз');
     }
 
     return throwError(err);

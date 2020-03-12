@@ -1,0 +1,68 @@
+@import 'variables';
+
+.app-toastr {
+  position: fixed;
+  top: 2vh;
+  right: 50%;
+  transform: translateX(50%);
+  z-index: 1000;
+}
+
+.app-toastr__content {
+  min-width: 200px;
+  max-width: 300px;
+  min-height: 50px;
+  padding: 10px 20px 10px 50px;
+  box-shadow: $box-shadow-simple;
+  overflow: hidden;
+  position: relative;
+  color: $text-color-dark;
+
+  &:before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    font-size: 25px;
+    text-align: center;
+    line-height: 30px;
+    font-weight: 700;
+  }
+}
+
+.toast-success {
+  background-color: $success-color;
+
+  &:before {
+    // content: '\2713';
+    content: '\263A';
+  }
+}
+
+.toast-info {
+  background-color: $info-color;
+
+  &:before {
+    content: '\24D8';
+  }
+}
+
+.toast-warning {
+  background-color: $warning-color;
+
+  &:before {
+    content: '\26A0';
+  }
+}
+
+.toast-error {
+  background-color: $error-color;
+
+  &:before {
+    content: '\2639';
+  }
+}

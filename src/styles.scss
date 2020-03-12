@@ -1,7 +1,9 @@
 @import 'mixins';
 @import 'variables';
 @import 'fonts';
-@import '~ngx-toastr/toastr';
+@import '~ngx-smart-modal/ngx-smart-modal';
+@import 'parts/toastr';
+@import 'parts/auth-modal';
 
 *,
 *:before,

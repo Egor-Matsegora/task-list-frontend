@@ -1,0 +1,12 @@
+@import 'variables';
+
+.auth-modal {
+  .nsm-content {
+    background-color: $bg-color-primary;
+    border-radius: 0;
+  }
+
+  .nsm-dialog-btn-close {
+    color: $text-color-primary;
+  }
+}

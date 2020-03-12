@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
 import { SystemRoutingModule } from './system-routing.module';
 // components
-import { SystemComponent } from './components/system/system.component';
 import { AsideNavComponent } from './components/aside-nav/aside-nav.component';
+import { SystemLayoutComponent } from './layouts/system-layout/system-layout.component';
 
 @NgModule({
-  declarations: [SystemComponent, AsideNavComponent],
-  imports: [CommonModule, SystemRoutingModule, SharedModule]
+  declarations: [AsideNavComponent, SystemLayoutComponent],
+  imports: [CommonModule, SystemRoutingModule]
 })
 export class SystemModule {}

@@ -4,6 +4,8 @@
   <div
     class="main-header__btn main-header__item"
     *ngIf="isLoggedIn"
+    [ngClass]="{'main-header__btn_active': !asideState}"
+    (click)="changeAsideState()"
     @btnAnimation
   >
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve" class="main-header__btn-img">
@@ -56,7 +58,7 @@
     class="main-header__btn main-header__item"
     *ngIf="isLoggedIn"
     @btnAnimation
-    (click)="logout()"
+    (click)="openLogoutModal()"
   >
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="main-header__btn-img">
       <g>

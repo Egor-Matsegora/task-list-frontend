@@ -5,10 +5,7 @@ export function handleHttpError(error: HttpErrorResponse): Observable<any> {
   if (error.error instanceof ErrorEvent) {
     console.error('An error occurred:', error.error.message);
   } else {
-    console.error(
-      `Backend returned code ${error.status}, body was:`, error.error
-    );
+    console.error(`Backend returned code ${error.status}, body was:`, error.error);
   }
-  return throwError(
-    'Something bad happened; please try again later.');
+  return throwError(error.error.message || error);
 }
