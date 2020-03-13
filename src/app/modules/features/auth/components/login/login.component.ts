@@ -53,11 +53,10 @@ export class LoginComponent implements OnInit {
             this.loading = false;
             this.form.enable();
             this.router.navigate(['system']);
-          } else [];
+          }
         },
         error => {
           this.toastr.error(`Ошибка авторизации: ${error}`);
-          this.form.reset();
           this.loading = false;
           this.form.enable();
         }

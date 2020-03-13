@@ -1,3 +1,4 @@
+import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tasks-header.component.scss']
 })
 export class TasksHeaderComponent implements OnInit {
+  constructor(private smartModal: NgxSmartModalService) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  openTaskModal() {
+    const taskModal = this.smartModal.getModal('taskModal');
+    taskModal && taskModal.open();
   }
-
 }

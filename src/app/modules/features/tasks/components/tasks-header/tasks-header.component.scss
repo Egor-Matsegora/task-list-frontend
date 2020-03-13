@@ -1,0 +1,19 @@
+@import 'variables';
+
+.tasks-header {
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+
+  &__button {
+    flex-basis: 200px;
+  }
+
+  &__text {
+    font-size: 1.2em;
+    font-weight: 300;
+    color: $text-color-accent;
+    align-self: center;
+  }
+}
