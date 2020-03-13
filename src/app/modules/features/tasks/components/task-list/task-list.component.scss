@@ -1,0 +1,23 @@
+@import 'variables';
+@import 'mixins';
+
+.task-list {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  &__item {
+    border-bottom: 1px solid $border-color-simple;
+    padding: 0 10px;
+    @include simple-transition(background-color);
+
+    &:hover {
+      background-color: $bg-color-light;
+    }
+  }
+
+  &__message:first-letter {
+    text-transform: uppercase;
+  }
+}

@@ -1,0 +1,12 @@
+<div class="task-list">
+
+  <ng-container *ngIf="items?.length">
+    <div class="task-list__item" *ngFor="let item of items">
+      <task [task]="item"></task>
+    </div>
+  </ng-container>
+
+  <div class="task-list__message" *ngIf="!items?.length">
+    еще нет ни одной задачи
+  </div>
+</div>

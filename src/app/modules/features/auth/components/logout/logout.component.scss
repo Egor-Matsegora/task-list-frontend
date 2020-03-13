@@ -1,4 +1,3 @@
-@import 'parts/buttons';
 .logout {
   &__content {
     margin-bottom: 30px;
@@ -9,8 +8,8 @@
     display: flex;
     justify-content: space-between;
   }
-}
 
-.button {
-  flex-basis: 45%;
+  &__button {
+    flex-basis: 45%;
+  }
 }

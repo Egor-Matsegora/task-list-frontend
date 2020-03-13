@@ -3,7 +3,21 @@
     <p>Вы действительно хотите выйти?</p>
   </div>
   <div class="logout__buttons">
-    <button class="button button_block button_submit" (click)="logout()">Выйти</button>
-    <button class="button button_block" (click)="close()">Отмена</button>
+    <div class="logout__button">
+      <ui-button
+        [classList]="['button_submit', 'button_block']"
+        (click)="logout()"
+      >
+        Выйти
+      </ui-button>
+    </div>
+    <div class="logout__button">
+      <ui-button
+        [classList]="'button_block'"
+        (click)="close()"
+      >
+        Отмена
+      </ui-button>
+    </div>
   </div>
 </div>

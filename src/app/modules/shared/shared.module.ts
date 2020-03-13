@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // external modules
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
+// internal modules
+import { UiKitModule } from './ui-kit/ui-kit.module';
 // components
 import { LoaderComponent } from './components/loader/loader.component';
 import { LogoComponent } from './components/logo/logo.component';
@@ -23,7 +25,8 @@ import { ToastrOptions } from '../../helpers/toastr-options';
     ReactiveFormsModule,
     RouterModule,
     ToastrModule.forRoot(ToastrOptions),
-    NgxSmartModalModule.forRoot()
+    NgxSmartModalModule.forRoot(),
+    UiKitModule
   ],
   exports: [
     RouterModule,
@@ -33,7 +36,8 @@ import { ToastrOptions } from '../../helpers/toastr-options';
     FormsModule,
     ReactiveFormsModule,
     LoaderComponent,
-    NgxSmartModalModule
+    NgxSmartModalModule,
+    UiKitModule
   ]
 })
 export class SharedModule {}

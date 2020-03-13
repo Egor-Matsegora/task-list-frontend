@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 // services
-import { AsideStateService } from './../aside-state/aside-state.service';
+import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 // helpers
-import { handleHttpError } from '../../../../helpers/handle-http-error';
+import { handleHttpError } from '@helpers/handle-http-error';
 // interfaces
 import { RegistretionUser } from '../../../../interfaces/registration-user.inerface';
 import { LoginUser } from '../../../../interfaces/login-user.interface';
@@ -15,7 +15,7 @@ import { LoginRequest } from '../../../../interfaces/login-request.interface';
 
 @Injectable()
 export class AuthService {
-  private url = 'http://localhost:5000/auth/';
+  private url = 'http://localhost:5000/api/';
   private token: string = null;
 
   constructor(private http: HttpClient, private router: Router, private asideState: AsideStateService) {}
