@@ -32,7 +32,7 @@
     &_dynamic {
       overflow: hidden;
       border-top: 1px solid $border-color-simple;
-      padding-top: 5px;
+      padding: 5px 0;
     }
   }
 
@@ -148,10 +148,20 @@
       background-color: $bg-color-primary;
       @include simple-transition;
     }
+
+    &:hover:before,
+    &:hover:after {
+      box-shadow: $box-shadow-focus;
+    }
   }
 }
 
 .form__checkbox:checked + .form__checkbox-label:after {
   left: 0;
   background-color: $bg-color-accent;
+}
+
+.form__checkbox:checked + .form__checkbox-label:after,
+.form__checkbox:checked + .form__checkbox-label:before {
+  box-shadow: $box-shadow-focus;
 }

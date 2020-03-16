@@ -1,3 +1,4 @@
+import { TasksService } from './services/tasks/tasks.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -11,6 +12,7 @@ import { TasksHeaderComponent } from './components/tasks-header/tasks-header.com
 
 @NgModule({
   declarations: [TasksLayoutComponent, TaskListComponent, TaskComponent, TaskFormComponent, TasksHeaderComponent],
-  imports: [CommonModule, TasksRoutingModule, SharedModule]
+  imports: [CommonModule, TasksRoutingModule, SharedModule],
+  providers: [TasksService]
 })
 export class TasksModule {}

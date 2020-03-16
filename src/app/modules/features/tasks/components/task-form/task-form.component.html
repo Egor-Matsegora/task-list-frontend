@@ -2,7 +2,7 @@
   <div class="task-form__header">
     Добавьте задачу
   </div>
-  <form class="task-form__form form">
+  <form class="task-form__form form" [formGroup]="form">
 
     <div class="form__control">
       <label class="form__label" for="task-tytle">Заголовок</label>
@@ -11,31 +11,48 @@
         type="text"
         name="tytle"
         id="task-tytle"
+        formControlName="tytle"
       >
     </div>
 
-    <div class="form__control">
+    <div class="form__control" formGroupName="optionsChecks">
       <div class="form__option">
-        <input type="checkbox" name="" id="task-desc-checkbox" class="form__checkbox">
+        <input
+          type="checkbox"
+          name=""
+          id="task-desc-checkbox"
+          class="form__checkbox"
+          formControlName="description"
+        >
         <label for="task-desc-checkbox" class="form__checkbox-label">Добавить описание</label>
       </div>
     </div>
 
-    <div class="form__control form__control_dynamic">
-      <label class="form__label" for="task-desc">Описание</label>
-      <textarea
-        class="form__input form__input_textarea"
-        name="description"
-        id="task-desc"
-        rows="2"
-      ></textarea>
-    </div>
+    <ng-container formGroupName="options">
+
+      <div
+        class="form__control form__control_dynamic"
+        *ngIf="optionsChecks.controls.description.value"
+        @controlAnimation
+      >
+        <label class="form__label" for="task-desc">Описание</label>
+        <textarea
+          class="form__input form__input_textarea"
+          name="description"
+          id="task-desc"
+          rows="2"
+          formControlName="description"
+        ></textarea>
+      </div>
+
+    </ng-container>
 
     <div class="form__buttons">
       <ui-button
         [classList]="['button_submit', 'button_block']"
-        [isDisabled]="true"
-        [buttonType]="'submit'"
+        [isDisabled]="form.invalid"
+        (click)="createTask()"
+        (keyress.enter)="createTask()"
       >
         Добавить задачу
       </ui-button>

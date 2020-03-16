@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Task } from '../../../../../interfaces/task.interface';
+import { Task } from '@interfaces/task.interface';
 
 @Component({
   selector: 'task',
@@ -8,8 +8,7 @@ import { Task } from '../../../../../interfaces/task.interface';
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit {
-  // @Input() task: Task;
-  @Input() task: number;
+  @Input() task: Task;
 
   constructor() {}
 

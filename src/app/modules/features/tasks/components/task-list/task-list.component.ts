@@ -1,3 +1,4 @@
+import { TasksService } from './../../services/tasks/tasks.service';
 import { Task } from '@interfaces/task.interface';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit {
-  // items: Task[];
-  items = [1, 2, 3, 4];
+  items: Task[];
 
-  constructor() {}
+  constructor(private tasksService: TasksService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getTasks();
+  }
+
+  private getTasks() {
+    this.tasksService.getTasks().subscribe(response => (this.items = response));
+  }
 }
