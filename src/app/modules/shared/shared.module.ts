@@ -8,15 +8,14 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
 // internal modules
 import { UiKitModule } from './ui-kit/ui-kit.module';
 // components
-import { LogoComponent } from './components/logo/logo.component';
 import { StartPageComponent } from './components/start-page/start-page.component';
 // directives
-import { MutatedPasswordInputDirective } from '../../directives/mutated-password-input.directive';
+import { MutatedPasswordInputDirective } from '@app/directives/mutated-password-input.directive';
 // helpers
-import { ToastrOptions } from '../../helpers/toastr-options';
+import { ToastrOptions } from '@helpers/toastr-options';
 
 @NgModule({
-  declarations: [LogoComponent, StartPageComponent, MutatedPasswordInputDirective],
+  declarations: [StartPageComponent, MutatedPasswordInputDirective],
   imports: [
     CommonModule,
     RouterModule,
@@ -30,7 +29,6 @@ import { ToastrOptions } from '../../helpers/toastr-options';
   exports: [
     RouterModule,
     ToastrModule,
-    LogoComponent,
     MutatedPasswordInputDirective,
     FormsModule,
     ReactiveFormsModule,

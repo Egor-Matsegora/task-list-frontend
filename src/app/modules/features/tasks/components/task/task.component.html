@@ -1,8 +1,68 @@
 <div class="task">
   <div class="task__main-row">
-    <div class="task__done-button"></div>
-    <div class="task__tytle"></div>
-    <div class="task__menu-button"></div>
+    <div class="task__button">
+      <button
+        class="button button_action"
+        [ngClass]="{'button_action-done': task.done}"
+        (click)="onDone()"
+      >
+        <svg viewBox="0 0 512 512">
+          <path d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0    c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7    C514.5,101.703,514.499,85.494,504.502,75.496z" fill="#C7C7C7"/>
+        </svg>
+      </button>
+      <!-- <button
+        class="button button_delete"
+        *ngIf="task.done"
+        (click)="task.done = !task.done"
+      ></button> -->
+    </div>
+    <div class="task__tytle" [ngClass]="{'task__tytle_done': isDone}">{{ task.tytle }}</div>
+    <div class="task__button task__button_menu">
+      <button
+        class="button button_menu"
+        [ngClass]="{'button_menu_active': isMenuVisible}"
+        (click)="changeMenuVisibility()"
+      >
+        <svg viewBox="0 0 512 512">
+          <g>
+            <path d="M256,192c-35.292,0-64,28.708-64,64s28.708,64,64,64s64-28.708,64-64S291.292,192,256,192z M256,298.667     c-23.521,0-42.667-19.135-42.667-42.667s19.146-42.667,42.667-42.667s42.667,19.135,42.667,42.667S279.521,298.667,256,298.667z" fill="#C7C7C7"/>
+            <path d="M256,384c-35.292,0-64,28.708-64,64c0,35.292,28.708,64,64,64s64-28.708,64-64C320,412.708,291.292,384,256,384z      M256,490.667c-23.521,0-42.667-19.135-42.667-42.667s19.146-42.667,42.667-42.667s42.667,19.135,42.667,42.667     S279.521,490.667,256,490.667z" fill="#C7C7C7"/>
+            <path d="M256,128c35.292,0,64-28.708,64-64S291.292,0,256,0s-64,28.708-64,64S220.708,128,256,128z M256,21.333     c23.521,0,42.667,19.135,42.667,42.667S279.521,106.667,256,106.667S213.333,87.531,213.333,64S232.479,21.333,256,21.333z" fill="#C7C7C7"/>
+          </g>
+        </svg>
+      </button>
+
+      <div class="dropdown" *ngIf="isMenuVisible" @menuAnimation>
+        <div class="dropdown__item">
+          <i class="dropdown__icon">
+            <svg viewBox="0 0 383.947 383.947" style="enable-background:new 0 0 383.947 383.947;">
+              <polygon points="0,303.947 0,383.947 80,383.947 316.053,147.893 236.053,67.893" fill="#C7C7C7"/>
+              <path d="M377.707,56.053L327.893,6.24c-8.32-8.32-21.867-8.32-30.187,0l-39.04,39.04l80,80l39.04-39.04 C386.027,77.92,386.027,64.373,377.707,56.053z" fill="#C7C7C7"/>
+            </svg>
+          </i>
+          редактировать
+        </div>
+        <div class="dropdown__item" (click)="onDelete()">
+          <i class="dropdown__icon">
+            <svg viewBox="0 0 515.556 515.556">
+              <g>
+                <path d="m64.444 451.111c0 35.526 28.902 64.444 64.444 64.444h257.778c35.542 0 64.444-28.918 64.444-64.444v-322.222h-386.666z"fill="#C7C7C7"/>
+                <path d="m322.222 32.222v-32.222h-128.889v32.222h-161.111v64.444h451.111v-64.444z" fill="#C7C7C7"/>
+              </g>
+            </svg>
+          </i>
+          удалить
+        </div>
+      </div>
+
+    </div>
   </div>
-  <div class="task__desc-row"></div>
+  <div class="task__info">
+    <div class="task__desc task__info-item" *ngIf="task.description">
+      {{ task.description }}
+    </div>
+    <div class="task__date task__info-item">
+      {{ task.date | date }}
+    </div>
+  </div>
 </div>

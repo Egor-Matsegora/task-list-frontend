@@ -57,14 +57,16 @@ export class TaskFormComponent implements OnInit {
   private setValidators() {
     this.optionsChecks.valueChanges.subscribe(value => {
       for (const key in value) {
-        const control = this.options.controls[key];
-        if (value[key]) {
-          control.setValidators(Validators.required);
-          control.updateValueAndValidity();
-        } else {
-          control.clearValidators();
-          control.updateValueAndValidity();
-          control.reset();
+        if (key) {
+          const control = this.options.controls[key];
+          if (value[key]) {
+            control.setValidators(Validators.required);
+            control.updateValueAndValidity();
+          } else {
+            control.clearValidators();
+            control.updateValueAndValidity();
+            control.reset();
+          }
         }
       }
     });
@@ -86,6 +88,7 @@ export class TaskFormComponent implements OnInit {
       this.tasksService.createTask(task).subscribe(
         result => {
           if (result.tytle) {
+            this.tasksService.updateTaskState(result);
             this.closeTaskModal();
             this.toastr.success(`Задача "${result.tytle}" успешно создана`);
           }
@@ -97,9 +100,5 @@ export class TaskFormComponent implements OnInit {
         }
       );
     }
-  }
-
-  log() {
-    console.log(this.optionsChecks.controls.descriptionCheck);
   }
 }

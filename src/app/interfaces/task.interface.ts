@@ -6,5 +6,5 @@ export interface Task {
   done: boolean;
   date: Date;
   user: User;
-  id?: string;
+  _id?: string;
 }

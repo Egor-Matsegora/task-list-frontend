@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
+import { trigger, transition, useAnimation } from '@angular/animations';
 // rxjs
 import { Subscription } from 'rxjs';
-import { trigger, transition, useAnimation } from '@angular/animations';
 import { filter, tap } from 'rxjs/operators';
 // services
-import { AsideStateService } from './../../../../core/services/aside-state/aside-state.service';
-import { AuthService } from 'src/app/modules/core/services/auth/auth.service';
+import { AsideStateService } from '@core/services/aside-state/aside-state.service';
+import { AuthService } from '@core/services/auth/auth.service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 // animations
-import { enterAnimation, liveAnimation } from 'src/app/animations/header-btn.animation';
+import { enterAnimation, liveAnimation } from './header-btn.animation';
 
 @Component({
   selector: 'main-header',

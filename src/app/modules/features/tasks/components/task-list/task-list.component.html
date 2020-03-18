@@ -2,7 +2,7 @@
 
   <ng-container *ngIf="items?.length">
     <div class="task-list__item" *ngFor="let item of items">
-      <task [task]="item"></task>
+      <task [task]="item" (done)="onDone($event)"></task>
     </div>
   </ng-container>
 
