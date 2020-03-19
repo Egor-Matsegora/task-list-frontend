@@ -1,8 +1,9 @@
-import { enterAnimation, leaveAnimation } from './task.animations';
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
-
-import { Task } from '@interfaces/task.interface';
 import { trigger, transition, useAnimation } from '@angular/animations';
+
+import { NgxSmartModalService } from 'ngx-smart-modal';
+import { Task } from '@interfaces/task.interface';
+import { enterAnimation, leaveAnimation } from './task.animations';
 
 @Component({
   selector: 'task',
@@ -22,6 +23,8 @@ export class TaskComponent implements OnChanges {
   isDone: boolean;
   isMenuVisible: boolean = false;
 
+  constructor(private smartModal: NgxSmartModalService) {}
+
   ngOnChanges() {
     this.isDone = this.task.done;
   }
@@ -37,6 +40,16 @@ export class TaskComponent implements OnChanges {
 
   onDelete() {
     this.closeMenu();
+    this.delete.emit(this.task._id);
+  }
+
+  onUpdate() {
+    this.closeMenu();
+    const taskModal = this.smartModal.getModal('taskModal');
+    if (!taskModal) return;
+    taskModal.removeData();
+    taskModal.setData(this.task);
+    taskModal.open();
   }
 
   private closeMenu() {

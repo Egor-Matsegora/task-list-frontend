@@ -1,10 +1,16 @@
-import { TasksService } from './../../services/tasks/tasks.service';
-import { enterAnimation, liveAnimation } from './animations/dynamic-control.animation';
-import { Component, OnInit } from '@angular/core';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { trigger, transition, useAnimation } from '@angular/animations';
+// services
+import { TasksService } from '@features/tasks/services/tasks/tasks.service';
 import { ToastrService } from 'ngx-toastr';
+// animations
+import { enterAnimation, liveAnimation } from './animations/dynamic-control.animation';
+// interfaces
+import { Task } from '@interfaces/task.interface';
+// smart modal
+import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 
 @Component({
   selector: 'task-form',
@@ -17,11 +23,14 @@ import { ToastrService } from 'ngx-toastr';
     ])
   ]
 })
-export class TaskFormComponent implements OnInit {
+export class TaskFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   options: FormGroup;
   optionsChecks: FormGroup;
   taskTytle: FormControl;
+  modalData: Task;
+  private modal: NgxSmartModalComponent;
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
     private smartModal: NgxSmartModalService,
@@ -31,12 +40,22 @@ export class TaskFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initModal();
     this.inintForm();
     this.setFormVariables();
     this.setValidators();
+    this.checkModalData();
+    this.subToCloseEvent();
   }
 
-  private inintForm() {
+  ngOnDestroy() {
+    this.subscriptions && this.subscriptions.unsubscribe();
+  }
+
+  /**
+   * Инициализация формы
+   */
+  private inintForm(): void {
     this.form = this.fb.group({
       tytle: ['', Validators.required],
       optionsChecks: this.fb.group({
@@ -48,13 +67,19 @@ export class TaskFormComponent implements OnInit {
     });
   }
 
-  private setFormVariables() {
+  /**
+   * Инициализация переменных для отображения в шаблоне
+   */
+  private setFormVariables(): void {
     this.options = this.form.get('options') as FormGroup;
     this.optionsChecks = this.form.get('optionsChecks') as FormGroup;
     this.taskTytle = this.form.get('tytle') as FormControl;
   }
 
-  private setValidators() {
+  /**
+   * Установка и удаление валидаторов при динамическом добавлении инпутов
+   */
+  private setValidators(): void {
     this.optionsChecks.valueChanges.subscribe(value => {
       for (const key in value) {
         if (key) {
@@ -72,32 +97,85 @@ export class TaskFormComponent implements OnInit {
     });
   }
 
-  closeTaskModal() {
-    const taskModal = this.smartModal.getModal('taskModal');
-    taskModal && taskModal.close();
-    this.form.reset();
+  /**
+   * Инициализация модалки
+   */
+  private initModal(): void {
+    this.modal = this.smartModal.getModal('taskModal');
   }
 
-  createTask() {
+  /**
+   * Очистка формы при закрытии модалки
+   */
+  private subToCloseEvent(): void {
+    this.subscriptions.add(this.modal.onAnyCloseEventFinished.subscribe(() => this.form.reset()));
+  }
+
+  /**
+   * Проверка, есть ли приходящие в модалку данные
+   * Если данные есть, значит это редактирование задачи
+   * Устанавливаем значение инпутов на основе полученных данных
+   * Если их нет, значит задача создается
+   */
+  private checkModalData(): void {
+    this.modal.onOpen.subscribe(() => {
+      if (!this.modal.getData()) return;
+      this.modalData = this.modal.getData();
+      this.taskTytle.setValue(this.modalData.tytle);
+      this.optionsChecks.controls.description.setValue(!!this.modalData.description);
+      this.options.controls.description.setValue(this.modalData.description);
+    });
+  }
+
+  /**создание задачи */
+  createTask(): void {
     if (this.form.valid) {
       this.form.disable();
       const task = {
         tytle: this.taskTytle.value,
-        description: this.options.controls.description.value
+        description: this.optionsChecks.controls.description ? this.options.controls.description.value : null
       };
-      this.tasksService.createTask(task).subscribe(
-        result => {
-          if (result.tytle) {
-            this.tasksService.updateTaskState(result);
-            this.closeTaskModal();
-            this.toastr.success(`Задача "${result.tytle}" успешно создана`);
+      this.subscriptions.add(
+        this.tasksService.createTask(task).subscribe(
+          result => {
+            if (result._id) {
+              this.tasksService.addTaskAction(result);
+              this.modal.close();
+              this.toastr.success(`Задача "${result.tytle}" успешно создана`);
+            }
+            this.form.enable();
+          },
+          error => {
+            this.toastr.error('Ошибка в создании задачи');
+            this.form.enable();
           }
-          this.form.enable();
-        },
-        error => {
-          this.toastr.error('Ошибка в создании задачи');
-          this.form.enable();
-        }
+        )
+      );
+    }
+  }
+
+  /**
+   * обновление задачи
+   */
+  updateTask(): void {
+    if (this.form.valid) {
+      this.form.disable();
+      this.modalData.tytle = this.taskTytle.value;
+      this.modalData.description = this.optionsChecks.controls.description.value
+        ? this.options.controls.description.value
+        : null;
+      this.subscriptions.add(
+        this.tasksService.updateTask(this.modalData).subscribe(
+          task => {
+            this.form.enable();
+            this.toastr.success(`Задача "${this.modalData.tytle}" успешно обновлена`);
+            this.modal.close();
+          },
+          error => {
+            this.form.enable();
+            this.toastr.error('Ошибка в обновлении задачи');
+          }
+        )
       );
     }
   }

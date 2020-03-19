@@ -101,6 +101,12 @@
       height: 76px;
       resize: none;
     }
+
+    &_error,
+    &error:hover {
+      border-color: $error-color;
+      box-shadow: $box-shadow-error;
+    }
   }
 
   &__option {
@@ -138,7 +144,7 @@
       content: '';
       display: block;
       position: absolute;
-      left: 14px;
+      left: 0;
       top: 50%;
       transform: translateY(-50%);
       height: 20px;
@@ -154,10 +160,20 @@
       box-shadow: $box-shadow-focus;
     }
   }
+
+  &__error-message {
+    font-size: 0.8em;
+    padding: 0 15px;
+    margin-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    color: $error-color;
+  }
 }
 
 .form__checkbox:checked + .form__checkbox-label:after {
-  left: 0;
+  left: 14px;
   background-color: $bg-color-accent;
 }
 

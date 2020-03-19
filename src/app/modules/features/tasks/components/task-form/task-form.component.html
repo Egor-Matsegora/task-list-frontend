@@ -1,7 +1,15 @@
 <div class="task-form">
-  <div class="task-form__header">
-    Добавьте задачу
+
+  <!-- заголовок при добавлении задачи -->
+  <div class="task-form__header" *ngIf="modalData">
+    Редактирование задачи
   </div>
+
+  <!-- заголовок при редактировании задачи -->
+  <div class="task-form__header" *ngIf="!modalData">
+    Добавление задачи
+  </div>
+
   <form class="task-form__form form" [formGroup]="form">
 
     <div class="form__control">
@@ -12,7 +20,14 @@
         name="tytle"
         id="task-tytle"
         formControlName="tytle"
+        [ngClass]="{'form__input_error': taskTytle.invalid && taskTytle.touched}"
       >
+      <div
+        class="form__error-message"
+        *ngIf="taskTytle.invalid && taskTytle.touched"
+      >
+        Поле должно быть заполненно
+      </div>
     </div>
 
     <div class="form__control" formGroupName="optionsChecks">
@@ -42,7 +57,14 @@
           id="task-desc"
           rows="2"
           formControlName="description"
+          [ngClass]="{'form__input_error': options.controls.description.invalid && options.controls.description.touched}"
         ></textarea>
+        <div
+          class="form__error-message"
+          *ngIf="options.controls.description.invalid && options.controls.description.touched"
+        >
+          Поле должно быть заполненно
+        </div>
       </div>
 
     </ng-container>
@@ -53,12 +75,24 @@
         [isDisabled]="form.invalid"
         (click)="createTask()"
         (keyress.enter)="createTask()"
+        *ngIf="!modalData"
       >
         Добавить задачу
       </ui-button>
+
+      <ui-button
+        [classList]="['button_submit', 'button_block']"
+        [isDisabled]="form.invalid"
+        (click)="updateTask()"
+        (keyress.enter)="updateTask()"
+        *ngIf="modalData"
+      >
+        Редактировать задачу
+      </ui-button>
+
       <ui-button
         [classList]="'button_block'"
-        (click)="closeTaskModal()"
+        (click)="modal.close()"
       >
         Отмена
       </ui-button>

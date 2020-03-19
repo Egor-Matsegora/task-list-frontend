@@ -33,7 +33,7 @@
       </button>
 
       <div class="dropdown" *ngIf="isMenuVisible" @menuAnimation>
-        <div class="dropdown__item">
+        <div class="dropdown__item" (click)="onUpdate()">
           <i class="dropdown__icon">
             <svg viewBox="0 0 383.947 383.947" style="enable-background:new 0 0 383.947 383.947;">
               <polygon points="0,303.947 0,383.947 80,383.947 316.053,147.893 236.053,67.893" fill="#C7C7C7"/>

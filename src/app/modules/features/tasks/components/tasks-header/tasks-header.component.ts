@@ -13,6 +13,8 @@ export class TasksHeaderComponent implements OnInit {
 
   openTaskModal() {
     const taskModal = this.smartModal.getModal('taskModal');
-    taskModal && taskModal.open();
+    if (!taskModal) return;
+    taskModal.removeData();
+    taskModal.open();
   }
 }
