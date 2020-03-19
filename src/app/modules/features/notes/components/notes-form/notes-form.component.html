@@ -1,0 +1,103 @@
+<div class="notes-form">
+
+  <!-- заголовок при добавлении задачи -->
+  <div class="notes-form__header" *ngIf="modalData">
+    Редактирование заметки
+  </div>
+
+  <!-- заголовок при редактировании задачи -->
+  <div class="notes-form__header" *ngIf="!modalData">
+    Добавление заметки
+  </div>
+
+  <form class="notes-form__form form" [formGroup]="form">
+
+    <div class="form__control">
+      <label class="form__label" for="notes-text">Заметка</label>
+      <textarea
+        class="form__input form__input_textarea"
+        name="text"
+        id="notes-text"
+        rows="2"
+        formControlName="text"
+        [ngClass]="{'form__input_error': noteText.invalid && noteText.touched}"
+      ></textarea>
+      <div
+        class="form__error-message"
+        *ngIf="noteText.invalid && noteText.touched"
+      >
+        Поле должно быть заполненно
+      </div>
+    </div>
+
+    <div class="form__control" formGroupName="optionsChecks">
+      <div class="form__option">
+        <input
+          type="checkbox"
+          name="title"
+          id="notes-title-checkbox"
+          class="form__checkbox"
+          formControlName="title"
+        >
+        <label for="notes-title-checkbox" class="form__checkbox-label">Добавить заголовок</label>
+      </div>
+    </div>
+
+    <ng-container formGroupName="options">
+
+      <div
+        class="form__control form__control_dynamic"
+        *ngIf="titleCheck.value"
+        @controlAnimation
+      >
+        <label class="form__label" for="notes-tytle">Заголовок</label>
+        <input
+          class="form__input"
+          type="text"
+          name="title"
+          id="notes-tytle"
+          formControlName="title"
+          [ngClass]="{'form__input_error': noteTitle.invalid && noteTitle.touched}"
+        >
+        <div
+          class="form__error-message"
+          *ngIf="noteTitle.invalid && noteTitle.touched"
+        >
+          Поле должно быть заполненно
+        </div>
+      </div>
+
+    </ng-container>
+
+    <div class="form__buttons">
+      <ui-button
+        [classList]="['button_submit', 'button_block']"
+        [isDisabled]="form.invalid"
+        (click)="createNote()"
+        (keyress.enter)="createNote()"
+        *ngIf="!modalData"
+      >
+        Добавить заметку
+      </ui-button>
+
+      <ui-button
+        [classList]="['button_submit', 'button_block']"
+        [isDisabled]="form.invalid"
+        (click)="updateNote()"
+        (keyress.enter)="updateNote()"
+        *ngIf="modalData"
+      >
+        Редактировать заметку
+      </ui-button>
+
+      <ui-button
+        [classList]="'button_block'"
+        (click)="modal.close()"
+      >
+        Отмена
+      </ui-button>
+    </div>
+
+  </form>
+</div>
+

@@ -8,7 +8,7 @@ export const enterAnimation = animation(
   { params: { timing: '150ms 30ms ease-in-out' } }
 );
 
-export const liveAnimation = animation(
+export const leaveAnimation = animation(
   [
     style({ height: '*', opacity: '*', padding: '*' }),
     animate('{{ timing }}', style({ height: 0, opacity: 0, padding: 0 }))

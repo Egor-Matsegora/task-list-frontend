@@ -1,1 +1,12 @@
-<p>notes-layout works!</p>
+<div class="notes-layout">
+  <div class="notes-layout__header">
+    <notes-header></notes-header>
+  </div>
+  <div class="notes-layout__list">
+    <notes-list></notes-list>
+  </div>
+</div>
+
+<ngx-smart-modal identifier="noteModal" [customClass]="'app-modal'">
+  <notes-form></notes-form>
+</ngx-smart-modal>

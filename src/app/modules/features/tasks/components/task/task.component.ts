@@ -29,6 +29,10 @@ export class TaskComponent implements OnChanges {
     this.isDone = this.task.done;
   }
 
+  private closeMenu() {
+    this.isMenuVisible = false;
+  }
+
   onDone() {
     this.isDone = !this.isDone;
     this.done.emit({ id: this.task._id, done: this.isDone });
@@ -50,9 +54,5 @@ export class TaskComponent implements OnChanges {
     taskModal.removeData();
     taskModal.setData(this.task);
     taskModal.open();
-  }
-
-  private closeMenu() {
-    this.isMenuVisible = false;
   }
 }

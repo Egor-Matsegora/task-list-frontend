@@ -6,7 +6,7 @@ import { trigger, transition, useAnimation } from '@angular/animations';
 import { TasksService } from '@features/tasks/services/tasks/tasks.service';
 import { ToastrService } from 'ngx-toastr';
 // animations
-import { enterAnimation, liveAnimation } from './animations/dynamic-control.animation';
+import { enterAnimation, leaveAnimation } from '@app/animations/dynamic-control.animation';
 // interfaces
 import { Task } from '@interfaces/task.interface';
 // smart modal
@@ -19,7 +19,7 @@ import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
   animations: [
     trigger('controlAnimation', [
       transition(':enter', [useAnimation(enterAnimation)]),
-      transition(':leave', [useAnimation(liveAnimation)])
+      transition(':leave', [useAnimation(leaveAnimation)])
     ])
   ]
 })

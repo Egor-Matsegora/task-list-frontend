@@ -1,18 +1,14 @@
-<div class="task">
-  <div class="task__main-row">
-    <div class="task__button">
-      <button
-        class="button button_action"
-        [ngClass]="{'button_action-done': task.done}"
-        (click)="onDone()"
-      >
-        <svg viewBox="0 0 512 512">
-          <path d="M504.502,75.496c-9.997-9.998-26.205-9.998-36.204,0L161.594,382.203L43.702,264.311c-9.997-9.998-26.205-9.997-36.204,0    c-9.998,9.997-9.998,26.205,0,36.203l135.994,135.992c9.994,9.997,26.214,9.99,36.204,0L504.502,111.7    C514.5,101.703,514.499,85.494,504.502,75.496z" fill="#C7C7C7"/>
-        </svg>
-      </button>
+<div class="note">
+  <div class="note__main-row">
+    <div class="note__content">
+      <div class="note__title" *ngIf="note.title">
+        {{ note.title }}
+      </div>
+      <div class="note__text">
+        {{ note.text }}
+      </div>
     </div>
-    <div class="task__tytle" [ngClass]="{'task__tytle_done': isDone}">{{ task.tytle }}</div>
-    <div class="task__button task__button_menu">
+    <div class="note__button">
       <button
         class="button button_menu"
         [ngClass]="{'button_menu_active': isMenuVisible}"
@@ -52,12 +48,10 @@
 
     </div>
   </div>
-  <div class="task__info">
-    <div class="task__desc task__info-item" *ngIf="task.description">
-      {{ task.description }}
-    </div>
-    <div class="task__date task__info-item">
-      {{ task.date | date }}
+  <div class="note__info">
+    <div class="note__date note__info-item">
+      {{ note.date | date }}
     </div>
   </div>
 </div>
+
