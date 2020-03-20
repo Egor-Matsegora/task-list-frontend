@@ -13,7 +13,8 @@ import { Subscription } from 'rxjs';
 })
 export class TaskListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  items: Task[];
+  items: Task[] = [];
+  isLoading: boolean = false;
 
   constructor(private tasksService: TasksService, private toastr: ToastrService) {}
 
@@ -28,7 +29,19 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   private getTasks() {
-    this.subscriptions.add(this.tasksService.getTasks().subscribe(response => (this.items = response)));
+    this.isLoading = true;
+    this.subscriptions.add(
+      this.tasksService.getTasks().subscribe(
+        response => {
+          this.isLoading = false;
+          this.items = response;
+        },
+        error => {
+          this.isLoading = false;
+          this.toastr.error('Ошибка в загрузке задач');
+        }
+      )
+    );
   }
 
   private subToAddTaskState() {

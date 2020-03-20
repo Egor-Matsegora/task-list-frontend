@@ -14,14 +14,17 @@
 
     <div class="form__control">
       <label class="form__label" for="task-tytle">Заголовок</label>
-      <input
-        class="form__input"
+      <textarea
+        class="form__input form__input_textarea"
         type="text"
         name="tytle"
         id="task-tytle"
         formControlName="tytle"
         [ngClass]="{'form__input_error': taskTytle.invalid && taskTytle.touched}"
+        rows="2"
       >
+
+      </textarea>
       <div
         class="form__error-message"
         *ngIf="taskTytle.invalid && taskTytle.touched"
@@ -55,7 +58,7 @@
           class="form__input form__input_textarea"
           name="description"
           id="task-desc"
-          rows="2"
+          rows="4"
           formControlName="description"
           [ngClass]="{'form__input_error': options.controls.description.invalid && options.controls.description.touched}"
         ></textarea>

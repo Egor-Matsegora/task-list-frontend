@@ -170,7 +170,9 @@
         [buttonType]="'submit'"
       >
         <span *ngIf="!loading">Зарегистрироваться</span>
-        <loader *ngIf="loading"></loader>
+        <div class="auth-form__loader">
+          <loader *ngIf="loading"></loader>
+        </div>
       </ui-button>
     </div>
 

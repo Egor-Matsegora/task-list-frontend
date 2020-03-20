@@ -11,18 +11,24 @@ export class TasksService {
   // data subjects
   private addTaskState: BehaviorSubject<Task> = new BehaviorSubject(null);
   private updateTaskState: BehaviorSubject<Task> = new BehaviorSubject(null);
-  updateTaskState$ = this.updateTaskState.asObservable().pipe(filter(task => task !== null));
-  addTaskState$ = this.addTaskState.asObservable().pipe(filter(task => task !== null));
+  private deleteTaskState: BehaviorSubject<Task> = new BehaviorSubject(null);
+  updateTaskState$: Observable<Task> = this.updateTaskState.asObservable().pipe(filter(task => task !== null));
+  addTaskState$: Observable<Task> = this.addTaskState.asObservable().pipe(filter(task => task !== null));
+  deleteTaskState$: Observable<Task> = this.deleteTaskState.asObservable().pipe(filter(task => task !== null));
 
   constructor(private http: HttpClient) {}
 
   // data methods
-  addTaskAction(task) {
+  addTaskAction(task: Task) {
     this.addTaskState.next(task);
   }
 
-  updateTaskAction(task) {
+  updateTaskAction(task: Task) {
     this.updateTaskState.next(task);
+  }
+
+  deleteTaskAction(task: Task) {
+    this.deleteTaskState.next(task);
   }
 
   // http methods

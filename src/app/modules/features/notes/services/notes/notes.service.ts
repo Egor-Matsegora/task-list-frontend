@@ -13,11 +13,17 @@ export class NotesService {
   // data subjects
   private createNoteState: BehaviorSubject<Note> = new BehaviorSubject(null);
   createNoteState$: Observable<Note> = this.createNoteState.asObservable().pipe(filter(task => task !== null));
+  private updateNoteState: BehaviorSubject<Note> = new BehaviorSubject(null);
+  updateNoteState$ = this.updateNoteState.asObservable().pipe(filter(note => note !== null));
 
   constructor(private http: HttpClient) {}
 
   createNoteAction(note) {
     this.createNoteState.next(note);
+  }
+
+  updateNoteAction(note) {
+    this.updateNoteState.next(note);
   }
 
   // http methods
@@ -31,5 +37,9 @@ export class NotesService {
 
   deleteNote(id): Observable<any> {
     return this.http.delete(this.url + id).pipe(catchError(error => handleHttpError(error)));
+  }
+
+  updateNote(note: Note): Observable<Note> {
+    return this.http.patch(this.url + note._id, note).pipe(catchError(error => handleHttpError(error)));
   }
 }

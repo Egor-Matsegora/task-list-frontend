@@ -3,7 +3,8 @@ import { trigger, transition, useAnimation } from '@angular/animations';
 
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Task } from '@interfaces/task.interface';
-import { enterAnimation, leaveAnimation } from './task.animations';
+import { enterAnimation, leaveAnimation } from '@app/animations/item-dropdown.animations';
+import { fromEvent, Subscription } from 'rxjs';
 
 @Component({
   selector: 'task',
@@ -17,6 +18,7 @@ import { enterAnimation, leaveAnimation } from './task.animations';
   ]
 })
 export class TaskComponent implements OnChanges {
+  private clickSubscription: Subscription;
   @Input() task: Task;
   @Output() done: EventEmitter<any> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
@@ -31,6 +33,15 @@ export class TaskComponent implements OnChanges {
 
   private closeMenu() {
     this.isMenuVisible = false;
+    this.clickSubscription && this.clickSubscription.unsubscribe();
+  }
+
+  private subToWindowClick() {
+    let count = 0;
+    this.clickSubscription = fromEvent(window, 'click').subscribe((event: Event) => {
+      count++;
+      if (count > 1 && this.isMenuVisible) this.closeMenu();
+    });
   }
 
   onDone() {
@@ -40,6 +51,11 @@ export class TaskComponent implements OnChanges {
 
   changeMenuVisibility() {
     this.isMenuVisible = !this.isMenuVisible;
+    if (this.isMenuVisible) {
+      this.subToWindowClick();
+    } else {
+      this.clickSubscription && this.clickSubscription.unsubscribe();
+    }
   }
 
   onDelete() {
@@ -51,7 +67,6 @@ export class TaskComponent implements OnChanges {
     this.closeMenu();
     const taskModal = this.smartModal.getModal('taskModal');
     if (!taskModal) return;
-    taskModal.removeData();
     taskModal.setData(this.task);
     taskModal.open();
   }

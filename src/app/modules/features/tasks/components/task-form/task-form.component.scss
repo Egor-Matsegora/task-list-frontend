@@ -98,8 +98,9 @@
     }
 
     &_textarea {
-      height: 76px;
+      height: auto;
       resize: none;
+      padding: 10px 15px;
     }
 
     &_error,

@@ -11,7 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class NotesListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  items: Note[];
+  items: Note[] = [];
+  isLoading: boolean = false;
 
   constructor(private notesService: NotesService, private toastr: ToastrService) {}
 
@@ -25,10 +26,17 @@ export class NotesListComponent implements OnInit, OnDestroy {
   }
 
   private getNotes() {
+    this.isLoading = true;
     this.subscriptions.add(
       this.notesService.getUserNotes().subscribe(
-        notes => (this.items = notes),
-        error => this.toastr.error('Ошибка загрузки')
+        notes => {
+          this.isLoading = false;
+          this.items = notes;
+        },
+        error => {
+          this.isLoading = false;
+          this.toastr.error('Ошибка загрузки');
+        }
       )
     );
   }

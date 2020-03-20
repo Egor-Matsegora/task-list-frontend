@@ -1,6 +1,6 @@
 <div class="task-list">
 
-  <ng-container *ngIf="items?.length">
+  <ng-container *ngIf="items?.length && !isLoading">
     <div class="task-list__item" *ngFor="let item of items">
       <task
         [task]="item"
@@ -10,7 +10,12 @@
     </div>
   </ng-container>
 
-  <div class="task-list__message" *ngIf="!items?.length">
+  <div class="task-list__message" *ngIf="!items?.length && !isLoading">
     еще нет ни одной задачи
   </div>
+
+  <div class="task-list__loader" *ngIf="isLoading">
+    <loader></loader>
+  </div>
+
 </div>

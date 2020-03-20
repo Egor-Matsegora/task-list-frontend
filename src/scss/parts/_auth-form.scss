@@ -41,4 +41,11 @@
   &__buttons {
     padding-top: 10px;
   }
+
+  &__loader {
+    display: inline-block;
+    position: relative;
+    left: -20px;
+    top: -5px;
+  }
 }

@@ -31,6 +31,10 @@
     }
   }
 
+  &__text {
+    white-space: pre-wrap;
+  }
+
   &__button {
     flex: 0 1 50px;
     position: relative;

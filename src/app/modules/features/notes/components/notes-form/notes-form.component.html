@@ -18,7 +18,7 @@
         class="form__input form__input_textarea"
         name="text"
         id="notes-text"
-        rows="2"
+        rows="4"
         formControlName="text"
         [ngClass]="{'form__input_error': noteText.invalid && noteText.touched}"
       ></textarea>
@@ -85,7 +85,7 @@
         [isDisabled]="form.invalid"
         (click)="updateNote()"
         (keyress.enter)="updateNote()"
-        *ngIf="modalData"
+        *ngIf="!!modalData"
       >
         Редактировать заметку
       </ui-button>

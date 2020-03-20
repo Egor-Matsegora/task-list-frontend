@@ -49,6 +49,7 @@
     font-size: 15px;
     font-style: italic;
     line-height: 1.1em;
+    white-space: pre-wrap;
 
     &:before {
       content: '\201C';

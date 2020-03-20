@@ -73,7 +73,9 @@
         [buttonType]="'submit'"
       >
         <span *ngIf="!loading">Войти</span>
-        <loader *ngIf="loading"></loader>
+        <div class="auth-form__loader" *ngIf="loading">
+          <loader></loader>
+        </div>
       </ui-button>
     </div>
   </form>

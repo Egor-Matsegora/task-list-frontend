@@ -1,7 +1,7 @@
 <div class="note">
   <div class="note__main-row">
     <div class="note__content">
-      <div class="note__title" *ngIf="note.title">
+      <div class="note__title" *ngIf="!!note.title">
         {{ note.title }}
       </div>
       <div class="note__text">

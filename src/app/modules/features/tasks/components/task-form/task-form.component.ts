@@ -108,7 +108,12 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * Очистка формы при закрытии модалки
    */
   private subToCloseEvent(): void {
-    this.subscriptions.add(this.modal.onAnyCloseEventFinished.subscribe(() => this.form.reset()));
+    this.subscriptions.add(
+      this.modal.onAnyCloseEvent.subscribe(() => {
+        this.form.reset();
+        this.modal.removeData();
+      })
+    );
   }
 
   /**
@@ -118,16 +123,21 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * Если их нет, значит задача создается
    */
   private checkModalData(): void {
-    this.modal.onOpen.subscribe(() => {
-      if (!this.modal.getData()) return;
-      this.modalData = this.modal.getData();
-      this.taskTytle.setValue(this.modalData.tytle);
-      this.optionsChecks.controls.description.setValue(!!this.modalData.description);
-      this.options.controls.description.setValue(this.modalData.description);
-    });
+    this.subscriptions.add(
+      this.modal.onOpen.subscribe(() => {
+        this.modalData = this.modal.getData();
+        if (!!this.modalData) {
+          this.taskTytle.setValue(this.modalData.tytle);
+          this.optionsChecks.controls.description.setValue(!!this.modalData.description);
+          this.options.controls.description.setValue(this.modalData.description);
+        }
+      })
+    );
   }
 
-  /**создание задачи */
+  /**
+   * создание задачи
+   */
   createTask(): void {
     if (this.form.valid) {
       this.form.disable();

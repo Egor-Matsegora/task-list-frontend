@@ -38,7 +38,9 @@ export class NotesFormComponent implements OnInit, OnDestroy {
     this.initModal();
     this.inintForm();
     this.initFormVariables();
+    this.setValidators();
     this.subToCloseModalEvent();
+    this.checkModalData();
   }
 
   ngOnDestroy() {
@@ -53,10 +55,50 @@ export class NotesFormComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Подписка на закрытие модалки для сброса формы
+   * Подписка на закрытие модалки для сброса формы и данных, приходящих в модалку
    */
   private subToCloseModalEvent() {
-    this.subscriptions.add(this.modal.onAnyCloseEvent.subscribe(() => this.form.reset()));
+    this.subscriptions.add(
+      this.modal.onAnyCloseEvent.subscribe(() => {
+        this.form.reset();
+        this.modal.removeData();
+      })
+    );
+  }
+
+  /**
+   * Проверка данных приходящих в модалку
+   * Если данные приходят, значит заметка редактируется
+   * Если их нет, значит заметка создается
+   */
+  private checkModalData() {
+    if (!this.modal) return;
+    this.subscriptions.add(
+      this.modal.onOpen.subscribe(() => {
+        this.modalData = this.modal.getData();
+        if (this.modalData) {
+          this.noteText.setValue(this.modalData.text);
+          this.titleCheck.setValue(!!this.modalData.title);
+          this.noteTitle.setValue(this.modalData.title);
+        }
+      })
+    );
+  }
+
+  /**
+   * Установка и удаление валидаторов при динамическом добавлении инпутов
+   */
+  private setValidators(): void {
+    this.titleCheck.valueChanges.subscribe(value => {
+      if (value) {
+        this.noteTitle.setValidators(Validators.required);
+        this.noteTitle.updateValueAndValidity();
+      } else {
+        this.noteTitle.clearValidators();
+        this.noteTitle.updateValueAndValidity();
+        this.noteTitle.reset();
+      }
+    });
   }
 
   /**
@@ -83,6 +125,9 @@ export class NotesFormComponent implements OnInit, OnDestroy {
     this.titleCheck = this.form.controls.optionsChecks.get('title') as FormControl;
   }
 
+  /**
+   * Добавление заметки
+   */
   createNote() {
     if (this.form.invalid) return;
     this.form.disable();
@@ -90,7 +135,6 @@ export class NotesFormComponent implements OnInit, OnDestroy {
       text: this.noteText.value,
       title: this.titleCheck.value ? this.noteTitle.value : null
     };
-    console.log(formValue);
     this.subscriptions.add(
       this.noteService.createNote(formValue).subscribe(
         note => {
@@ -107,5 +151,27 @@ export class NotesFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  updateNote() {}
+  /**
+   * Обнавление задачи
+   */
+  updateNote() {
+    if (this.form.invalid) return;
+    this.form.disable();
+    this.modalData.text = this.noteText.value;
+    this.modalData.title = this.titleCheck.value ? this.noteTitle.value : null;
+    this.subscriptions.add(
+      this.noteService.updateNote(this.modalData).subscribe(
+        note => {
+          this.form.enable();
+          this.modal.close();
+          this.noteService.updateNoteAction(note);
+          this.toastr.success('Задача успешно обновлена');
+        },
+        error => {
+          this.toastr.error('Ошибка в редактировании задачи');
+          this.form.enable();
+        }
+      )
+    );
+  }
 }
