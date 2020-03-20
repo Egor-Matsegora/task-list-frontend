@@ -19,6 +19,10 @@
       text-decoration: line-through;
       color: $success-color;
     }
+
+    &_deleted {
+      color: $error-color;
+    }
   }
 
   &__button {
@@ -69,6 +73,16 @@
     font-size: 10px;
     margin-top: 5px;
     align-self: flex-end;
+  }
+
+  &__delete-message {
+    font-size: 0.9em;
+
+    span {
+      color: $success-color;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }
 

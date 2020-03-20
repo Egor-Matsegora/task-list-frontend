@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';
 
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Task } from '@interfaces/task.interface';
 import { enterAnimation, leaveAnimation } from '@app/animations/item-dropdown.animations';
-import { fromEvent, Subscription } from 'rxjs';
+import { fromEvent, Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'task',
@@ -17,18 +17,24 @@ import { fromEvent, Subscription } from 'rxjs';
     ])
   ]
 })
-export class TaskComponent implements OnChanges {
+export class TaskComponent implements OnChanges, OnDestroy {
   private clickSubscription: Subscription;
+  private timerSubscription: Subscription;
   @Input() task: Task;
   @Output() done: EventEmitter<any> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
   isDone: boolean;
+  isDeleted: boolean = false;
   isMenuVisible: boolean = false;
 
   constructor(private smartModal: NgxSmartModalService) {}
 
   ngOnChanges() {
     this.isDone = this.task.done;
+  }
+
+  ngOnDestroy(): void {
+    this.timerSubscription && this.timerSubscription.unsubscribe();
   }
 
   private closeMenu() {
@@ -59,8 +65,11 @@ export class TaskComponent implements OnChanges {
   }
 
   onDelete() {
+    this.isDeleted = true;
     this.closeMenu();
-    this.delete.emit(this.task._id);
+    this.timerSubscription = timer(5000).subscribe(() => {
+      this.isDeleted && this.delete.emit(this.task._id);
+    });
   }
 
   onUpdate() {
@@ -69,5 +78,9 @@ export class TaskComponent implements OnChanges {
     if (!taskModal) return;
     taskModal.setData(this.task);
     taskModal.open();
+  }
+
+  recoverTask() {
+    this.isDeleted = false;
   }
 }

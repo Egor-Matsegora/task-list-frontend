@@ -11,7 +11,14 @@
         </svg>
       </button>
     </div>
-    <div class="task__tytle" [ngClass]="{'task__tytle_done': isDone}">{{ task.tytle }}</div>
+
+    <div
+      class="task__tytle"
+      [ngClass]="{'task__tytle_done': isDone, 'task__tytle_deleted': isDeleted}"
+    >
+      {{ task.tytle }}
+    </div>
+
     <div class="task__button task__button_menu">
       <button
         class="button button_menu"
@@ -28,6 +35,7 @@
       </button>
 
       <div class="dropdown" *ngIf="isMenuVisible" @menuAnimation>
+
         <div class="dropdown__item" (click)="onUpdate()">
           <i class="dropdown__icon">
             <svg viewBox="0 0 383.947 383.947" style="enable-background:new 0 0 383.947 383.947;">
@@ -37,6 +45,7 @@
           </i>
           редактировать
         </div>
+
         <div class="dropdown__item" (click)="onDelete()">
           <i class="dropdown__icon">
             <svg viewBox="0 0 515.556 515.556">
@@ -48,16 +57,22 @@
           </i>
           удалить
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
+
   <div class="task__info">
     <div class="task__desc task__info-item" *ngIf="task.description">
       {{ task.description }}
+    </div>
+    <div class="task__delete-message task__info-item" *ngIf="isDeleted">
+      Задача удалена,
+      <span class="task__recovery" (click)="recoverTask()">восстановить?</span>
     </div>
     <div class="task__date task__info-item">
       {{ task.date | date }}
     </div>
   </div>
+
 </div>
