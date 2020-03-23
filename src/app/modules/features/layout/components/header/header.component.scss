@@ -8,8 +8,16 @@
   position: relative;
   display: flex;
 
+  @include max-width($bp-mobile-l) {
+    height: 60px;
+  }
+
   &__item {
     padding: 15px 0;
+
+    @include max-width($bp-mobile-l) {
+      padding: 10px 0;
+    }
   }
 
   &__logo {
@@ -31,6 +39,10 @@
     &:hover,
     &:focus {
       background-color: $bg-color-light;
+    }
+
+    @include max-width($bp-mobile-l) {
+      flex: 0 0 50px;
     }
   }
 

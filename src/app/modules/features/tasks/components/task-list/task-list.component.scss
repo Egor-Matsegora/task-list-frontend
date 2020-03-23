@@ -8,6 +8,10 @@
   align-items: stretch;
   height: 100%;
 
+  @include max-width($bp-mobile-l) {
+    padding: 10px 5px;
+  }
+
   &__item {
     border-bottom: 1px solid $border-color-simple;
     padding: 0 10px;

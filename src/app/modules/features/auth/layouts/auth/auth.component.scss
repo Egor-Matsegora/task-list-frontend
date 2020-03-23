@@ -18,6 +18,13 @@
     box-shadow: $box-shadow-simple;
     margin: 3vh 0;
     position: relative;
+
+    @include max-width($bp-mobile-l) {
+      // flex-basis: auto;
+      width: auto;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
   }
 
   &__header {

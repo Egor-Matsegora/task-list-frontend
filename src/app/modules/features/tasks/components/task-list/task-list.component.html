@@ -1,7 +1,11 @@
 <div class="task-list">
 
   <ng-container *ngIf="items?.length && !isLoading">
-    <div class="task-list__item" *ngFor="let item of items">
+    <div
+      class="task-list__item"
+      *ngFor="let item of items"
+      @itemAnimation
+    >
       <task
         [task]="item"
         (done)="onDone($event)"

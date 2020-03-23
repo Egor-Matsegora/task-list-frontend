@@ -5,17 +5,24 @@
   padding: 5px 0;
 
   &__main-row {
-    display: flex;
-    justify-content: stretch;
-    flex-wrap: nowrap;
+    position: relative;
+    padding-right: 40px;
+
+    @include max-width($bp-mobile-l) {
+      padding-right: 30px;
+    }
   }
 
   &__content {
     flex: 1 1 auto;
-    margin-left: 50px;
+    padding-left: 40px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
+
+    @include max-width($bp-mobile-l) {
+      padding-left: 30px;
+    }
   }
 
   &__title {
@@ -36,15 +43,36 @@
   }
 
   &__button {
-    flex: 0 1 50px;
-    position: relative;
+    position: absolute;
+    top: 2px;
+    z-index: 10;
+
+    &_menu {
+      right: 5px;
+
+      @include max-width($bp-mobile-l) {
+        right: 0;
+      }
+    }
+
+    &_delete {
+      left: 5px;
+
+      @include max-width($bp-mobile-l) {
+        left: 0;
+      }
+    }
   }
 
   &__info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0 50px;
+    padding-right: 40px;
+
+    @include max-width($bp-mobile-l) {
+      padding-right: 30px;
+    }
   }
 
   &__info-item {
@@ -57,6 +85,25 @@
     margin-top: 5px;
     align-self: flex-end;
   }
+
+  &__delete-message {
+    font-size: 0.9em;
+    padding-left: 40px;
+
+    @include max-width($bp-mobile-l) {
+      padding-left: 30px;
+    }
+
+    span {
+      color: $success-color;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  &_deleted {
+    color: $error-color;
+  }
 }
 
 .button {
@@ -65,7 +112,6 @@
   height: 25px;
   border-radius: 50%;
   background-color: transparent;
-  margin-right: 15px;
   padding: 0;
   @include simple-transition;
   border: 0;
@@ -108,7 +154,7 @@
 
 .dropdown {
   position: absolute;
-  top: 27px;
+  top: 100%;
   right: 80%;
   overflow: hidden;
   min-width: 100px;

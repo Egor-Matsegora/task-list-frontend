@@ -1,13 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Note } from '@interfaces/note.interface';
-import { NotesService } from '../../services/notes/notes.service';
+import { trigger, transition, useAnimation } from '@angular/animations';
 import { Subscription } from 'rxjs';
+// services
+import { NotesService } from '@features/notes/services/notes/notes.service';
 import { ToastrService } from 'ngx-toastr';
+// interfacess
+import { Note } from '@interfaces/note.interface';
+// animations
+import { removeAnimation } from '@app/animations/item.animation';
 
 @Component({
   selector: 'notes-list',
   templateUrl: './notes-list.component.html',
-  styleUrls: ['./notes-list.component.scss']
+  styleUrls: ['./notes-list.component.scss'],
+  animations: [trigger('itemAnimation', [transition(':leave', [useAnimation(removeAnimation)])])]
 })
 export class NotesListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
@@ -47,7 +53,6 @@ export class NotesListComponent implements OnInit, OnDestroy {
 
   onDelete(note: Note) {
     const index = this.items.indexOf(note);
-    console.log(index);
     this.subscriptions.add(
       this.notesService.deleteNote(note._id).subscribe(
         response => {

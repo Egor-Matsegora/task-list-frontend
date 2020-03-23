@@ -8,9 +8,9 @@
   flex-wrap: nowrap;
 
   &__header {
-    flex: 0 0 70px;
-    height: 70px;
-    max-height: 70px;
+    flex: 0 0 auto;
+    // height: 70px;
+    // max-height: 70px;
     overflow: hidden;
     box-shadow: $box-shadow-simple;
   }

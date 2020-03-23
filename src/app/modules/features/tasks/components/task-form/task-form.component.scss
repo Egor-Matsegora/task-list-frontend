@@ -40,6 +40,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 20px;
+
+    @include max-width($bp-mobile-l) {
+      grid-template-columns: 1fr;
+      grid-gap: 10px;
+    }
   }
 
   &__label {

@@ -34,6 +34,7 @@ export class TaskComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.clickSubscription && this.clickSubscription.unsubscribe();
     this.timerSubscription && this.timerSubscription.unsubscribe();
   }
 
@@ -48,6 +49,10 @@ export class TaskComponent implements OnChanges, OnDestroy {
       count++;
       if (count > 1 && this.isMenuVisible) this.closeMenu();
     });
+  }
+
+  deleteNow() {
+    this.delete.emit(this.task._id);
   }
 
   onDone() {
@@ -67,7 +72,7 @@ export class TaskComponent implements OnChanges, OnDestroy {
   onDelete() {
     this.isDeleted = true;
     this.closeMenu();
-    this.timerSubscription = timer(5000).subscribe(() => {
+    this.timerSubscription = timer(3000).subscribe(() => {
       this.isDeleted && this.delete.emit(this.task._id);
     });
   }

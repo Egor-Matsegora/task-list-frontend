@@ -13,6 +13,10 @@
     margin-bottom: 15px;
     background-color: $bg-color-primary;
     box-shadow: $box-shadow-simple;
+
+    @include max-width($bp-mobile-l) {
+      margin-bottom: 10px;
+    }
   }
 
   &__list {

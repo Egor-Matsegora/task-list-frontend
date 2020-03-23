@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'mixins';
 
 .tasks-header {
   padding: 15px 25px;
@@ -6,8 +7,12 @@
   justify-content: space-between;
   flex-wrap: nowrap;
 
-  &__button {
-    flex-basis: 200px;
+  @include max-width($bp-mobile-l) {
+    padding: 10px;
+  }
+
+  &__add-button {
+    margin-left: 10px;
   }
 
   &__text {

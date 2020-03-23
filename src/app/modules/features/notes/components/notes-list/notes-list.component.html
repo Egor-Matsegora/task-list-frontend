@@ -1,7 +1,7 @@
 <div class="notes-list">
 
     <ng-container *ngIf="items?.length && !isLoading">
-      <div class="notes-list__item" *ngFor="let item of items">
+      <div class="notes-list__item" *ngFor="let item of items" @itemAnimation>
         <note
           [note]="item"
           (delete)="onDelete($event)"

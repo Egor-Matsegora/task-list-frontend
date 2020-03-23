@@ -1,15 +1,19 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { transition, useAnimation, trigger } from '@angular/animations';
 // services
 import { TasksService } from '@features/tasks/services/tasks/tasks.service';
 import { ToastrService } from 'ngx-toastr';
 // interfaces
 import { Task } from '@interfaces/task.interface';
 import { Subscription } from 'rxjs';
+// animations
+import { removeAnimation, addAnimation } from '@app/animations/item.animation';
 
 @Component({
   selector: 'task-list',
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
+  animations: [trigger('itemAnimation', [transition(':leave', [useAnimation(removeAnimation)])])]
 })
 export class TaskListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
@@ -45,7 +49,11 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   private subToAddTaskState() {
-    this.subscriptions.add(this.tasksService.addTaskState$.subscribe(task => this.items.push(task)));
+    this.subscriptions.add(
+      this.tasksService.addTaskState$.subscribe(task => {
+        this.items.push(task);
+      })
+    );
   }
 
   private subToUpdateTaskState() {

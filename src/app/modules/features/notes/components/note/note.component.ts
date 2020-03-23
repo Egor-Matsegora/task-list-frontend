@@ -1,9 +1,9 @@
 import { leaveAnimation, enterAnimation } from '@app/animations/item-dropdown.animations';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Note } from '@interfaces/note.interface';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
-import { Subscription, fromEvent } from 'rxjs';
+import { Subscription, fromEvent, timer } from 'rxjs';
 
 @Component({
   selector: 'note',
@@ -16,13 +16,20 @@ import { Subscription, fromEvent } from 'rxjs';
     ])
   ]
 })
-export class NoteComponent {
+export class NoteComponent implements OnDestroy {
   private clickSubscription: Subscription;
+  private timerSubscription: Subscription;
   @Input() note: Note;
   @Output() delete: EventEmitter<Note> = new EventEmitter();
   isMenuVisible: Boolean = false;
+  isDeleted: boolean = false;
 
   constructor(private smartModal: NgxSmartModalService) {}
+
+  ngOnDestroy() {
+    this.clickSubscription && this.clickSubscription.unsubscribe();
+    this.timerSubscription && this.timerSubscription.unsubscribe();
+  }
 
   private closeMenu() {
     this.isMenuVisible = false;
@@ -47,7 +54,18 @@ export class NoteComponent {
   }
 
   onDelete() {
+    this.isDeleted = true;
     this.closeMenu();
+    this.timerSubscription = timer(3000).subscribe(() => {
+      this.isDeleted && this.delete.emit(this.note);
+    });
+  }
+
+  recoverTask() {
+    this.isDeleted = false;
+  }
+
+  deleteNow() {
     this.delete.emit(this.note);
   }
 

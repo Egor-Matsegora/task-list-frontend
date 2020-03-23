@@ -1,5 +1,23 @@
-<div class="note">
+<div class="note" [ngClass]="{'note_deleted': isDeleted}">
   <div class="note__main-row">
+
+    <div
+      class="note__button note__button_delete"
+      *ngIf="isDeleted"
+    >
+      <button
+        class="button button_delete"
+        (click)="deleteNow()"
+      >
+        <svg viewBox="0 0 515.556 515.556">
+          <g>
+            <path d="m64.444 451.111c0 35.526 28.902 64.444 64.444 64.444h257.778c35.542 0 64.444-28.918 64.444-64.444v-322.222h-386.666z" fill="#ff3f3f"/>
+            <path d="m322.222 32.222v-32.222h-128.889v32.222h-161.111v64.444h451.111v-64.444z" fill="#ff3f3f"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+
     <div class="note__content">
       <div class="note__title" *ngIf="!!note.title">
         {{ note.title }}
@@ -8,7 +26,9 @@
         {{ note.text }}
       </div>
     </div>
-    <div class="note__button">
+
+    <div class="note__button note__button_menu">
+
       <button
         class="button button_menu"
         [ngClass]="{'button_menu_active': isMenuVisible}"
@@ -51,6 +71,10 @@
   <div class="note__info">
     <div class="note__date note__info-item">
       {{ note.date | date }}
+    </div>
+    <div class="note__delete-message note__info-item" *ngIf="isDeleted">
+      Задача удалена,
+      <span class="mote__recovery" (click)="recoverTask()">восстановить?</span>
     </div>
   </div>
 </div>

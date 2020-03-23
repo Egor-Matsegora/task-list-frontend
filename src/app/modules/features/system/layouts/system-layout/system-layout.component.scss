@@ -9,12 +9,21 @@
   flex-wrap: nowrap;
   align-items: stretch;
 
+  @include max-width($bp-mobile-l) {
+    padding-top: 60px;
+    margin-top: -60px;
+  }
+
   &__aside {
     flex: 0 0 auto;
   }
 
   &__content {
-    flex: 1 0 auto;
+    flex: 1;
     margin: 15px 20px;
+
+    @include max-width($bp-mobile-l) {
+      margin: 10px;
+    }
   }
 }

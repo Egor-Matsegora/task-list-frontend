@@ -10,3 +10,15 @@
 @mixin simple-transition($var: all) {
   transition: $var 150ms ease-in-out 30ms;
 }
+
+@mixin max-width($width) {
+  @media screen and (max-width: #{$width}) {
+    @content;
+  }
+}
+
+@mixin min-width($width) {
+  @media screen and (min-width: #{$width}) {
+    @content;
+  }
+}
