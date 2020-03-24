@@ -41,4 +41,23 @@
       box-shadow: $box-shadow-focus;
     }
   }
+
+  &_delete {
+    color: $text-color-light;
+    background-color: $error-color;
+    position: relative;
+    padding-left: 35px;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 12px;
+      display: block;
+      height: 16px;
+      width: 16px;
+      background-image: url('/assets/images/delete.svg');
+      background-size: cover;
+    }
+  }
 }

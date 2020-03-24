@@ -2,13 +2,16 @@
 @import 'mixins';
 
 .tasks-header {
-  padding: 15px 25px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
+  padding: 15px 25px 0;
+
+  &__form {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
 
   @include max-width($bp-mobile-l) {
-    padding: 10px;
+    padding: 10px 10px 0;
   }
 
   &__add-button {
@@ -20,5 +23,30 @@
     font-weight: 300;
     color: $text-color-accent;
     align-self: center;
+  }
+
+  &__actions {
+    margin-top: 10px;
+  }
+}
+
+.header-actions {
+  overflow: hidden;
+
+  &__open-button {
+    padding: 5px 0;
+    text-align: center;
+    border-top: 1px solid $border-color-simple;
+    cursor: pointer;
+
+    i {
+      display: inline-block;
+      width: 15px;
+      @include simple-transition(transform);
+    }
+
+    &_open i {
+      transform: rotate(180deg);
+    }
   }
 }

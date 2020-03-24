@@ -1,20 +1,42 @@
 <div class="tasks-header">
 
-  <div class="tasks-header__text">
-    Задачи
+  <div class="tasks-header__form">
+
+    <div class="tasks-header__text">
+      Задачи
+    </div>
+
+    <div class="tasks-header__add-button">
+      <ui-button
+        [classList]="'button-submit'"
+        (click)="openTaskModal()"
+      >
+        Добавить задачу
+      </ui-button>
+
+    </div>
+
   </div>
 
-  <div class="tasks-header__add-button">
-    <ui-button
-      [classList]="'button-submit'"
-      (click)="openTaskModal()"
+  <div class="tasks-header__actions header-actions">
+    <div
+      class="header-actions__open-button"
+      [ngClass]="{'header-actions__open-button_open': isActionsOpen}"
+      (click)="openActions()"
     >
-      Добавить задачу
-    </ui-button>
+      <i>
+        <svg viewBox="0 0 512.011 512.011">
+          <path d="M505.755,123.592c-8.341-8.341-21.824-8.341-30.165,0L256.005,343.176L36.421,123.592c-8.341-8.341-21.824-8.341-30.165,0    s-8.341,21.824,0,30.165l234.667,234.667c4.16,4.16,9.621,6.251,15.083,6.251c5.462,0,10.923-2.091,15.083-6.251l234.667-234.667    C514.096,145.416,514.096,131.933,505.755,123.592z" fill="#C7C7C7"/>
+        </svg>
+      </i>
+    </div>
+    <div
+      class="header-actions__actions"
+      *ngIf="isActionsOpen"
+      @actionsAnimation
+    >
+      <task-actions></task-actions>
+    </div>
   </div>
-
-  <!-- <div class="tasks-header__options">
-
-  </div> -->
 
 </div>

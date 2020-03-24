@@ -1,5 +1,11 @@
 import { Component, OnChanges, Input, ElementRef, Renderer2, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
+/**
+ * Возможные классы:
+ * button_block: кнопка display: block
+ * button_submit: синий фон белый текст
+ * Button_delete: красный фон, белый текст, значек корзины
+ */
 @Component({
   selector: 'ui-button',
   templateUrl: './ui-button.component.html',
