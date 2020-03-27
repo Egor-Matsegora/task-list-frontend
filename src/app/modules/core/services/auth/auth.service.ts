@@ -9,9 +9,9 @@ import { AsideStateService } from '@core/services/aside-state/aside-state.servic
 // helpers
 import { handleHttpError } from '@helpers/handle-http-error';
 // interfaces
-import { RegistretionUser } from '../../../../interfaces/registration-user.inerface';
-import { LoginUser } from '../../../../interfaces/login-user.interface';
-import { LoginRequest } from '../../../../interfaces/login-request.interface';
+import { RegistretionUser } from '@interfaces/registration-user.inerface';
+import { LoginUser } from '@interfaces/login-user.interface';
+import { LoginRequest } from '@interfaces/login-request.interface';
 
 @Injectable()
 export class AuthService {
