@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -7,7 +7,7 @@ export class AsideStateService implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
   private asideState = new BehaviorSubject(this.asideStorageState);
 
-  asideState$ = this.asideState.asObservable();
+  asideState$: Observable<boolean> = this.asideState.asObservable();
 
   constructor() {
     this.setDefaultState();

@@ -12,9 +12,11 @@ export class TasksService {
   private addTaskState: BehaviorSubject<Task> = new BehaviorSubject(null);
   private updateTaskState: BehaviorSubject<Task> = new BehaviorSubject(null);
   private deleteTaskState: BehaviorSubject<Task> = new BehaviorSubject(null);
+  private deleteDoneTasksState: BehaviorSubject<boolean> = new BehaviorSubject(false);
   updateTaskState$: Observable<Task> = this.updateTaskState.asObservable().pipe(filter(task => task !== null));
   addTaskState$: Observable<Task> = this.addTaskState.asObservable().pipe(filter(task => task !== null));
   deleteTaskState$: Observable<Task> = this.deleteTaskState.asObservable().pipe(filter(task => task !== null));
+  deleteDoneTasksState$: Observable<boolean> = this.deleteDoneTasksState.asObservable().pipe(filter(action => action));
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +31,10 @@ export class TasksService {
 
   deleteTaskAction(task: Task) {
     this.deleteTaskState.next(task);
+  }
+
+  deleteDoneTasksAction() {
+    this.deleteDoneTasksState.next(true);
   }
 
   // http methods

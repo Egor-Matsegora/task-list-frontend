@@ -1,3 +1,4 @@
+import { TasksService } from './../../services/tasks/tasks.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-actions.component.scss']
 })
 export class TaskActionsComponent implements OnInit {
+  constructor(private tasksService: TasksService) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  deleteCompleted() {
+    this.tasksService.deleteDoneTasksAction();
   }
-
 }
