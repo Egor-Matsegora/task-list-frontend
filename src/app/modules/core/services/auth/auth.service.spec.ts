@@ -36,5 +36,104 @@ describe('AuthService', () => {
   });
 
   // login()
-  xit('should login and returns user, success status and token', () => {});
+  it('should login and returns user, success status and set token to localStorage', () => {
+    const testUser = {
+      email: 'test@email.com',
+      password: '111111111'
+    };
+
+    const userResponseData = {
+      token: `Bearer someToken`,
+      success: true,
+      user: {
+        email: testUser.email,
+        password: 'testhashpassword',
+        firstName: 'first-name',
+        lastName: 'last-name',
+        imageUrl: ''
+      }
+    };
+
+    spyOn(localStorage, 'setItem');
+
+    authService.login(testUser).subscribe(response => {
+      expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+      expect(asideStateSpy.setDefaultState).toHaveBeenCalledTimes(1);
+      expect(response).toBeTruthy('no user returned');
+      expect(response.user.email).toEqual(testUser.email);
+    });
+    const request = httpTestingController.expectOne('http://localhost:5000/api/login');
+    expect(request.request.method).toEqual('POST');
+    request.flush(userResponseData);
+  });
+
+  // login with wrong password
+  it('should returns sucess: false and wrong password message, when password is wrong', () => {
+    const wrongUser = {
+      email: 'test@email.com',
+      password: '111111111'
+    };
+
+    const wrongUserResponseData = {
+      success: false,
+      message: 'wrong password'
+    };
+
+    spyOn(localStorage, 'setItem');
+    spyOn(console, 'error');
+
+    authService.login(wrongUser).subscribe(
+      response => {
+        expect(response).toBeTruthy('no response returned');
+        expect(localStorage.setItem).toHaveBeenCalledTimes(0);
+        expect(asideStateSpy.setDefaultState).toHaveBeenCalledTimes(0);
+        expect(response.success).toBeFalsy('wrong success value');
+        expect(response.message).toEqual(wrongUserResponseData.message);
+      },
+      error => {
+        expect(console.error).toHaveBeenCalled();
+        expect(error).toEqual(wrongUserResponseData.message);
+      }
+    );
+    const request = httpTestingController.expectOne('http://localhost:5000/api/login');
+    expect(request.request.method).toEqual('POST');
+    request.flush(wrongUserResponseData, { status: 401, statusText: 'Unaftorized' });
+  });
+
+  // login with unaftorizes user
+  it('should returns sucess: false and wrong password message, when password is wrong', () => {
+    const wrongUser = {
+      email: 'test@email.com',
+      password: '111111111'
+    };
+
+    const wrongUserResponseData = {
+      success: false,
+      message: 'wrong password'
+    };
+
+    spyOn(localStorage, 'setItem');
+    spyOn(console, 'error');
+
+    authService.login(wrongUser).subscribe(
+      response => {
+        expect(response).toBeTruthy('no response returned');
+        expect(localStorage.setItem).toHaveBeenCalledTimes(0);
+        expect(asideStateSpy.setDefaultState).toHaveBeenCalledTimes(0);
+        expect(response.success).toBeFalsy('wrong success value');
+        expect(response.message).toEqual(wrongUserResponseData.message);
+      },
+      error => {
+        expect(console.error).toHaveBeenCalled();
+        expect(error).toEqual(wrongUserResponseData.message);
+      }
+    );
+    const request = httpTestingController.expectOne('http://localhost:5000/api/login');
+    expect(request.request.method).toEqual('POST');
+    request.flush(wrongUserResponseData, { status: 401, statusText: 'Unaftorized' });
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
+  });
 });
