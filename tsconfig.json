@@ -11,7 +11,8 @@
       "@features/*": ["src/app/modules/features/*"],
       "@validators/*": ["src/app/validators/*"],
       "@core/*": ["src/app/modules/core/*"],
-      "@helpers/*": ["src/app/helpers/*"]
+      "@helpers/*": ["src/app/helpers/*"],
+      "@tests/*": ["src/app/tests/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
