@@ -95,42 +95,29 @@ describe('AuthService', () => {
         expect(error).toEqual(wrongUserResponseData.message);
       }
     );
+
     const request = httpTestingController.expectOne('http://localhost:5000/api/login');
     expect(request.request.method).toEqual('POST');
     request.flush(wrongUserResponseData, { status: 401, statusText: 'Unaftorized' });
   });
 
-  // login with unaftorizes user
-  it('should returns sucess: false and wrong password message, when password is wrong', () => {
-    const wrongUser = {
+  // registration()
+  it('should return succes: true when user registered', () => {
+    const registrationUser = {
       email: 'test@email.com',
-      password: '111111111'
+      password: '111111111',
+      firstName: 'John',
+      lastName: 'Doe'
     };
 
-    const wrongUserResponseData = {
-      success: false,
-      message: 'wrong password'
-    };
+    authService.registration(registrationUser).subscribe(response => {
+      expect(response).toBeTruthy();
+      expect(response.success).toBeTruthy();
+    });
 
-    spyOn(localStorage, 'setItem');
-    spyOn(console, 'error');
-
-    authService.login(wrongUser).subscribe(
-      response => {
-        expect(response).toBeTruthy('no response returned');
-        expect(localStorage.setItem).toHaveBeenCalledTimes(0);
-        expect(asideStateSpy.setDefaultState).toHaveBeenCalledTimes(0);
-        expect(response.success).toBeFalsy('wrong success value');
-        expect(response.message).toEqual(wrongUserResponseData.message);
-      },
-      error => {
-        expect(console.error).toHaveBeenCalled();
-        expect(error).toEqual(wrongUserResponseData.message);
-      }
-    );
-    const request = httpTestingController.expectOne('http://localhost:5000/api/login');
+    const request = httpTestingController.expectOne('http://localhost:5000/api/registration');
     expect(request.request.method).toEqual('POST');
-    request.flush(wrongUserResponseData, { status: 401, statusText: 'Unaftorized' });
+    request.flush({ success: true });
   });
 
   afterEach(() => {
