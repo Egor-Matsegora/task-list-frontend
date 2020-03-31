@@ -48,7 +48,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
   }
 
   private subToCreateNoteState() {
-    this.subscriptions.add(this.notesService.createNoteState$.subscribe(note => this.items.push(note)));
+    this.subscriptions.add(this.notesService.createNoteState$.subscribe(note => note && this.items.push(note)));
   }
 
   onDelete(note: Note) {

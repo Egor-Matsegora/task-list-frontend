@@ -24,6 +24,7 @@ export class AuthService {
     return this.http.post<LoginRequest>(`${this.url}login`, user).pipe(
       map(req => {
         if (req && req.token) {
+          // console.log(req);
           localStorage.setItem('token', req.token);
           this.setToken(req.token);
           this.asideState.setDefaultState();
@@ -52,8 +53,8 @@ export class AuthService {
   }
 
   logout() {
-    this.setToken(null);
     localStorage.removeItem('token');
+    this.setToken(null);
     this.router.navigate(['']);
     this.asideState.removeAsideStorageState();
   }
@@ -61,8 +62,6 @@ export class AuthService {
   checkToken() {
     const token = localStorage.getItem('token');
 
-    if (token) {
-      this.setToken(token);
-    }
+    token && this.setToken(token);
   }
 }

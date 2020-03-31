@@ -4,29 +4,30 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { AuthService } from './auth.service';
-
-// import { LayoutComponent } from '@features/layout/layouts/layout/layout.component';
+import { Router } from '@angular/router';
 
 let authService: AuthService;
 let asideStateSpy: any;
 let httpTestingController: HttpTestingController;
+let router: any;
 
 describe('AuthService', () => {
   beforeEach(() => {
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     asideStateSpy = jasmine.createSpyObj('AsideStateService', ['setDefaultState', 'removeAsideStorageState']);
-    // routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
         AuthService,
-        // { provide: Router, useValue: routerSpy },
-        { provide: AsideStateService, useValue: asideStateSpy }
+        { provide: AsideStateService, useValue: asideStateSpy },
+        { provide: Router, useValue: routerSpy }
       ]
     });
 
     authService = TestBed.get(AuthService);
     httpTestingController = TestBed.get(HttpTestingController);
+    router = TestBed.get(Router);
   });
 
   // constructor
@@ -43,7 +44,7 @@ describe('AuthService', () => {
     };
 
     const userResponseData = {
-      token: `Bearer someToken`,
+      token: 'Bearer someToken',
       success: true,
       user: {
         email: testUser.email,
@@ -54,7 +55,7 @@ describe('AuthService', () => {
       }
     };
 
-    spyOn(localStorage, 'setItem');
+    spyOn(localStorage, 'setItem').withArgs('token', 'Bearer someToken');
 
     authService.login(testUser).subscribe(response => {
       expect(localStorage.setItem).toHaveBeenCalledTimes(1);
@@ -62,6 +63,7 @@ describe('AuthService', () => {
       expect(response).toBeTruthy('no user returned');
       expect(response.user.email).toEqual(testUser.email);
     });
+
     const request = httpTestingController.expectOne('http://localhost:5000/api/login');
     expect(request.request.method).toEqual('POST');
     request.flush(userResponseData);
@@ -118,6 +120,17 @@ describe('AuthService', () => {
     const request = httpTestingController.expectOne('http://localhost:5000/api/registration');
     expect(request.request.method).toEqual('POST');
     request.flush({ success: true });
+  });
+
+  // logout
+  it('should remove token and asideState keys from localStorage and navigate to start page', () => {
+    spyOn(localStorage, 'removeItem').withArgs('token');
+
+    authService.logout();
+
+    expect(asideStateSpy.removeAsideStorageState).toHaveBeenCalledTimes(1);
+    expect(localStorage.removeItem).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledTimes(1);
   });
 
   afterEach(() => {
