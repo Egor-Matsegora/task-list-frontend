@@ -68,4 +68,8 @@ describe('NoteComponent', () => {
     expect(dropdownMenu).toBeTruthy('menu dont displaing');
     expect(dropdownMenu.length).toBe(1, 'unexpected number of menu');
   });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
 });

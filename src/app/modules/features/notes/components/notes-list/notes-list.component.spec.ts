@@ -85,4 +85,8 @@ describe('NotesListComponent', () => {
     expect(notes.length).toBe(2, 'notes length must bee smaller then before deleting');
     expect(toastrService.warning).toHaveBeenCalledTimes(1);
   });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
 });

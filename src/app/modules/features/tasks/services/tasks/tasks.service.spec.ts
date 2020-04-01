@@ -11,7 +11,7 @@ import { TASKS } from '@tests/tasks-db';
 let tasksService: TasksService;
 let httpTestingController: HttpTestingController;
 
-xdescribe('TasksService', () => {
+describe('TasksService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
