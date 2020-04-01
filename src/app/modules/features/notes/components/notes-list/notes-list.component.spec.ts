@@ -12,7 +12,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrService } from 'ngx-toastr';
 
-fdescribe('NotesListComponent', () => {
+describe('NotesListComponent', () => {
   let component: NotesListComponent;
   let fixture: ComponentFixture<NotesListComponent>;
   let element: DebugElement;
@@ -53,9 +53,11 @@ fdescribe('NotesListComponent', () => {
 
     const notes = element.queryAll(By.css('.notes-list__item'));
 
-    expect(notes).toBeTruthy('notes no found');
+    expect(notes).toBeTruthy('notes not found');
     expect(notes.length).toBe(3, 'unexpected number of notes');
   });
+
+  // it('should display an error about loading notes on the screen', () => {});
 
   it('sould display message when there is no notes found', () => {
     notesService.createNoteState$ = of(null);
@@ -70,14 +72,17 @@ fdescribe('NotesListComponent', () => {
     expect(notes.length).toBe(0, 'notes length must be 0 in this case');
   });
 
-  xit('should remove single note when delete is emitted', () => {
+  it('should remove single note when delete is emitted', () => {
     notesService.createNoteState$ = of(null);
     notesService.getUserNotes.and.returnValue(of(NOTES));
-    notesService.deleteNote.and.returnValue(of({ sucess: true }));
     fixture.detectChanges();
+    notesService.deleteNote.and.returnValue(of({ success: true }));
     component.onDelete(NOTES[0]);
+    toastrService.warning.withArgs('Задача успешно удалена');
+    fixture.detectChanges();
 
     const notes = element.queryAll(By.css('.notes-list__item'));
     expect(notes.length).toBe(2, 'notes length must bee smaller then before deleting');
+    expect(toastrService.warning).toHaveBeenCalledTimes(1);
   });
 });
