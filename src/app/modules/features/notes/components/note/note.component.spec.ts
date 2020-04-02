@@ -13,6 +13,7 @@ describe('NoteComponent', () => {
   let fixture: ComponentFixture<NoteComponent>;
   let element: DebugElement;
   let smartModal: any;
+  const displayNote = NOTES[1];
 
   beforeEach(async(() => {
     const smartModalSpy = jasmine.createSpyObj('NgxSmartModalService', ['getModal']);
@@ -38,7 +39,7 @@ describe('NoteComponent', () => {
   });
 
   it('shold display note', () => {
-    component.note = NOTES[1];
+    component.note = displayNote;
     fixture.detectChanges();
 
     const titleElement = element.query(By.css('.note__title'));
@@ -47,11 +48,11 @@ describe('NoteComponent', () => {
 
     expect(titleElement).toBeTruthy('note title not displaing');
     expect(titleElement.nativeElement.innerText.toLowerCase()).toContain(
-      NOTES[1].title.toLowerCase(),
+      displayNote.title.toLowerCase(),
       'note title are not displayed correctly'
     );
     expect(textElement).toBeTruthy('note text displaing');
-    expect(textElement.nativeElement.innerText).toContain(NOTES[1].text, 'note text are not displayed correctly');
+    expect(textElement.nativeElement.innerText).toContain(displayNote.text, 'note text are not displayed correctly');
 
     expect(noteDate).toBeTruthy('note date is not displayed');
     expect(noteDate.length).toBe(1, 'unexpectet number of notes');
@@ -59,7 +60,7 @@ describe('NoteComponent', () => {
   });
 
   it('should open a menu on click', () => {
-    component.note = NOTES[1];
+    component.note = displayNote;
     component.changeMenuVisibility();
     fixture.detectChanges();
 
