@@ -1,6 +1,6 @@
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { UiKitModule } from './../../../../shared/ui-kit/ui-kit.module';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 
 import { NotesHeaderComponent } from './notes-header.component';
 import { By } from '@angular/platform-browser';
@@ -34,5 +34,11 @@ describe('NotesHeaderComponent', () => {
 
   it('should open modal on button click', () => {
     const button = element.query(By.css('ui-button'));
+    button.nativeElement.click();
+    smartModal.getModal.withArgs('noteModal');
+
+    fixture.detectChanges();
+
+    expect(smartModal.getModal).toHaveBeenCalledTimes(1);
   });
 });

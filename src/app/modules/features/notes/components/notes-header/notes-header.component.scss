@@ -6,6 +6,7 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
+  background-color: $bg-color-primary;
 
   @include max-width($bp-mobile-l) {
     padding: 10px;
