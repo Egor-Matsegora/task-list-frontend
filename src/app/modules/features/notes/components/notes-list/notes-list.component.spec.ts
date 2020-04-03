@@ -1,8 +1,9 @@
+import { Note } from '@interfaces/note.interface';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NOTES } from '@tests/notes-db';
+import { getNotes } from '@tests/notes-db';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks } from '@angular/core/testing';
 
 import { of } from 'rxjs';
 
@@ -20,9 +21,8 @@ describe('NotesListComponent', () => {
   let element: DebugElement;
   let notesService: any;
   let toastrService: any;
-  const notesList = NOTES;
-  const deleteNote = NOTES[0];
-  const notesListWhenDelete = NOTES;
+  let notesList: Note[];
+  const deleteNote = getNotes(1);
 
   beforeEach(async(() => {
     const notesServiceSpy = jasmine.createSpyObj('NotesService', ['getUserNotes', 'createNoteState$', 'deleteNote']);
@@ -43,6 +43,7 @@ describe('NotesListComponent', () => {
         element = fixture.debugElement;
         toastrService = TestBed.get(ToastrService);
         notesService = TestBed.get(NotesService);
+        notesList = getNotes();
       })
       .catch(error => console.error(error));
   }));
@@ -77,9 +78,9 @@ describe('NotesListComponent', () => {
     expect(notes.length).toBe(0, 'notes length must be 0 in this case');
   });
 
-  xit('should remove single note when delete is emitted', () => {
+  it('should remove single note when delete is emitted', () => {
     notesService.createNoteState$ = of(null);
-    notesService.getUserNotes.and.returnValue(of(notesListWhenDelete));
+    notesService.getUserNotes.and.returnValue(of(notesList));
     fixture.detectChanges();
     notesService.deleteNote.and.returnValue(of({ success: true }));
     component.onDelete(deleteNote);

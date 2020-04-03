@@ -6,7 +6,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { NotesService } from './notes.service';
 
-import { NOTES } from '@tests/notes-db';
+import { getNotes } from '@tests/notes-db';
 
 let notesService: NotesService;
 let httpTestingController: HttpTestingController;
@@ -38,8 +38,9 @@ describe('NotesService', () => {
     });
 
     const request = httpTestingController.expectOne('http://localhost:5000/api/notes/');
+    const notesList = getNotes();
     expect(request.request.method).toEqual('GET');
-    request.flush(NOTES);
+    request.flush(notesList);
   });
 
   // updateNote()
@@ -59,8 +60,9 @@ describe('NotesService', () => {
     });
 
     const request = httpTestingController.expectOne('http://localhost:5000/api/notes/5e81b36d50b35125fc9ded6b');
+    const noteItem = getNotes(0);
     expect(request.request.method).toEqual('PATCH');
-    request.flush({ ...NOTES[0], ...changeNote });
+    request.flush({ ...noteItem, ...changeNote });
   });
 
   // createTask()

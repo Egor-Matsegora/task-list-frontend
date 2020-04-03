@@ -1,6 +1,6 @@
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NOTES } from '@tests/notes-db';
+import { getNotes } from '@tests/notes-db';
 import { SharedModule } from '@shared/shared.module';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
@@ -13,7 +13,7 @@ describe('NoteComponent', () => {
   let fixture: ComponentFixture<NoteComponent>;
   let element: DebugElement;
   let smartModal: any;
-  const displayNote = NOTES[1];
+  const displayNote = getNotes(1);
 
   beforeEach(async(() => {
     const smartModalSpy = jasmine.createSpyObj('NgxSmartModalService', ['getModal']);

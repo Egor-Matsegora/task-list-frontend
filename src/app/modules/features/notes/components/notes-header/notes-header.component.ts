@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
@@ -6,10 +6,8 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
   templateUrl: './notes-header.component.html',
   styleUrls: ['./notes-header.component.scss']
 })
-export class NotesHeaderComponent implements OnInit {
+export class NotesHeaderComponent {
   constructor(private smartModal: NgxSmartModalService) {}
-
-  ngOnInit() {}
 
   openNoteModal() {
     const modal = this.smartModal.getModal('noteModal');

@@ -1,4 +1,3 @@
-import { Note } from '@interfaces/note.interface';
 export const NOTES = [
   {
     title: null,
@@ -22,3 +21,8 @@ export const NOTES = [
     userId: '5e39158f712c5c2056e6e743'
   }
 ];
+
+export function getNotes(index?: number): any {
+  const notes = NOTES.concat([]);
+  return index ? notes[index] : notes;
+}
