@@ -1,3 +1,8 @@
-<button #button class="button">
-    <ng-content></ng-content>
+<button
+  #button
+  class="button"
+  [disabled]="isDisabled"
+  [type]="buttonType"
+>
+  <ng-content></ng-content>
 </button>

@@ -14,17 +14,19 @@ import { Component, OnChanges, Input, ElementRef, Renderer2, ViewChild, ChangeDe
 })
 export class UiButtonComponent implements OnChanges {
   @Input() buttonType?: string;
-  @Input() classList: string | string[];
+  @Input() classList?: string | string[];
   @Input() isDisabled?: boolean;
   @ViewChild('button', { static: true }) button: ElementRef;
 
   constructor(private renderer: Renderer2) {}
 
   ngOnChanges() {
-    this.setAttributes();
+    this.setClasses();
   }
 
-  private setAttributes() {
+  private setClasses() {
+    if (!this.classList) return;
+
     const element = this.button.nativeElement;
 
     if (typeof this.classList === 'string') {
@@ -33,12 +35,6 @@ export class UiButtonComponent implements OnChanges {
       for (const item of this.classList) {
         this.renderer.addClass(element, item);
       }
-    }
-
-    if (this.buttonType) this.renderer.setAttribute(element, 'type', this.buttonType);
-
-    if (this.isDisabled === true || this.isDisabled === false) {
-      this.renderer.setProperty(element, 'disabled', this.isDisabled);
     }
   }
 }

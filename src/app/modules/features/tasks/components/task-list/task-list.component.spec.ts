@@ -7,7 +7,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TaskListComponent } from './task-list.component';
 import { DebugElement } from '@angular/core';
 
-fdescribe('TaskListComponent', () => {
+describe('TaskListComponent', () => {
   let component: TaskListComponent;
   let fixture: ComponentFixture<TaskListComponent>;
   let element: DebugElement;
