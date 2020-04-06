@@ -3,6 +3,12 @@
 
 .task {
   padding: 5px 0;
+  background-color: $bg-color-primary;
+  @include simple-transition(background-color);
+
+  &:hover {
+    background-color: $bg-color-light;
+  }
 
   &__main-row {
     padding: 0 40px;

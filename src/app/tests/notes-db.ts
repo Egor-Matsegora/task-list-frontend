@@ -24,5 +24,5 @@ export const NOTES = [
 
 export function getNotes(index?: number): any {
   const notes = NOTES.concat([]);
-  return index ? notes[index] : notes;
+  return typeof index === 'number' ? notes[index] : notes;
 }

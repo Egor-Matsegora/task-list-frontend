@@ -53,7 +53,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   private subToAddTaskState() {
     this.subscriptions.add(
       this.tasksService.addTaskState$.subscribe(task => {
-        this.items.push(task);
+        task && this.items.push(task);
       })
     );
   }
@@ -61,6 +61,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   private subToUpdateTaskState() {
     this.subscriptions.add(
       this.tasksService.updateTaskState$.subscribe(task => {
+        if (!task) return;
         this.items = this.items.map(item => {
           const result = task._id === item._id ? task : item;
           return result;

@@ -82,3 +82,8 @@ export const TASKS = [
     user: '5e39158f712c5c2056e6e743'
   }
 ];
+
+export function getTasks(index?: number): any {
+  const tasks = TASKS.concat([]);
+  return typeof index === 'number' ? tasks[index] : tasks;
+}
