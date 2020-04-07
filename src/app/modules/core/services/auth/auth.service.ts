@@ -15,14 +15,14 @@ import { LoginRequest } from '@interfaces/login-request.interface';
 
 @Injectable()
 export class AuthService {
-  private url = 'http://localhost:5000/api/';
+  private url = '/api/';
   private token: string = null;
 
   constructor(private http: HttpClient, private router: Router, private asideState: AsideStateService) {}
 
   login(user: LoginUser): Observable<LoginRequest> {
     return this.http.post<LoginRequest>(`${this.url}login`, user).pipe(
-      map(req => {
+      map((req) => {
         if (req && req.token) {
           // console.log(req);
           localStorage.setItem('token', req.token);
@@ -32,12 +32,12 @@ export class AuthService {
         }
         return { success: req.success, message: req.message };
       }),
-      catchError(error => handleHttpError(error))
+      catchError((error) => handleHttpError(error))
     );
   }
 
   registration(user: RegistretionUser): Observable<any> {
-    return this.http.post(`${this.url}registration`, user).pipe(catchError(error => handleHttpError(error)));
+    return this.http.post(`${this.url}registration`, user).pipe(catchError((error) => handleHttpError(error)));
   }
 
   setToken(token) {
