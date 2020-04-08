@@ -1,0 +1,22 @@
+@import 'variables';
+
+.statistics {
+  height: 100%;
+  background-color: $bg-color-dark;
+
+  &__item {
+    background-color: $bg-color-primary;
+    margin-bottom: 15px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__loader {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

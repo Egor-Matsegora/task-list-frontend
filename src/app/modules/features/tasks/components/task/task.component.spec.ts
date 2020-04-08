@@ -7,7 +7,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import { getTasks } from '@app/tests/tasks-db';
 import { DebugElement } from '@angular/core';
 
-fdescribe('TaskComponent', () => {
+describe('TaskComponent', () => {
   let component: TaskComponent;
   let fixture: ComponentFixture<TaskComponent>;
   let element: DebugElement;
@@ -19,7 +19,7 @@ fdescribe('TaskComponent', () => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
       declarations: [TaskComponent],
-      providers: [{ provide: NgxSmartModalService, useValue: smartModalSpy }]
+      providers: [{ provide: NgxSmartModalService, useValue: smartModalSpy }],
     })
       .compileComponents()
       .then(() => {
