@@ -1,1 +1,24 @@
-<p>notes-stat works!</p>
+<div class="notes-stat">
+  <div class="notes-stat__header">
+    Заметки
+  </div>
+  <div class="notes-stat__info global-info">
+    <div class="global-info__item">Создано всего: <span>{{ allNotesNumber }}</span></div>
+    <div class="global-info__item">Создано сегодня: <span>{{ todayNotesNumber }}</span></div>
+  </div>
+  <div class="notes-stat__graph graph">
+    <div class="graph__buttons">
+      <button class="graph__button">
+        <i class="graph__icon">
+
+        </i>
+      </button>
+      <button class="graph__button">
+        <i class="graph__icon">
+
+        </i>
+      </button>
+    </div>
+    <div class="graph__visual"></div>
+  </div>
+</div>

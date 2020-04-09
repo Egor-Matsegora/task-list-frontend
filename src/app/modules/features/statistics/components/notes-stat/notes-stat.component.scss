@@ -1,0 +1,78 @@
+@import 'variables';
+@import 'mixins';
+
+%stat-item {
+  border-bottom: 1px solid $border-color-simple;
+  padding: 0 0.5em 0.5em;
+}
+
+.notes-stat {
+  background-color: $bg-color-primary;
+
+  &__header {
+    @extend %stat-item;
+    color: $text-color-accent;
+    font-size: 1.2em;
+    font-weight: 300;
+  }
+
+  &__info {
+    @extend %stat-item;
+    padding-top: 0.5em;
+  }
+
+  &__graph {
+    padding: 0.5em;
+  }
+}
+
+.global-info {
+  display: flex;
+  justify-content: flex-end;
+
+  &__item {
+    margin-right: 1em;
+    font-style: italic;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    span {
+      font-style: normal;
+      font-weight: 300;
+      display: inline-block;
+      padding-left: 0.5em;
+    }
+  }
+}
+
+.graph {
+  display: flex;
+  align-items: stretch;
+
+  &__buttons {
+    flex: 0 1 30px;
+    background-color: $bg-color-dark;
+    border-radius: 3px 0 0 3px;
+    overflow: hidden;
+  }
+
+  &__button {
+    display: block;
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    outline: none;
+    border: 0;
+    background-color: transparent;
+
+    &_active {
+      background-color: $bg-color-primary;
+    }
+  }
+
+  &__visual {
+    flex: auto;
+  }
+}
