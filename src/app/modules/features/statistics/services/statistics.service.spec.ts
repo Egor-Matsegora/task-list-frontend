@@ -1,8 +1,10 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 import { StatisticsService } from './statistics.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { handleHttpError } from '@helpers/handle-http-error';
 
 let httpTestingController: HttpTestingController;
 let service: StatisticsService;
@@ -45,17 +47,19 @@ describe('StatisticsService', () => {
   });
 
   it('should throw error when server returnes error', () => {
-    const handleError = jasmine.createSpy('handleHttpError');
+    let handleError = jasmine.createSpy('handleError', handleHttpError);
     spyOn(console, 'error');
-    service.getStatistics().subscribe(
-      () => fail('it should be failed'),
-      (error: HttpErrorResponse) => {
-        // expect(handleError).toHaveBeenCalled();
-        // expect(handleError).toHaveBeenCalledWith(error);
-        expect(console.error).toHaveBeenCalled();
-        expect(error.status).toBe(500);
-      }
-    );
+    service
+      .getStatistics()
+      .pipe(catchError((error) => handleError(error)))
+      .subscribe(
+        () => fail('it should be failed'),
+        (error: HttpErrorResponse) => {
+          expect(handleHttpError).toHaveBeenCalledWith(error);
+          expect(console.error).toHaveBeenCalled();
+          expect(error.status).toBe(500);
+        }
+      );
 
     const request = httpTestingController.expectOne('/api/statistics/');
     expect(request.request.method).toEqual('GET');
