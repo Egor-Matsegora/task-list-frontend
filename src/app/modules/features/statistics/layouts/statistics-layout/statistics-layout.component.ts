@@ -18,7 +18,6 @@ export class StatisticsLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getStatistics();
-    console.log(this.statistics);
   }
 
   ngOnDestroy() {
