@@ -50,9 +50,10 @@
 .graph {
   display: flex;
   align-items: stretch;
+  padding-top: 30px;
 
   &__buttons {
-    flex: 0 1 30px;
+    flex: 0 0 40px;
     background-color: $bg-color-dark;
     border-radius: 3px 0 0 3px;
     overflow: hidden;
@@ -60,19 +61,31 @@
 
   &__button {
     display: block;
-    width: 30px;
-    height: 30px;
-    padding: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
     outline: none;
     border: 0;
     background-color: transparent;
+    cursor: pointer;
+    @include simple-transition;
 
     &_active {
       background-color: $bg-color-primary;
+
+      path {
+        fill: $text-color-accent;
+      }
     }
   }
 
+  &__icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+
   &__visual {
-    flex: auto;
+    flex: 1 1 auto;
   }
 }
