@@ -11,7 +11,7 @@ import { getNotes } from '@tests/notes-db';
 let notesService: NotesService;
 let httpTestingController: HttpTestingController;
 
-xdescribe('NotesService', () => {
+describe('NotesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -37,7 +37,7 @@ xdescribe('NotesService', () => {
       expect(note.text).toEqual('это тестовая заметка без заголовка');
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/notes/');
+    const request = httpTestingController.expectOne('/api/notes/');
     const notesList = getNotes();
     expect(request.request.method).toEqual('GET');
     request.flush(notesList);
@@ -59,7 +59,7 @@ xdescribe('NotesService', () => {
       expect(note.text).toEqual('test text', 'note test not modified');
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/notes/5e81b36d50b35125fc9ded6b');
+    const request = httpTestingController.expectOne('/api/notes/5e81b36d50b35125fc9ded6b');
     const noteItem = getNotes(0);
     expect(request.request.method).toEqual('PATCH');
     request.flush({ ...noteItem, ...changeNote });
@@ -77,7 +77,7 @@ xdescribe('NotesService', () => {
       expect(note.text).toEqual(noteData.text);
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/notes/');
+    const request = httpTestingController.expectOne('/api/notes/');
     expect(request.request.method).toEqual('POST');
     request.flush(noteData);
   });
@@ -91,7 +91,7 @@ xdescribe('NotesService', () => {
       expect(response.success).toBeTruthy('no success property in response');
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/notes/5e81b36d50b35125fc9ded6b');
+    const request = httpTestingController.expectOne('/api/notes/5e81b36d50b35125fc9ded6b');
     expect(request.request.method).toEqual('DELETE');
     request.flush({ success: true });
   });
@@ -108,7 +108,7 @@ xdescribe('NotesService', () => {
       }
     );
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/notes/');
+    const request = httpTestingController.expectOne('/api/notes/');
     expect(request.request.method).toEqual('GET');
     request.flush('get all tasks failed', { status: 500, statusText: 'Internal Server Error' });
   });

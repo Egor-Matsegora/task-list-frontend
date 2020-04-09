@@ -11,7 +11,7 @@ import { TASKS } from '@tests/tasks-db';
 let tasksService: TasksService;
 let httpTestingController: HttpTestingController;
 
-xdescribe('TasksService', () => {
+describe('TasksService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -37,7 +37,7 @@ xdescribe('TasksService', () => {
       expect(task.tytle).toEqual('добавить попапы везде где можно');
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/tasks/');
+    const request = httpTestingController.expectOne('/api/tasks/');
     expect(request.request.method).toEqual('GET');
     request.flush(TASKS);
   });
@@ -56,7 +56,7 @@ xdescribe('TasksService', () => {
       expect(task.description).toEqual('test description', 'task description not modified');
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/tasks/5e7484ac8bb00c23073935ee');
+    const request = httpTestingController.expectOne('/api/tasks/5e7484ac8bb00c23073935ee');
     expect(request.request.method).toEqual('PATCH');
     request.flush({ ...TASKS[0], ...changeTask });
   });
@@ -73,7 +73,7 @@ xdescribe('TasksService', () => {
       expect(task.tytle).toEqual(taskData.tytle);
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/tasks/');
+    const request = httpTestingController.expectOne('/api/tasks/');
     expect(request.request.method).toEqual('POST');
     request.flush(taskData);
   });
@@ -89,7 +89,7 @@ xdescribe('TasksService', () => {
       expect(response.success).toBeTruthy('no success property in response');
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/tasks/5e7484ac8bb00c23073935ee');
+    const request = httpTestingController.expectOne('/api/tasks/5e7484ac8bb00c23073935ee');
     expect(request.request.method).toEqual('DELETE');
     request.flush({ success: true });
   });
@@ -106,7 +106,7 @@ xdescribe('TasksService', () => {
       }
     );
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/tasks/');
+    const request = httpTestingController.expectOne('/api/tasks/');
     expect(request.request.method).toEqual('GET');
     request.flush('get all tasks failed', { status: 500, statusText: 'Internal Server Error' });
   });

@@ -11,7 +11,7 @@ let asideStateSpy: any;
 let httpTestingController: HttpTestingController;
 let router: any;
 
-xdescribe('AuthService', () => {
+describe('AuthService', () => {
   beforeEach(() => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     asideStateSpy = jasmine.createSpyObj('AsideStateService', ['setDefaultState', 'removeAsideStorageState']);
@@ -64,7 +64,7 @@ xdescribe('AuthService', () => {
       expect(response.user.email).toEqual(testUser.email);
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/login');
+    const request = httpTestingController.expectOne('/api/login');
     expect(request.request.method).toEqual('POST');
     request.flush(userResponseData);
   });
@@ -98,7 +98,7 @@ xdescribe('AuthService', () => {
       }
     );
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/login');
+    const request = httpTestingController.expectOne('/api/login');
     expect(request.request.method).toEqual('POST');
     request.flush(wrongUserResponseData, { status: 401, statusText: 'Unaftorized' });
   });
@@ -117,7 +117,7 @@ xdescribe('AuthService', () => {
       expect(response.success).toBeTruthy();
     });
 
-    const request = httpTestingController.expectOne('http://localhost:5000/api/registration');
+    const request = httpTestingController.expectOne('/api/registration');
     expect(request.request.method).toEqual('POST');
     request.flush({ success: true });
   });
