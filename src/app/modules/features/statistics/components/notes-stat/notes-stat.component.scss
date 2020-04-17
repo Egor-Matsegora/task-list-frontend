@@ -70,6 +70,10 @@
     cursor: pointer;
     @include simple-transition;
 
+    &:first-child {
+      margin-top: 10px;
+    }
+
     &_active {
       background-color: $bg-color-primary;
 
