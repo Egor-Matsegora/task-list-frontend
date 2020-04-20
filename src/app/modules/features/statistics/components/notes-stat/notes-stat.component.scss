@@ -59,6 +59,10 @@
     overflow: hidden;
   }
 
+  &__select {
+    visibility: hidden;
+  }
+
   &__button {
     display: block;
     width: 40px;

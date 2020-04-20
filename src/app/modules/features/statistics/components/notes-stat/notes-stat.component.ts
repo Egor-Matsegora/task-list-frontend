@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { NotesStatistics } from '@app/interfaces/statistics.interface';
 
 import * as moment from 'moment';
@@ -15,6 +16,9 @@ export class NotesStatComponent implements OnInit, AfterViewInit {
   @Input() statistic: NotesStatistics;
   allNotesNumber: number = 0;
   todayNotesNumber: number = 0;
+  type$: BehaviorSubject<string> = new BehaviorSubject('line');
+  type: string = 'line';
+  chart: Chart;
 
   @ViewChild('graph', { static: true }) graphRef: ElementRef;
 
@@ -25,7 +29,10 @@ export class NotesStatComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.paintGraph();
+    this.type$.subscribe((val) => {
+      this.type = val;
+      this.paintGraph(val);
+    });
   }
 
   private setNotesNumber() {
@@ -36,15 +43,17 @@ export class NotesStatComponent implements OnInit, AfterViewInit {
     });
   }
 
-  paintGraph() {
+  paintGraph(type) {
+    this.chart && this.chart.destroy();
     const config = {
       label: 'Заметки',
       color: '#22b9ff',
+      type,
       labels: this.statistic.notesStat.map((item) => item.date),
       data: this.statistic.notesStat.map((item) => item.notesNumber),
     };
     const ctx = this.graphRef.nativeElement.getContext('2d');
 
-    new Chart(ctx, chartHelper(config));
+    this.chart = new Chart(ctx, chartHelper(config));
   }
 }

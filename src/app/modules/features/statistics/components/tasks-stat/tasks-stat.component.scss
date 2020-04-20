@@ -1,1 +1,99 @@
+@import 'variables';
+@import 'mixins';
 
+%stat-item {
+  border-bottom: 1px solid $border-color-simple;
+  padding: 0 0.5em 0.5em;
+}
+
+.notes-stat {
+  background-color: $bg-color-primary;
+
+  &__header {
+    @extend %stat-item;
+    color: $text-color-accent;
+    font-size: 1.2em;
+    font-weight: 300;
+  }
+
+  &__info {
+    @extend %stat-item;
+    padding-top: 0.5em;
+  }
+
+  &__graph {
+    padding: 0.5em;
+  }
+}
+
+.global-info {
+  display: flex;
+  justify-content: flex-end;
+
+  &__item {
+    margin-right: 1em;
+    font-style: italic;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    span {
+      font-style: normal;
+      font-weight: 300;
+      display: inline-block;
+      padding-left: 0.5em;
+    }
+  }
+}
+
+.graph {
+  display: flex;
+  align-items: stretch;
+  padding-top: 30px;
+
+  &__buttons {
+    flex: 0 0 40px;
+    background-color: $bg-color-dark;
+    border-radius: 3px 0 0 3px;
+    overflow: hidden;
+  }
+
+  &__select {
+    visibility: hidden;
+  }
+
+  &__button {
+    display: block;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    outline: none;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    @include simple-transition;
+
+    &:first-child {
+      margin-top: 10px;
+    }
+
+    &_active {
+      background-color: $bg-color-primary;
+
+      path {
+        fill: $text-color-accent;
+      }
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+  }
+
+  &__visual {
+    flex: 1 1 auto;
+  }
+}

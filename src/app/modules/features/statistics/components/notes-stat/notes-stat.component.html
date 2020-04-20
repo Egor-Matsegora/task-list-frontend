@@ -8,7 +8,11 @@
   </div>
   <div class="notes-stat__graph graph">
     <div class="graph__buttons">
-      <button class="graph__button graph__button_active">
+      <button
+        class="graph__button"
+        [ngClass]="{'graph__button_active': type === 'line'}"
+        (click)="type$.next('line')"
+      >
         <i class="graph__icon">
           <svg viewBox="0 0 512.001 512.001">
             <g>
@@ -19,7 +23,11 @@
           </svg>
         </i>
       </button>
-      <button class="graph__button">
+      <button
+        class="graph__button"
+        [ngClass]="{'graph__button_active': type === 'bar'}"
+        (click)="type$.next('bar')"
+      >
         <i class="graph__icon">
           <svg viewBox="0 0 512 512">
             <g>
