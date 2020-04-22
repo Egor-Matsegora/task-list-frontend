@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs';
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
-import { NotesStatistics } from '@app/interfaces/statistics.interface';
+import { NotesStatistics, TasksStatistics } from '@app/interfaces/statistics.interface';
 
 import * as moment from 'moment';
 import { Chart } from 'chart.js';
@@ -13,7 +13,7 @@ import { chartHelper } from './../../helpers/chart.helper';
   styleUrls: ['./tasks-stat.component.scss'],
 })
 export class TasksStatComponent implements OnInit, AfterViewInit {
-  @Input() statistic;
+  @Input() statistic: TasksStatistics;
   allTasksNumber: number = 0;
   allDoneTasksNumber: number = 0;
   todayTasksNumber: number = 0;
