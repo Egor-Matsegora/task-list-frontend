@@ -47,15 +47,38 @@ export class TasksStatComponent implements OnInit, AfterViewInit {
 
   paintGraph(type) {
     this.chart && this.chart.destroy();
-    const config = {
-      label: 'Заметки',
-      color: '#22b9ff',
-      type,
-      labels: this.statistic.notesStat.map((item) => item.date),
-      data: this.statistic.notesStat.map((item) => item.tasksNumber),
-    };
     const ctx = this.graphRef.nativeElement.getContext('2d');
 
-    this.chart = new Chart(ctx, chartHelper(config));
+    this.chart = new Chart(ctx, {
+      type: type || 'line',
+      gridLines: {
+        drawOnChartArea: false,
+      },
+      options: {
+        responsive: false,
+        padding: 10,
+      },
+      data: {
+        labels: this.statistic.tasksStat.map((item) => item.date),
+        datasets: [
+          {
+            label: 'Активные задачи',
+            data: this.statistic.tasksStat.map((item) => item.tasksNumber),
+            borderColor: '#22b9ff',
+            backgroundColor: '#22b9ff',
+            steppedLine: false,
+            fill: false,
+          },
+          {
+            label: 'Выполненные задачи',
+            data: this.statistic.tasksStat.map((item) => item.doneTasksNumber),
+            borderColor: '#10b759',
+            backgroundColor: '#10b759',
+            steppedLine: false,
+            fill: false,
+          },
+        ],
+      },
+    });
   }
 }
