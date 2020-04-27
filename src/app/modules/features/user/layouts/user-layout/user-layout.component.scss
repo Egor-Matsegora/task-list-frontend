@@ -1,0 +1,20 @@
+@import 'mixins';
+@import 'variables';
+
+.user {
+  height: 100%;
+  overflow-y: auto;
+  background-color: $bg-color-primary;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  &__info {
+    flex: 0 1 200px;
+  }
+
+  &__form {
+    flex: 4 1 auto;
+  }
+}

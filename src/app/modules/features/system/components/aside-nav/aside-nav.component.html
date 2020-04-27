@@ -5,13 +5,13 @@
 
   <div class="aside__user user">
     <a class="user__avatar" routerLink="user">
-      <!-- <img class="user__avatar-image" src="" alt="" *ngIf="false"> -->
+      <img class="user__avatar-image" [src]="user?.imageUrl" alt="avatar" *ngIf="user?.imageUrl">
     </a>
     <div class="user__info user__info_name">
-      vasilii pupkin
+      {{ user?.firstName }} {{ user?.lastName }}
     </div>
     <div class="user__info user__info_email">
-      vasya@example.com
+      {{ user?.email }}
     </div>
     <div class="user__buttons">
       <a class="user__button" (click)="onExit()" [routerLink]="['/']">

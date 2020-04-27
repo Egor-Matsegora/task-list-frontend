@@ -1,0 +1,11 @@
+<div class="user-info">
+  <div class="user-info__avatar">
+    <img class="user-info__avatar-image" [src]="user.imageUrl" alt="avatar" *ngIf="user?.imageUrl">
+  </div>
+  <div class="user-info__name">
+    {{ user?.firstName }} {{ user?.lastName }}
+  </div>
+  <div class="user-info__email">
+    {{ user?.email }}
+  </div>
+</div>

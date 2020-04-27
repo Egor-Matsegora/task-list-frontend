@@ -48,12 +48,27 @@
     background-size: cover;
     cursor: pointer;
     @include simple-transition;
+
+    @include max-width($bp-mobile-l) {
+      width: 30px;
+      height: 30px;
+      margin-right: -10px;
+    }
+  }
+
+  &__avatar-image {
+    width: 100%;
+    height: auto;
   }
 
   &__info {
     color: $text-color-primary;
     opacity: 0.7;
     overflow: hidden;
+
+    @include max-width($bp-mobile-l) {
+      display: none;
+    }
   }
 
   &__info_name {
@@ -70,6 +85,10 @@
     margin-top: 5px;
     display: flex;
     justify-content: space-around;
+
+    @include max-width($bp-mobile-l) {
+      display: none;
+    }
   }
 
   &__button {

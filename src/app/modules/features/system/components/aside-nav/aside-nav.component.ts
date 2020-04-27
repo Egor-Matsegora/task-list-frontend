@@ -1,8 +1,11 @@
-import { AuthService } from '@core/services/auth/auth.service';
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+// services
+import { AuthService } from '@core/services/auth/auth.service';
 import { UserService } from '@features/user/services/user.service';
+// interfaces
+import { User } from '@interfaces/user.interface';
 
 @Component({
   selector: 'aside-nav',
@@ -12,6 +15,7 @@ import { UserService } from '@features/user/services/user.service';
 export class AsideNavComponent implements OnInit {
   asideState: boolean;
   subscriptions: Subscription = new Subscription();
+  user: User;
 
   constructor(
     private asideService: AsideStateService,
@@ -21,6 +25,7 @@ export class AsideNavComponent implements OnInit {
 
   ngOnInit() {
     this.subToAsideState();
+    this.subToUserInfo();
   }
 
   private subToAsideState() {
@@ -29,6 +34,10 @@ export class AsideNavComponent implements OnInit {
         this.asideState = state;
       })
     );
+  }
+
+  private subToUserInfo() {
+    this.subscriptions.add(this.userService.getUserInfo().subscribe((user) => (this.user = user)));
   }
 
   onExit() {

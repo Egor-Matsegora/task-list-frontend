@@ -1,0 +1,53 @@
+<form class="user-form">
+
+  <div class="user-form__row">
+    <div class="user-form__text-row">
+      <div class="user-form__text-label">Имя:</div>
+      <div class="user-form__text">{{ user?.firstName }}</div>
+      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
+    </div>
+
+    <div class="user-form__control"></div>
+  </div>
+
+  <div class="user-form__row">
+    <div class="user-form__text-row">
+      <div class="user-form__text-label">Фамилия:</div>
+      <div class="user-form__text">{{ user?.lastName }}</div>
+      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
+    </div>
+
+    <div class="user-form__control"></div>
+  </div>
+
+  <div class="user-form__row">
+    <div class="user-form__text-row">
+      <div class="user-form__text-label">e-mail:</div>
+      <div class="user-form__text">{{ user?.email }}</div>
+      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
+    </div>
+
+    <div class="user-form__control"></div>
+    <div class="user-form__control"></div>
+  </div>
+
+  <div class="user-form__row">
+    <div class="user-form__text-row">
+      <div class="user-form__text-label">Пароль:</div>
+      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
+    </div>
+
+    <div class="user-form__control"></div>
+    <div class="user-form__control"></div>
+  </div>
+
+  <div class="user-form__button">
+    <ui-button
+      [classList]="'button_submit'"
+      [buttonType]="'submit'"
+      [isDisabled]="!modified"
+    >
+      Cохранить изменения
+    </ui-button>
+  </div>
+</form>
