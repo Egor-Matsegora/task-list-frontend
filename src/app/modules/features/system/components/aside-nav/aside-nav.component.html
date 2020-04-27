@@ -4,8 +4,8 @@
 >
 
   <div class="aside__user user">
-    <a class="user__avatar">
-      <img class="user__avatar-image" src="" alt="" *ngIf="false">
+    <a class="user__avatar" routerLink="user">
+      <!-- <img class="user__avatar-image" src="" alt="" *ngIf="false"> -->
     </a>
     <div class="user__info user__info_name">
       vasilii pupkin
@@ -17,7 +17,7 @@
       <a class="user__button" (click)="onExit()" [routerLink]="['/']">
         выйти
       </a>
-      <a class="user__button">
+      <a class="user__button" routerLink="user">
         изменить
       </a>
     </div>

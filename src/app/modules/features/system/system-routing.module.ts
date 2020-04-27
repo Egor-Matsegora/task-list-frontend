@@ -9,19 +9,23 @@ const routes: Routes = [
     path: '',
     component: SystemLayoutComponent,
     children: [
-      { path: 'notes', loadChildren: () => import('../notes/notes.module').then(m => m.NotesModule) },
-      { path: 'tasks', loadChildren: () => import('../tasks/tasks.module').then(m => m.TasksModule) },
-      { path: 'scheduler', loadChildren: () => import('../scheduler/scheduler.module').then(m => m.SchedulerModule) },
+      { path: 'notes', loadChildren: () => import('../notes/notes.module').then((m) => m.NotesModule) },
+      { path: 'tasks', loadChildren: () => import('../tasks/tasks.module').then((m) => m.TasksModule) },
+      { path: 'scheduler', loadChildren: () => import('../scheduler/scheduler.module').then((m) => m.SchedulerModule) },
       {
         path: 'statistics',
-        loadChildren: () => import('../statistics/statistics.module').then(m => m.StatisticsModule)
-      }
-    ]
-  }
+        loadChildren: () => import('../statistics/statistics.module').then((m) => m.StatisticsModule),
+      },
+      {
+        path: 'user',
+        loadChildren: () => import('../user/user.module').then((m) => m.UserModule),
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class SystemRoutingModule {}
