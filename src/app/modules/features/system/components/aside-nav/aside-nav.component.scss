@@ -15,6 +15,10 @@
     margin-left: -10px;
   }
 
+  &__user {
+    padding: 15px 0;
+  }
+
   &__navigation {
     display: block;
   }
@@ -28,6 +32,79 @@
   }
 }
 
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__avatar {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: 3px solid $border-color-simple;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    background: url('/assets/images/user.svg') no-repeat;
+    background-size: cover;
+    cursor: pointer;
+    @include simple-transition;
+  }
+
+  &__info {
+    color: $text-color-primary;
+    opacity: 0.7;
+    overflow: hidden;
+  }
+
+  &__info_name {
+    text-transform: capitalize;
+  }
+
+  &__info_email {
+    font-size: 0.7em;
+  }
+
+  &__buttons {
+    overflow: hidden;
+    align-self: stretch;
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__button {
+    cursor: pointer;
+    opacity: 0.8;
+    font-size: 0.8;
+    border-bottom: 1px dotted transparent;
+    text-decoration: none;
+    color: $text-color-primary;
+    @include simple-transition(opacity);
+
+    &:focus,
+    &:active {
+      color: $text-color-primary;
+    }
+
+    &:hover {
+      opacity: 1;
+      display: inline-block;
+      border-bottom: 1px dotted $text-color-primary;
+    }
+  }
+}
+
+.aside_hide .user__info,
+.aside_hide .user__buttons {
+  display: none;
+}
+
+.aside_hide .user__avatar {
+  height: 30px;
+  width: 30px;
+  margin: 0;
+}
+
 .navigation {
   &__item {
     display: block;
@@ -36,7 +113,6 @@
     border-bottom: 1px solid $border-color-simple;
     padding-left: 70px;
     position: relative;
-    @include simple-transition;
 
     &:hover {
       background-color: $bg-color-light;
