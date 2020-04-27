@@ -1,7 +1,8 @@
-import { AuthService } from './../../../../core/services/auth/auth.service';
-import { AsideStateService } from './../../../../core/services/aside-state/aside-state.service';
+import { AuthService } from '@core/services/auth/auth.service';
+import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { UserService } from '@features/user/services/user.service';
 
 @Component({
   selector: 'aside-nav',
@@ -12,7 +13,11 @@ export class AsideNavComponent implements OnInit {
   asideState: boolean;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private asideService: AsideStateService, private authService: AuthService) {}
+  constructor(
+    private asideService: AsideStateService,
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.subToAsideState();
