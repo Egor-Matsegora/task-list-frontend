@@ -1,0 +1,63 @@
+
+
+  <div class="user-form__text-row">
+    <div class="user-form__text-label">Имя:</div>
+    <div class="user-form__text">{{ user?.firstName }}</div>
+  </div>
+
+  <div class="user-form__text-row">
+    <div class="user-form__text-label">Фамилия:</div>
+    <div class="user-form__text">{{ user?.lastName }}</div>
+    <div class="user-form__add-button" (click)="showControl($event, nameTemplate)">изменить</div>
+  </div>
+
+  <ng-container #nameContainer></ng-container>
+
+  <ng-template #nameTemplate>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="user-form__control">
+        <label
+          for="userFirstName"
+          class="user-form__label"
+        >
+          Имя:
+        </label>
+        <input
+          class="user-form__input"
+          id="userFirstName"
+          type="text"
+          formControlName="firstName"
+        >
+      </div>
+
+      <div class="user-form__control">
+        <label
+          for="userLastName"
+          class="user-form__label"
+        >
+          Фамилия:
+        </label>
+        <input
+          class="user-form__input"
+          id="userLastName"
+          type="text"
+          formControlName="lastName"
+        >
+      </div>
+
+      <div class="user-form__button">
+        <ui-button
+          [classList]="'button_submit'"
+          [buttonType]="'submit'"
+          [isDisabled]="modified && form.invalid"
+        >
+          Cохранить изменения
+        </ui-button>
+      </div>
+
+    </form>
+
+  </ng-template>
+
