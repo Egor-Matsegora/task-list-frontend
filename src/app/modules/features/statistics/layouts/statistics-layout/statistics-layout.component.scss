@@ -1,26 +1,10 @@
 @import 'variables';
+@import 'mixins';
 
 .statistics {
   height: 100%;
   background-color: $bg-color-dark;
-  overflow-x: auto;
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-button {
-    display: none;
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: $bg-color-light;
-    border-radius: 2px;
-  }
+  @include webkit-scrollbar;
 
   &__item {
     background-color: $bg-color-primary;

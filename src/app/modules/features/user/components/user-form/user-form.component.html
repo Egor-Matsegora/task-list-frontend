@@ -1,53 +1,159 @@
-<form class="user-form">
+<form class="user-form" [formGroup]="form">
 
   <div class="user-form__row">
+
     <div class="user-form__text-row">
       <div class="user-form__text-label">Имя:</div>
       <div class="user-form__text">{{ user?.firstName }}</div>
-      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
     </div>
 
-    <div class="user-form__control"></div>
-  </div>
-
-  <div class="user-form__row">
     <div class="user-form__text-row">
       <div class="user-form__text-label">Фамилия:</div>
       <div class="user-form__text">{{ user?.lastName }}</div>
-      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
+      <div class="user-form__add-button" (click)="showControl($event, 'name', nameTemplate)">изменить</div>
     </div>
 
-    <div class="user-form__control"></div>
+    <ng-container #nameContainer></ng-container>
+
+    <ng-template #nameTemplate>
+
+      <div class="user-form__control">
+        <label
+          for="userFirstName"
+          class="user-form__label"
+        >
+          Имя:
+        </label>
+        <input
+          class="user-form__input"
+          id="userFirstName"
+          type="text"
+          formControlName="firstName"
+        >
+      </div>
+
+      <div class="user-form__control">
+        <label
+          for="userLastName"
+          class="user-form__label"
+        >
+          Фамилия:
+        </label>
+        <input
+          class="user-form__input"
+          id="userLastName"
+          type="text"
+          formControlName="lastName"
+        >
+      </div>
+
+    </ng-template>
+
   </div>
 
   <div class="user-form__row">
+
     <div class="user-form__text-row">
       <div class="user-form__text-label">e-mail:</div>
       <div class="user-form__text">{{ user?.email }}</div>
-      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
+      <div class="user-form__add-button" (click)="showControl($event, 'email', emailTemplate)">изменить</div>
     </div>
 
-    <div class="user-form__control"></div>
-    <div class="user-form__control"></div>
+    <ng-container #emailContainer></ng-container>
+
+    <ng-template #emailTemplate>
+
+      <div class="user-form__control">
+        <label
+          for="userOldEmail"
+          class="user-form__label"
+        >
+          Старый email:
+        </label>
+        <input
+          class="user-form__input"
+          id="userOldEmail"
+          type="text"
+          formControlName="oldEmail"
+        >
+      </div>
+
+      <div class="user-form__control">
+        <label
+          for="userOldEmail"
+          class="user-form__label"
+        >
+          Новый email:
+        </label>
+        <input
+          class="user-form__input"
+          id="userNewEmail"
+          type="text"
+          formControlName="newEmail"
+        >
+      </div>
+
+    </ng-template>
+
   </div>
 
   <div class="user-form__row">
+
     <div class="user-form__text-row">
       <div class="user-form__text-label">Пароль:</div>
-      <div class="user-form__add-button" (click)="showControl($event)">изменить</div>
+      <div class="user-form__add-button" (click)="showControl($event, 'password', passwordTemplate)">изменить</div>
     </div>
 
-    <div class="user-form__control"></div>
-    <div class="user-form__control"></div>
+    <ng-container #passwordContainer></ng-container>
+
+    <ng-template #passwordTemplate>
+
+      <div class="user-form__control">
+        <label
+          for="userOldPassword"
+          class="user-form__label"
+        >
+          Старый пароль:
+        </label>
+        <input
+          class="user-form__input"
+          id="userOldPassword"
+          type="text"
+          formControlName="oldPassword"
+        >
+      </div>
+
+      <div class="user-form__control">
+        <label
+          for="userNewPassword"
+          class="user-form__label"
+        >
+          Новый пароль:
+        </label>
+        <input
+          class="user-form__input"
+          id="userNewPassword"
+          type="text"
+          formControlName="newPassword"
+        >
+      </div>
+
+    </ng-template>
+
   </div>
 
-  <div class="user-form__button">
-    <ui-button
-      [classList]="'button_submit'"
-      [buttonType]="'submit'"
-      [isDisabled]="!modified"
-    >
-      Cохранить изменения
-    </ui-button>
-  </div>
+  <ng-template #btnTemplate>
+
+    <div class="user-form__button">
+      <ui-button
+        [classList]="'button_submit'"
+        [buttonType]="'submit'"
+        [isDisabled]="!modified && this.form.invalid"
+      >
+        Cохранить изменения
+      </ui-button>
+    </div>
+
+  </ng-template>
+
 </form>

@@ -7,12 +7,20 @@
   flex-direction: column;
   border-left: 1px solid $border-color-simple;
 
+  &__row {
+    border-bottom: 1px solid $border-color-simple;
+  }
+
   &__text-row {
     display: flex;
     flex-wrap: nowrap;
     width: 100%;
-    height: 50px;
+    min-height: 50px;
     align-items: center;
+
+    @include max-width($bp-tablet) {
+      flex-wrap: wrap;
+    }
   }
 
   &__text-label {
@@ -30,13 +38,80 @@
   }
 
   &__add-button {
+    flex: 0 0 60px;
     margin-left: auto;
     color: $text-color-accent;
     cursor: pointer;
     border-bottom: 1px dotted $text-color-accent;
+    margin-bottom: 10px;
+    text-align: center;
   }
 
   &__button {
-    margin-top: 10px;
+    margin: 10px 0;
+  }
+
+  &__control {
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(100% - 60px);
+    margin-bottom: 10px;
+  }
+
+  &__label {
+    margin-right: 10px;
+    flex: 0 0 100px;
+  }
+
+  &__input {
+    flex: 1 0 250px;
+    background-color: transparent;
+    border: 2px solid $border-color-simple;
+    overflow: hidden;
+    padding: 0 15px;
+    height: 40px;
+    line-height: 36px;
+    display: block;
+    width: 100%;
+    outline: none;
+    color: $text-color-primary;
+    font-family: $simple-font-family;
+    font-size: 1em;
+    font-weight: 200;
+    letter-spacing: 0.3px;
+    transition: $fill-transition;
+    border-radius: $border-radius-simple;
+
+    &:hover,
+    &:focus,
+    &:active {
+      box-shadow: $box-shadow-focus;
+    }
+
+    &:focus,
+    &:active {
+      border-color: $bg-color-accent;
+    }
+
+    &:disabled,
+    &:disabled:active,
+    &:disabled:focus,
+    &:disabled:hover {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    &:disabled:hover {
+      box-shadow: none;
+    }
+
+    &:disabled:active {
+      border-color: $border-color-simple;
+    }
+
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 30px $bg-color-primary inset !important;
+      -webkit-text-fill-color: $text-color-primary !important;
+    }
   }
 }

@@ -8,7 +8,10 @@
   padding: 15px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
+
+  @include webkit-scrollbar;
 
   &__info {
     flex: 0 1 200px;
