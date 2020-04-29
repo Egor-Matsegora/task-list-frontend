@@ -1,5 +1,14 @@
-import { Component, OnInit, Input, ViewChild, ViewContainerRef, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  Input,
+  ViewChild,
+  ViewContainerRef,
+  TemplateRef,
+  ViewEncapsulation,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { User } from '@interfaces/user.interface';
 
 @Component({
@@ -10,16 +19,18 @@ import { User } from '@interfaces/user.interface';
 })
 export class UserFormComponent implements OnInit {
   @Input() user: User;
+  @Output() changeUser: EventEmitter<User> = new EventEmitter();
+  @Output() changeUserPassword: EventEmitter<string> = new EventEmitter();
 
   constructor() {}
 
   ngOnInit() {}
 
   onChangeUser(user: User) {
-    console.log(user);
+    this.changeUser.emit(user);
   }
 
   onChangeUserPassword(password: string) {
-    console.log(password);
+    this.changeUserPassword.emit(password);
   }
 }

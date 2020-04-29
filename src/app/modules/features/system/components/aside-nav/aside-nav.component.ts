@@ -26,6 +26,7 @@ export class AsideNavComponent implements OnInit {
   ngOnInit() {
     this.subToAsideState();
     this.subToUserInfo();
+    this.subToUserUpdateState();
   }
 
   private subToAsideState() {
@@ -38,6 +39,10 @@ export class AsideNavComponent implements OnInit {
 
   private subToUserInfo() {
     this.subscriptions.add(this.userService.getUserInfo().subscribe((user) => (this.user = user)));
+  }
+
+  private subToUserUpdateState() {
+    this.userService.userUpdateState$.subscribe((user) => (this.user = { ...this.user, ...user }));
   }
 
   onExit() {

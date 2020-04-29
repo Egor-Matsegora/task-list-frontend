@@ -3,6 +3,10 @@
     <user-info [user]="user"></user-info>
   </div>
   <div class="user__form">
-    <user-form [user]="user"></user-form>
+    <user-form
+      [user]="user"
+      (changeUser)="onChangeUser($event)"
+      (changeUserPassword)="onChangeUserPassword($event)"
+      ></user-form>
   </div>
 </div>
