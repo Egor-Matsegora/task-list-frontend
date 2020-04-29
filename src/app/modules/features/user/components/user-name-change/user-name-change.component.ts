@@ -43,7 +43,7 @@ export class UserNameChangeComponent implements OnInit, OnChanges {
     if (!currentChange.currentValue && !this.form) return;
     this.firstName.setValidators([match(this.user.firstName), Validators.required]);
     this.firstName.updateValueAndValidity();
-    this.lastName.setValidators([match(this.user.firstName), Validators.required]);
+    this.lastName.setValidators([match(this.user.lastName), Validators.required]);
     this.lastName.updateValueAndValidity();
   }
 
@@ -66,7 +66,6 @@ export class UserNameChangeComponent implements OnInit, OnChanges {
   }
 
   showControl(event: Event, template: TemplateRef<any>) {
-    console.log(this.form);
     const button = event.target as HTMLButtonElement;
     if (button.innerText === 'изменить') {
       this.setFormControlsValues();

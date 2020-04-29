@@ -8,7 +8,7 @@ import { map, catchError, switchMap } from 'rxjs/operators';
 export class ExistingEmailValidator implements AsyncValidator {
   constructor(private http: HttpClient) {}
 
-  private url: string = 'http://localhost:5000/api/getuser';
+  private url: string = '/api/getuser';
 
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
     return timer(250).pipe(

@@ -8,7 +8,7 @@
 
 <ng-template #emailTemplate>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form>
 
     <div class="user-form__control">
       <label
@@ -21,7 +21,8 @@
         class="user-form__input"
         id="userNewEmail"
         type="text"
-        formControlName="newEmail"
+        [formControl]="email"
+        autocomplete="off"
       >
     </div>
 
@@ -29,7 +30,9 @@
       <ui-button
         [classList]="'button_submit'"
         [buttonType]="'submit'"
-        [isDisabled]="modified && form.invalid"
+        [isDisabled]="modified && email.invalid"
+        (click)="onSubmit()"
+        (keypress.enter)="onSubmit()"
       >
         Cохранить изменения
       </ui-button>
