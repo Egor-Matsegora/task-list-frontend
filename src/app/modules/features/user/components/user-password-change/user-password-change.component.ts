@@ -1,4 +1,3 @@
-import { ExistingPasswordValidator } from './../../../../../validators/existing-password.validator';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import {
   Component,
@@ -11,8 +10,9 @@ import {
   TemplateRef,
   SimpleChange,
 } from '@angular/core';
+import { ExistingPasswordValidator } from '@validators/existing-password.validator';
+import { match } from '@validators/match.validator';
 import { User } from '@interfaces/user.interface';
-import { match } from '@app/validators/match.validator';
 
 @Component({
   selector: 'user-password-change',

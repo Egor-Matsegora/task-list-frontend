@@ -10,7 +10,10 @@
 
   <form>
 
-    <div class="user-form__control">
+    <div
+      class="user-form__control"
+      [ngClass]="{'user-form__control_error': email.touched && email.invalid}"
+    >
       <label
         for="userOldEmail"
         class="user-form__label"
@@ -25,6 +28,29 @@
         autocomplete="off"
       >
     </div>
+
+    <!-- errors -->
+    <div
+      class="user-form__error"
+      *ngIf="email.invalid && email.touched && email.errors.required"
+    >
+      поле не должно быть пустым
+    </div>
+    
+    <div
+      class="user-form__error"
+      *ngIf="email.invalid && email.touched && email.errors.email"
+    >
+      поле должно содержать e-mail
+    </div>
+
+    <div
+      class="user-form__error"
+      *ngIf="email.invalid && email.touched && email.errors.match"
+    >
+      e-mail не должен совпадать
+    </div>
+    <!-- end of errors -->
 
     <div class="user-form__button">
       <ui-button

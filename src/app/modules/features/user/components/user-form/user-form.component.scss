@@ -66,6 +66,15 @@
     }
   }
 
+  &__control_error {
+    color: $error-color;
+
+    .user-form__input {
+      border-color: $error-color;
+      box-shadow: $box-shadow-error;
+    }
+  }
+
   &__label {
     margin-right: 10px;
     flex: 0 0 100px;
@@ -126,5 +135,13 @@
       -webkit-box-shadow: 0 0 0 30px $bg-color-primary inset !important;
       -webkit-text-fill-color: $text-color-primary !important;
     }
+  }
+
+  &__error {
+    color: $error-color;
+    font-size: 0.8em;
+    text-align: center;
+    max-width: 350px;
+    margin-bottom: 5px;
   }
 }

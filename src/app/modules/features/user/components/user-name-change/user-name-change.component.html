@@ -17,7 +17,10 @@
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-      <div class="user-form__control">
+      <div
+        class="user-form__control"
+        [ngClass]="{'user-form__control_error': firstName.invalid && firstName.touched}"
+      >
         <label
           for="userFirstName"
           class="user-form__label"
@@ -33,7 +36,26 @@
         >
       </div>
 
-      <div class="user-form__control">
+      <!-- errors -->
+      <div
+        class="user-form__error"
+        *ngIf="firstName.invalid && firstName.touched && firstName.errors.required"
+      >
+        поле не должно быть пустым
+      </div>
+
+      <div
+        class="user-form__error"
+        *ngIf="firstName.invalid && firstName.touched && firstName.errors.match"
+      >
+        значения не должны совпадать
+      </div>
+      <!-- end of errors -->
+
+      <div
+        class="user-form__control"
+        [ngClass]="{'user-form__control_error': lastName.invalid && lastName.touched}"
+      >
         <label
           for="userLastName"
           class="user-form__label"
@@ -48,6 +70,22 @@
           autocomplete="off"
         >
       </div>
+
+      <!-- errors -->
+      <div
+        class="user-form__error"
+        *ngIf="firstName.invalid && lastName.touched && lastName.errors.required"
+      >
+        поле не должно быть пустым
+      </div>
+
+      <div
+        class="user-form__error"
+        *ngIf="firstName.invalid && lastName.touched && lastName.errors.match"
+      >
+        значения не должны совпадать
+      </div>
+      <!-- end pf errors -->
 
       <div class="user-form__button">
         <ui-button
