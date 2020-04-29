@@ -9,9 +9,18 @@ import { UserInfoComponent } from './components/user-info/user-info.component';
 import { UserPasswordChangeComponent } from './components/user-password-change/user-password-change.component';
 import { UserNameChangeComponent } from './components/user-name-change/user-name-change.component';
 import { UserEmailChangeComponent } from './components/user-email-change/user-email-change.component';
+import { UserImageChangeComponent } from './components/user-image-change/user-image-change.component';
 
 @NgModule({
-  declarations: [UserLayoutComponent, UserFormComponent, UserInfoComponent, UserPasswordChangeComponent, UserNameChangeComponent, UserEmailChangeComponent],
+  declarations: [
+    UserLayoutComponent,
+    UserFormComponent,
+    UserInfoComponent,
+    UserPasswordChangeComponent,
+    UserNameChangeComponent,
+    UserEmailChangeComponent,
+    UserImageChangeComponent,
+  ],
   imports: [CommonModule, UserRoutingModule, SharedModule],
 })
 export class UserModule {}
