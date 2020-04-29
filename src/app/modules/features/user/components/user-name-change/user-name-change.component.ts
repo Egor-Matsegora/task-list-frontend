@@ -87,6 +87,5 @@ export class UserNameChangeComponent implements OnInit, OnChanges {
     this.changeUserName.emit(newUser);
     newUser = null;
     this.form.reset();
-    this.nameContainer.clear();
   }
 }

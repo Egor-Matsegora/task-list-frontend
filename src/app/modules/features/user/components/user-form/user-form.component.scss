@@ -7,6 +7,11 @@
   flex-direction: column;
   border-left: 1px solid $border-color-simple;
 
+  @include max-width($bp-tablet) {
+    padding: 0;
+    border: 0;
+  }
+
   &__row {
     border-bottom: 1px solid $border-color-simple;
   }
@@ -26,8 +31,7 @@
   &__text-label {
     font-style: italic;
     font-size: 0.9em;
-    margin-right: 10px;
-    flex: 0 0 70px;
+    flex: 0 0 100px;
   }
 
   &__text {
@@ -54,7 +58,7 @@
   &__control {
     display: flex;
     flex-wrap: wrap;
-    width: calc(100% - 60px);
+    max-width: 350px;
     margin-bottom: 10px;
 
     @include max-width($bp-tablet) {
@@ -86,6 +90,10 @@
     letter-spacing: 0.3px;
     transition: $fill-transition;
     border-radius: $border-radius-simple;
+
+    @include max-width($bp-tablet) {
+      flex-basis: 200px;
+    }
 
     &:hover,
     &:focus,
