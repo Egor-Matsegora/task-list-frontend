@@ -74,14 +74,14 @@
       <!-- errors -->
       <div
         class="user-form__error"
-        *ngIf="firstName.invalid && lastName.touched && lastName.errors.required"
+        *ngIf="lastName.invalid && lastName.touched && lastName.errors.required"
       >
         поле не должно быть пустым
       </div>
 
       <div
         class="user-form__error"
-        *ngIf="firstName.invalid && lastName.touched && lastName.errors.match"
+        *ngIf="lastName.invalid && lastName.touched && lastName.errors.match"
       >
         значения не должны совпадать
       </div>
