@@ -1,3 +1,4 @@
+import { NgxSmartModalService } from 'ngx-smart-modal';
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -20,7 +21,8 @@ export class AsideNavComponent implements OnInit {
   constructor(
     private asideService: AsideStateService,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private smartModal: NgxSmartModalService
   ) {}
 
   ngOnInit() {
@@ -46,6 +48,11 @@ export class AsideNavComponent implements OnInit {
   }
 
   onExit() {
-    this.authService.logout();
+    const authModal = this.smartModal.getModal('authModal');
+    if (authModal) {
+      authModal.open();
+    } else {
+      this.authService.logout();
+    }
   }
 }
