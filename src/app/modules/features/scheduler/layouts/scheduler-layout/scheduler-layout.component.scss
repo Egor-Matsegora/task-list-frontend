@@ -1,0 +1,48 @@
+@import 'variables';
+
+.sheduler {
+  height: 100%;
+  background-color: $bg-color-primary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__in-dev {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__image {
+    width: 250px;
+    margin-bottom: 40px;
+    opacity: 0.8;
+  }
+
+  &__text {
+    font-family: $primary-font-family;
+    font-size: 2em;
+    font-weight: 600;
+  }
+}
+
+.gear {
+  animation: turning 5s linear infinite;
+  transform-origin: 67.1% 28.2%;
+  fill: $success-color;
+
+  &-revers {
+    animation: turning 5s linear infinite reverse;
+    transform-origin: 34.4% 18.7%;
+    fill: $info-color;
+  }
+}
+
+@keyframes turning {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
