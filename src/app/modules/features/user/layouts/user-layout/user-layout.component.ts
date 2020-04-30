@@ -27,8 +27,11 @@ export class UserLayoutComponent implements OnInit {
     this.subscriptions.add(
       this.userService.updateUser(user).subscribe(
         (user) => {
-          this.user = user;
-          this.userService.dispatchUserUpdateState(user);
+          this.user = {
+            ...this.user,
+            ...user,
+          };
+          this.userService.dispatchUserUpdateState(this.user);
           this.toastr.success('Данные успешно обновлены');
         },
         (error) => this.toastr.error('Ошибка обновления данных')
@@ -46,6 +49,20 @@ export class UserLayoutComponent implements OnInit {
         },
         (error) => this.toastr.error('Ошибка обновления данных')
       )
+    );
+  }
+
+  onChangeUserImage(image: File) {
+    this.subscriptions.add(
+      this.userService.updateImage(image).subscribe((user) => {
+        if (!user) return;
+        this.user = {
+          ...this.user,
+          ...user,
+        };
+        this.userService.dispatchUserUpdateState(this.user);
+        this.toastr.success('Данные успешно обновлены');
+      })
     );
   }
 }

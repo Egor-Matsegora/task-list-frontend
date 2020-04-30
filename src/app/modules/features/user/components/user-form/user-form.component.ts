@@ -1,14 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ViewChild,
-  ViewContainerRef,
-  TemplateRef,
-  ViewEncapsulation,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { User } from '@interfaces/user.interface';
 
 @Component({
@@ -21,6 +11,7 @@ export class UserFormComponent implements OnInit {
   @Input() user: User;
   @Output() changeUser: EventEmitter<User> = new EventEmitter();
   @Output() changeUserPassword: EventEmitter<string> = new EventEmitter();
+  @Output() changeUserImage: EventEmitter<File> = new EventEmitter();
 
   constructor() {}
 
@@ -32,5 +23,9 @@ export class UserFormComponent implements OnInit {
 
   onChangeUserPassword(password: string) {
     this.changeUserPassword.emit(password);
+  }
+
+  onChangeUserImage(image: File) {
+    this.changeUserImage.emit(image);
   }
 }

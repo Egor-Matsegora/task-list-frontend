@@ -32,4 +32,10 @@ export class UserService {
       .patch(`${this.url}/updatepassword`, { password })
       .pipe(catchError((error) => handleHttpError(error)));
   }
+
+  updateImage(image: File): Observable<User> {
+    const data = new FormData();
+    data.append('image', image, image.name);
+    return this.http.patch<User>(this.url + '/updateuserimage', data);
+  }
 }

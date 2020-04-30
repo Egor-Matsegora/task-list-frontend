@@ -1,0 +1,43 @@
+<div class="user-form__text-row">
+  <div class="user-form__text-label">Изображение:</div>
+  <div class="user-form__add-button" (click)="showControl($event, imageTemplate)">изменить</div>
+</div>
+
+<ng-container #imageContainer></ng-container>
+
+<ng-template #imageTemplate>
+
+  <form>
+
+    <div class="user-form__control">
+      <label
+        for="userImage"
+        class="user-form__label"
+      >
+        Изображение:
+      </label>
+      <input
+        class="user-form__input_image"
+        id="userImage"
+        type="file"
+        autocomplete="off"
+        (change)="onFileChange()"
+        #fileInput
+      >
+    </div>
+
+    <div class="user-form__button">
+      <ui-button
+        [classList]="'button_submit'"
+        [buttonType]="'submit'"
+        (click)="onSubmit()"
+        (keypress.enter)="onSubmit()"
+      >
+        Cохранить изменения
+      </ui-button>
+    </div>
+
+  </form>
+
+</ng-template>
+
