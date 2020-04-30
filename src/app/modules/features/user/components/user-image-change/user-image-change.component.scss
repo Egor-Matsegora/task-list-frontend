@@ -1,0 +1,63 @@
+@import 'variables';
+
+.image-form {
+  &__control {
+    max-width: none;
+  }
+
+  &__input {
+    display: none;
+  }
+
+  &__image-wrapper {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__image-info {
+    font-size: 0.9em;
+    text-align: center;
+    opacity: 0.9;
+    margin-bottom: 15px;
+    padding-top: 5px;
+  }
+
+  &__image {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    flex: 0 0 150px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    cursor: pointer;
+
+    &:after {
+      content: '+';
+      display: block;
+      width: 100%;
+      height: 100%;
+      line-height: 150px;
+      background-color: transparent;
+      text-align: center;
+      font-size: 5em;
+      color: $text-color-primary;
+      opacity: 0.6;
+    }
+
+    &:hover:after {
+      opacity: 0.8;
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &__image-button {
+    color: $text-color-accent;
+    cursor: pointer;
+    border-bottom: 1px dotted $text-color-accent;
+    margin-bottom: 15px;
+  }
+}

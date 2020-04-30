@@ -7,9 +7,9 @@
 
 <ng-template #imageTemplate>
 
-  <form>
+  <form class="image-form">
 
-    <div class="user-form__control">
+    <div class="user-form__control image-form__control">
       <label
         for="userImage"
         class="user-form__label"
@@ -17,13 +17,26 @@
         Изображение:
       </label>
       <input
-        class="user-form__input_image"
+        class="image-form__input"
         id="userImage"
         type="file"
         autocomplete="off"
         (change)="onFileChange()"
         #fileInput
       >
+      <div class="image-form__image-wrapper">
+        <div class="image-form__image-info">
+          загрузите изображение в формате png, jpeg, gif не более 2Mb
+        </div>
+        <div
+          class="image-form__image"
+          (click)="triggerInputClick()"
+          [ngStyle]="{ 'background-image': 'url(' + imageUrl + ')' }"
+        ></div>
+        <div class="image-form__image-button" (click)="triggerInputClick()">
+          Добавить изображение
+        </div>
+      </div>
     </div>
 
     <div class="user-form__button">

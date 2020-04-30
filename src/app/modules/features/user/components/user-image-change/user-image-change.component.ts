@@ -9,6 +9,9 @@ import {
   TemplateRef,
   ChangeDetectorRef,
   ElementRef,
+  OnChanges,
+  SimpleChanges,
+  SimpleChange,
 } from '@angular/core';
 import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -19,12 +22,13 @@ import { User } from '@interfaces/user.interface';
   templateUrl: './user-image-change.component.html',
   styleUrls: ['./user-image-change.component.scss'],
 })
-export class UserImageChangeComponent implements OnInit {
+export class UserImageChangeComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Output() changeUserImage: EventEmitter<File> = new EventEmitter();
   @ViewChild('imageContainer', { read: ViewContainerRef, static: false }) imageContainer: ViewContainerRef;
   @ViewChild('fileInput', { static: false }) fileInputRef: ElementRef;
   imageControl: FormControl;
+  imageUrl = '';
   modified: boolean;
   image: File;
 
@@ -32,6 +36,16 @@ export class UserImageChangeComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.setImageUrl(changes.user);
+  }
+
+  private setImageUrl(change: SimpleChange) {
+    const user: User = change.currentValue;
+    if (!user) return;
+    this.imageUrl = user.imageUrl;
   }
 
   private initForm() {
@@ -55,6 +69,7 @@ export class UserImageChangeComponent implements OnInit {
   private resetInputs() {
     this.imageControl.reset();
     this.fileInputRef.nativeElement.value = null;
+    this.imageUrl = this.user.imageUrl || '';
   }
 
   onFileChange() {
@@ -72,6 +87,7 @@ export class UserImageChangeComponent implements OnInit {
         reader.readAsDataURL(file);
 
         reader.onload = () => {
+          this.imageUrl = reader.result as string;
           this.imageControl.patchValue({
             file: reader.result,
           });
@@ -82,6 +98,10 @@ export class UserImageChangeComponent implements OnInit {
         this.toastr.warning('Неаерный тип или размер файла');
       }
     }
+  }
+
+  triggerInputClick() {
+    this.fileInputRef.nativeElement.click();
   }
 
   onSubmit() {
