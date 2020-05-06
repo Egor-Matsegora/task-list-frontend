@@ -1,3 +1,4 @@
+import { Statistics } from '@interfaces/statistics.interface';
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
 import { StatisticsService } from './../../services/statistics.service';
@@ -58,7 +59,7 @@ describe('StatisticsLayoutComponent', () => {
   });
 
   it('should display components when receiving statistics', () => {
-    const testStat = {
+    const testStat: Statistics = {
       notes: {
         notesStat: [
           { date: '30.03.2020', notesNumber: 2 },
@@ -66,7 +67,22 @@ describe('StatisticsLayoutComponent', () => {
         ],
         allNotesNumber: 3,
       },
-      tests: {},
+      tasks: {
+        tasksStat: [
+          {
+            date: '20.03.2020',
+            doneTasksNumber: 0,
+            tasksNumber: 4,
+          },
+          {
+            date: '26.03.2020',
+            doneTasksNumber: 0,
+            tasksNumber: 5,
+          },
+        ],
+        allTasksNumber: 0,
+        allDoneTasksNumber: 9,
+      },
     };
     statisticsService.getStatistics.and.returnValue(of(testStat));
     fixture.detectChanges();
