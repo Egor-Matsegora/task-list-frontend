@@ -1,19 +1,19 @@
-import { ExistingEmailValidator } from './../../../../../validators/existing-email.validator';
+import { ExistingEmailValidator } from '@validators/existing-email.validator';
 import { Router } from '@angular/router';
-import { RegistretionUser } from './../../../../../interfaces/registration-user.inerface';
-import { AuthService } from '../../../../core/services/auth/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@core/services/auth/auth.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { passwordMatchValidator } from 'src/app/validators/replay-password.validator';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'registration',
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.scss'],
-  providers: [ExistingEmailValidator]
+  providers: [ExistingEmailValidator],
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent implements OnInit, OnDestroy {
   formHeader: string = 'Регистрация';
   loading: boolean = false;
   form: FormGroup;
@@ -23,6 +23,7 @@ export class RegistrationComponent implements OnInit {
   password: FormControl;
   replayPassword: FormControl;
   private user: FormGroup;
+  subscriptions: Subscription = new Subscription();
 
   constructor(
     private authService: AuthService,
@@ -38,6 +39,10 @@ export class RegistrationComponent implements OnInit {
     this.replayPasswordChangeAcces();
   }
 
+  ngOnDestroy() {
+    this.subscriptions && this.subscriptions.unsubscribe();
+  }
+
   private initForm() {
     this.form = this.fb.group(
       {
@@ -49,13 +54,13 @@ export class RegistrationComponent implements OnInit {
             [Validators.required, Validators.email],
             this.existingEmailValidator.validate.bind(this.existingEmailValidator)
           ),
-          password: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)])
+          password: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
         }),
         replayPassword: this.fb.control({ value: '', disabled: true }, [
           Validators.required,
           Validators.minLength(6),
-          Validators.maxLength(20)
-        ])
+          Validators.maxLength(20),
+        ]),
       },
       { validators: passwordMatchValidator }
     );
@@ -71,22 +76,22 @@ export class RegistrationComponent implements OnInit {
   }
 
   private replayPasswordChangeAcces() {
-    this.password.valueChanges.subscribe(val => {
-      if (val) {
-        this.replayPassword.enable();
-      } else {
-        this.replayPassword.reset();
-        this.replayPassword.disable();
-      }
-    });
+    this.subscriptions.add(
+      this.password.valueChanges.subscribe((val) => {
+        if (val) {
+          this.replayPassword.enable();
+        } else {
+          this.replayPassword.reset();
+          this.replayPassword.disable();
+        }
+      })
+    );
   }
 
-  registration(): void {
-    if (this.form.valid) {
-      this.form.disable();
-      this.loading = true;
+  private subToRegistration() {
+    this.subscriptions.add(
       this.authService.registration(this.user.value).subscribe(
-        res => {
+        (res) => {
           if (res && res.success) {
             this.toastr.success('Вы успешно зарегестрировались, можете войти');
             this.form.enable();
@@ -95,13 +100,21 @@ export class RegistrationComponent implements OnInit {
             this.router.navigate(['auth', 'login']);
           }
         },
-        err => {
+        (err) => {
           this.toastr.error('Ошибка регистрации');
           this.form.enable();
           this.loading = false;
           console.error(err);
         }
-      );
+      )
+    );
+  }
+
+  registration(): void {
+    if (this.form.valid) {
+      this.form.disable();
+      this.loading = true;
+      this.subToRegistration();
     }
   }
 }

@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Location } from '@angular/common';
-import { async, ComponentFixture, TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SharedModule } from '@app/modules/shared/shared.module';
 
@@ -14,15 +14,15 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '@core/services/auth/auth.service';
 
 import { ExistingEmailValidator } from '@app/validators/existing-email.validator';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 
 fdescribe('RegistrationComponent', () => {
   let component: RegistrationComponent;
   let fixture: ComponentFixture<RegistrationComponent>;
   let element: DebugElement;
-  let toastr: any;
+  let toastr: jasmine.SpyObj<ToastrService>;
   let authService: any;
-  let existingEmailValidator: ExistingEmailValidator;
+  let existingEmailValidator: any;
   let location: Location;
 
   function setErrorMessage() {
@@ -165,6 +165,7 @@ fdescribe('RegistrationComponent', () => {
     expect(errorMessage.length).toBe(1);
     expect(errorMessage[0].nativeElement.innerText).toContain('поле не должно быть пустым');
     // отображение ошибки если введены некорректные данные
+    emailControl.clearAsyncValidators();
     emailControl.setValue('somevalue');
     fixture.detectChanges();
     errorMessage = setErrorMessage();
@@ -254,8 +255,42 @@ fdescribe('RegistrationComponent', () => {
     const replayPasswordControl = component.replayPassword;
     expect(replayPasswordControl.disabled).toBeTruthy();
     passwordControl.setValue('somevalue');
-    fixture.detectChanges();
+    // fixture.detectChanges();
     expect(replayPasswordControl.disabled).toBeFalsy();
+  });
+
+  it('should registered user when value is correct', () => {
+    // const subSpy = spyOn(component, 'subToRegistration');
+    const formData = {
+      user: {
+        firstName: 'name',
+        lastName: 'lastname',
+        email: 'someEmail@email.test',
+        password: 'somepassword',
+      },
+      replayPassword: 'somepassword',
+    };
+    component.ngOnInit();
+    component.email.clearAsyncValidators();
+    component.form.setValue(formData);
+    component.form.markAllAsTouched();
+    authService.registration.withArgs(formData.user).and.returnValue(of({ success: true }));
+    fixture.detectChanges();
+    component.registration();
+    // проверяем инпуты на disabled
+    expect(component.email.disabled).toBeTruthy('form controls are not disabled');
+    expect(component.password.disabled).toBeTruthy('form controls are not disabled');
+    expect(component.replayPassword.disabled).toBeTruthy('form controls are not disabled');
+    expect(component.firstName.disabled).toBeTruthy('form controls are not disabled');
+    expect(component.lastName.disabled).toBeTruthy('form controls are not disabled');
+    expect(component.loading).toBeTruthy('loading dont change to true');
+    // эмулируем
+    authService.registration.subscribe(() => {
+      expect(toastr.success).toHaveBeenCalled();
+      expect(toastr.success).toHaveBeenCalledWith('Вы успешно зарегестрировались, можете войти');
+      expect(component.form.enabled).toBeTruthy();
+      expect(component.loading).toBeFalsy();
+    });
   });
 
   afterEach(() => {
