@@ -22,7 +22,7 @@ import { match } from '@app/validators/match.validator';
 export class UserEmailChangeComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Output() changeUserEmail: EventEmitter<User> = new EventEmitter();
-  @ViewChild('emailContainer', { read: ViewContainerRef, static: false }) emailContainer: ViewContainerRef;
+  @ViewChild('emailContainer', { read: ViewContainerRef }) emailContainer: ViewContainerRef;
   email: FormControl;
   modified: boolean;
 

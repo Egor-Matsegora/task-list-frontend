@@ -23,7 +23,7 @@ import { User } from '@interfaces/user.interface';
 export class UserPasswordChangeComponent implements OnInit {
   @Input() user: User;
   @Output() changeUserPassword: EventEmitter<string> = new EventEmitter();
-  @ViewChild('passwordContainer', { read: ViewContainerRef, static: false }) passwordContainer: ViewContainerRef;
+  @ViewChild('passwordContainer', { read: ViewContainerRef }) passwordContainer: ViewContainerRef;
   form: FormGroup;
   oldPassword: FormControl;
   newPassword: FormControl;

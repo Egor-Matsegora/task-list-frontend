@@ -25,8 +25,8 @@ import { User } from '@interfaces/user.interface';
 export class UserImageChangeComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Output() changeUserImage: EventEmitter<File> = new EventEmitter();
-  @ViewChild('imageContainer', { read: ViewContainerRef, static: false }) imageContainer: ViewContainerRef;
-  @ViewChild('fileInput', { static: false }) fileInputRef: ElementRef;
+  @ViewChild('imageContainer', { read: ViewContainerRef }) imageContainer: ViewContainerRef;
+  @ViewChild('fileInput') fileInputRef: ElementRef;
   imageControl: FormControl;
   imageUrl = '';
   modified: boolean;

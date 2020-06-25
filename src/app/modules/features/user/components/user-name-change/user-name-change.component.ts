@@ -22,7 +22,7 @@ import { match } from '@app/validators/match.validator';
 export class UserNameChangeComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Output() changeUserName: EventEmitter<User> = new EventEmitter();
-  @ViewChild('nameContainer', { read: ViewContainerRef, static: false }) nameContainer: ViewContainerRef;
+  @ViewChild('nameContainer', { read: ViewContainerRef }) nameContainer: ViewContainerRef;
   form: FormGroup;
   firstName: FormControl;
   lastName: FormControl;
