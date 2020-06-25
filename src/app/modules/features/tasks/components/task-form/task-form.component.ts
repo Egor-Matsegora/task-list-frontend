@@ -19,9 +19,9 @@ import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
   animations: [
     trigger('controlAnimation', [
       transition(':enter', [useAnimation(enterAnimation)]),
-      transition(':leave', [useAnimation(leaveAnimation)])
-    ])
-  ]
+      transition(':leave', [useAnimation(leaveAnimation)]),
+    ]),
+  ],
 })
 export class TaskFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -59,11 +59,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       tytle: ['', Validators.required],
       optionsChecks: this.fb.group({
-        description: false
+        description: false,
       }),
       options: this.fb.group({
-        description: ''
-      })
+        description: '',
+      }),
     });
   }
 
@@ -80,7 +80,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * Установка и удаление валидаторов при динамическом добавлении инпутов
    */
   private setValidators(): void {
-    this.optionsChecks.valueChanges.subscribe(value => {
+    this.optionsChecks.valueChanges.subscribe((value) => {
       for (const key in value) {
         if (key) {
           const control = this.options.controls[key];
@@ -143,11 +143,11 @@ export class TaskFormComponent implements OnInit, OnDestroy {
       this.form.disable();
       const task = {
         tytle: this.taskTytle.value,
-        description: this.optionsChecks.controls.description ? this.options.controls.description.value : null
+        description: this.optionsChecks.controls.description ? this.options.controls.description.value : null,
       };
       this.subscriptions.add(
         this.tasksService.createTask(task).subscribe(
-          result => {
+          (result) => {
             if (result._id) {
               this.tasksService.addTaskAction(result);
               this.modal.close();
@@ -155,7 +155,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
             }
             this.form.enable();
           },
-          error => {
+          (error) => {
             this.toastr.error('Ошибка в создании задачи');
             this.form.enable();
           }
@@ -176,17 +176,21 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         : null;
       this.subscriptions.add(
         this.tasksService.updateTask(this.modalData).subscribe(
-          task => {
+          (task) => {
             this.form.enable();
             this.toastr.success(`Задача "${this.modalData.tytle}" успешно обновлена`);
             this.modal.close();
           },
-          error => {
+          (error) => {
             this.form.enable();
             this.toastr.error('Ошибка в обновлении задачи');
           }
         )
       );
     }
+  }
+
+  closeModal() {
+    this.modal.close();
   }
 }
