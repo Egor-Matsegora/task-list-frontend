@@ -35,8 +35,8 @@ describe('StatisticsLayoutComponent', () => {
         fixture = TestBed.createComponent(StatisticsLayoutComponent);
         component = fixture.componentInstance;
         element = fixture.debugElement;
-        toastr = TestBed.get(ToastrService);
-        statisticsService = TestBed.get(StatisticsService);
+        toastr = TestBed.inject<any>(ToastrService);
+        statisticsService = TestBed.inject<any>(StatisticsService);
       });
   }));
 

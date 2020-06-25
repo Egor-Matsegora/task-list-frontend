@@ -40,8 +40,8 @@ describe('AuthComponent', () => {
       .then(() => {
         fixture = TestBed.createComponent(AuthComponent);
         component = fixture.componentInstance;
-        router = TestBed.get(Router);
-        location = TestBed.get(Location);
+        router = TestBed.inject<any>(Router);
+        location = TestBed.inject<any>(Location);
         router.initialNavigation();
       });
   }));

@@ -27,7 +27,7 @@ describe('TaskListComponent', () => {
       'updateTaskState$',
       'deleteDoneTasksState$',
       'deleteTask',
-      'updateTask'
+      'updateTask',
     ]);
     const toastrServiceSpy = jasmine.createSpyObj('ToastrService', ['error', 'warning', 'success']);
 
@@ -35,17 +35,17 @@ describe('TaskListComponent', () => {
       imports: [SharedModule, NoopAnimationsModule],
       providers: [
         { provide: TasksService, useValue: tasksServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy }
+        { provide: ToastrService, useValue: toastrServiceSpy },
       ],
-      declarations: [TaskListComponent, TaskComponent]
+      declarations: [TaskListComponent, TaskComponent],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(TaskListComponent);
         component = fixture.componentInstance;
         element = fixture.debugElement;
-        toastr = TestBed.get(ToastrService);
-        tasksService = TestBed.get(TasksService);
+        toastr = TestBed.inject<any>(ToastrService);
+        tasksService = TestBed.inject<any>(TasksService);
         tasksService.addTaskState$ = of(null);
         tasksService.updateTaskState$ = of(null);
         tasksService.deleteDoneTasksState$ = of(null);

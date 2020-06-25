@@ -15,8 +15,8 @@ describe('StatisticsService', () => {
       imports: [HttpClientTestingModule],
       providers: [StatisticsService],
     });
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(StatisticsService);
+    httpTestingController = TestBed.inject<any>(HttpTestingController);
+    service = TestBed.inject<any>(StatisticsService);
   });
 
   it('should be created', () => {

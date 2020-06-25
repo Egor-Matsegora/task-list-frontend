@@ -3,7 +3,7 @@ import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { getNotes } from '@tests/notes-db';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, flush, flushMicrotasks, tick } from '@angular/core/testing';
 
 import { of } from 'rxjs';
 
@@ -19,8 +19,8 @@ describe('NotesListComponent', () => {
   let component: NotesListComponent;
   let fixture: ComponentFixture<NotesListComponent>;
   let element: DebugElement;
-  let notesService: any;
-  let toastrService: any;
+  let notesService: jasmine.SpyObj<NotesService>;
+  let toastrService: jasmine.SpyObj<ToastrService>;
   let notesList: Note[];
   const deleteNote = getNotes(1);
 
@@ -33,19 +33,19 @@ describe('NotesListComponent', () => {
       declarations: [NotesListComponent, NoteComponent],
       providers: [
         { provide: NotesService, useValue: notesServiceSpy },
-        { provide: ToastrService, useValue: toastrServiceSpy }
-      ]
+        { provide: ToastrService, useValue: toastrServiceSpy },
+      ],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(NotesListComponent);
         component = fixture.componentInstance;
         element = fixture.debugElement;
-        toastrService = TestBed.get(ToastrService);
-        notesService = TestBed.get(NotesService);
+        toastrService = TestBed.inject<any>(ToastrService);
+        notesService = TestBed.inject<any>(NotesService);
         notesList = getNotes();
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   }));
 
   it('should create', () => {
@@ -63,8 +63,6 @@ describe('NotesListComponent', () => {
     expect(notes.length).toBe(3, 'unexpected number of notes');
   });
 
-  // it('should display an error about loading notes on the screen', () => {});
-
   it('sould display message when there is no notes found', () => {
     notesService.createNoteState$ = of(null);
     notesService.getUserNotes.and.returnValue(of([]));
@@ -78,19 +76,22 @@ describe('NotesListComponent', () => {
     expect(notes.length).toBe(0, 'notes length must be 0 in this case');
   });
 
-  it('should remove single note when delete is emitted', () => {
+  it('should remove single note when delete is emitted', fakeAsync(() => {
     notesService.createNoteState$ = of(null);
     notesService.getUserNotes.and.returnValue(of(notesList));
     fixture.detectChanges();
     notesService.deleteNote.and.returnValue(of({ success: true }));
-    component.onDelete(deleteNote);
+    const itemComponent = element.query(By.css('note'));
+    itemComponent.triggerEventHandler('delete', deleteNote);
     toastrService.warning.withArgs('Задача успешно удалена');
     fixture.detectChanges();
+    tick(500);
 
     const notes = element.queryAll(By.css('.notes-list__item'));
     expect(notes.length).toBe(2, 'notes length must bee smaller then before deleting');
     expect(toastrService.warning).toHaveBeenCalledTimes(1);
-  });
+    expect(toastrService.warning).toHaveBeenCalledWith('Задача успешно удалена');
+  }));
 
   afterEach(() => {
     fixture.destroy();

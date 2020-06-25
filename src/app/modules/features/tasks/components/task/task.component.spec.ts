@@ -26,7 +26,7 @@ describe('TaskComponent', () => {
         fixture = TestBed.createComponent(TaskComponent);
         component = fixture.componentInstance;
         element = fixture.debugElement;
-        smartModal = TestBed.get(NgxSmartModalService);
+        smartModal = TestBed.inject<any>(NgxSmartModalService);
         component.task = getTasks(0);
         fixture.detectChanges();
       });

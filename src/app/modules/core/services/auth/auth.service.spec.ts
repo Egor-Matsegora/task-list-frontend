@@ -25,9 +25,9 @@ describe('AuthService', () => {
       ],
     });
 
-    authService = TestBed.get(AuthService);
-    httpTestingController = TestBed.get(HttpTestingController);
-    router = TestBed.get(Router);
+    authService = TestBed.inject<any>(AuthService);
+    httpTestingController = TestBed.inject<any>(HttpTestingController);
+    router = TestBed.inject<any>(Router);
   });
 
   // constructor

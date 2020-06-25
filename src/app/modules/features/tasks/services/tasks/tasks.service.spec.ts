@@ -18,8 +18,8 @@ describe('TasksService', () => {
       providers: [TasksService],
     });
 
-    tasksService = TestBed.get(TasksService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    tasksService = TestBed.inject<any>(TasksService);
+    httpTestingController = TestBed.inject<any>(HttpTestingController);
   });
 
   // constructor

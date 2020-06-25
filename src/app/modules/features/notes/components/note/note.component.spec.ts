@@ -21,12 +21,12 @@ describe('NoteComponent', () => {
     TestBed.configureTestingModule({
       imports: [SharedModule, NoopAnimationsModule],
       declarations: [NoteComponent],
-      providers: [{ provide: NgxSmartModalService, useValue: smartModalSpy }]
+      providers: [{ provide: NgxSmartModalService, useValue: smartModalSpy }],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(NoteComponent);
-        smartModal = TestBed.get(NgxSmartModalService);
+        smartModal = TestBed.inject<any>(NgxSmartModalService);
         component = fixture.componentInstance;
         element = fixture.debugElement;
       });

@@ -7,9 +7,9 @@ let asideStateService: AsideStateService;
 describe('AsideStateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AsideStateService]
+      providers: [AsideStateService],
     });
-    asideStateService = TestBed.get(AsideStateService);
+    asideStateService = TestBed.inject<any>(AsideStateService);
   });
 
   // constructor
@@ -31,7 +31,7 @@ describe('AsideStateService', () => {
     spyOn(localStorage, 'setItem');
 
     asideStateService.setDefaultState();
-    asideStateService.asideState$.subscribe(state => {
+    asideStateService.asideState$.subscribe((state) => {
       const expectation = state ? '1' : '0';
       expect(expectation).toBe(localStorage.getItem('asideState'));
     });

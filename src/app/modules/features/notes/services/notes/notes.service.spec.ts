@@ -18,8 +18,8 @@ describe('NotesService', () => {
       providers: [NotesService],
     });
 
-    notesService = TestBed.get(NotesService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    notesService = TestBed.inject<any>(NotesService);
+    httpTestingController = TestBed.inject<any>(HttpTestingController);
   });
 
   // constructor

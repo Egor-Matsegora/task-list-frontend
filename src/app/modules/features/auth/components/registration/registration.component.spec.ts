@@ -16,7 +16,7 @@ import { AuthService } from '@core/services/auth/auth.service';
 import { ExistingEmailValidator } from '@app/validators/existing-email.validator';
 import { of, Observable } from 'rxjs';
 
-fdescribe('RegistrationComponent', () => {
+xdescribe('RegistrationComponent', () => {
   let component: RegistrationComponent;
   let fixture: ComponentFixture<RegistrationComponent>;
   let element: DebugElement;
@@ -46,12 +46,12 @@ fdescribe('RegistrationComponent', () => {
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(RegistrationComponent);
-        toastr = TestBed.get(ToastrService);
-        authService = TestBed.get(AuthService);
-        existingEmailValidator = TestBed.get(ExistingEmailValidator);
+        toastr = TestBed.inject<any>(ToastrService);
+        authService = TestBed.inject<any>(AuthService);
+        existingEmailValidator = TestBed.inject<any>(ExistingEmailValidator);
         component = fixture.componentInstance;
         element = fixture.debugElement;
-        location = TestBed.get(Location);
+        location = TestBed.inject<any>(Location);
       });
   }));
 

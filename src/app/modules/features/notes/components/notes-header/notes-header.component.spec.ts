@@ -17,14 +17,14 @@ describe('NotesHeaderComponent', () => {
     TestBed.configureTestingModule({
       providers: [{ provide: NgxSmartModalService, useValue: smartModalSpy }],
       imports: [UiKitModule],
-      declarations: [NotesHeaderComponent]
+      declarations: [NotesHeaderComponent],
     })
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(NotesHeaderComponent);
         component = fixture.componentInstance;
         element = fixture.debugElement;
-        smartModal = TestBed.get(NgxSmartModalService);
+        smartModal = TestBed.inject<any>(NgxSmartModalService);
       });
   }));
 

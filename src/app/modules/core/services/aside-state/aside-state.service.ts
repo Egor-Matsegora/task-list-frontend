@@ -2,6 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+// TODO: Add Angular decorator.
+// TODO: Add Angular decorator.
 @Injectable()
 export class AsideStateService implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
