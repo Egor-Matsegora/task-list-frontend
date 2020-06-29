@@ -1,8 +1,7 @@
-import { LocalStorageService } from './../local-storage/local-storage.service';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isPlatformBrowser } from '@angular/common';
+import { LocalStorageService } from '@core/services/local-storage/local-storage.service';
 
 @Injectable()
 export class AsideStateService implements OnDestroy {

@@ -1,4 +1,3 @@
-import { LocalStorageService } from './../local-storage/local-storage.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -7,6 +6,7 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 // services
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
+import { LocalStorageService } from '@core/services/local-storage/local-storage.service';
 // helpers
 import { handleHttpError } from '@helpers/handle-http-error';
 // interfaces
@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-    return !!this.token;
+    return !!this.localStorage.getItem('token');
   }
 
   logout() {
@@ -66,7 +66,6 @@ export class AuthService {
 
   checkToken() {
     const token = this.localStorage.getItem('token');
-
     token && this.setToken(token);
   }
 }
