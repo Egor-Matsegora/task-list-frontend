@@ -1,5 +1,5 @@
-@import 'mixins';
-@import 'variables';
+@import 'scss/mixins';
+@import 'scss/variables';
 
 // Yanone Kaffeesatz import
 @include font-face($primary-font, '../assets/fonts/yanone_kaffeesatz/YanoneKaffeesatz-Bold.ttf', 700);

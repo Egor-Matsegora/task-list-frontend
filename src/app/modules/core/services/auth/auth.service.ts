@@ -1,3 +1,4 @@
+import { LocalStorageService } from './../local-storage/local-storage.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -11,26 +12,30 @@ import { handleHttpError } from '@helpers/handle-http-error';
 // interfaces
 import { RegistretionUser } from '@interfaces/registration-user.inerface';
 import { LoginUser } from '@interfaces/login-user.interface';
-import { LoginRequest } from '@interfaces/login-request.interface';
+import { LoginResponse } from '@interfaces/login-response.interface';
 
 @Injectable()
 export class AuthService {
   private url = '/api/';
   private token: string = null;
 
-  constructor(private http: HttpClient, private router: Router, private asideState: AsideStateService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private asideState: AsideStateService,
+    private localStorage: LocalStorageService
+  ) {}
 
-  login(user: LoginUser): Observable<LoginRequest> {
-    return this.http.post<LoginRequest>(`${this.url}login`, user).pipe(
-      map((req) => {
-        if (req && req.token) {
-          // console.log(req);
-          localStorage.setItem('token', req.token);
-          this.setToken(req.token);
+  login(user: LoginUser): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.url}login`, user).pipe(
+      map((res) => {
+        if (res && res.token) {
+          this.localStorage.setItem('token', res.token);
+          this.setToken(res.token);
           this.asideState.setDefaultState();
-          return { success: req.success, user: req.user };
+          return { success: res.success, user: res.user };
         }
-        return { success: req.success, message: req.message };
+        return { success: res.success, message: res.message };
       }),
       catchError((error) => handleHttpError(error))
     );
@@ -40,7 +45,7 @@ export class AuthService {
     return this.http.post(`${this.url}registration`, user).pipe(catchError((error) => handleHttpError(error)));
   }
 
-  setToken(token) {
+  setToken(token): void {
     this.token = token;
   }
 
@@ -48,19 +53,19 @@ export class AuthService {
     return this.token;
   }
 
-  isLoggedIn(): boolean {
+  get isLoggedIn(): boolean {
     return !!this.token;
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.localStorage.removeItem('token');
     this.setToken(null);
     this.router.navigate(['']);
     this.asideState.removeAsideStorageState();
   }
 
   checkToken() {
-    const token = localStorage.getItem('token');
+    const token = this.localStorage.getItem('token');
 
     token && this.setToken(token);
   }

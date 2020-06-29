@@ -18,9 +18,9 @@ import { enterAnimation, liveAnimation } from './header-btn.animation';
   animations: [
     trigger('btnAnimation', [
       transition(':enter', [useAnimation(enterAnimation)]),
-      transition(':leave', [useAnimation(liveAnimation)])
-    ])
-  ]
+      transition(':leave', [useAnimation(liveAnimation)]),
+    ]),
+  ],
 })
 export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
   private subs: Subscription = new Subscription();
@@ -61,7 +61,7 @@ export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
     this.subs.add(
       this.router.events
         .pipe(
-          filter(event => event instanceof NavigationStart),
+          filter((event) => event instanceof NavigationStart),
           tap((event: NavigationStart) => {
             this.checkAuthUrl(event.url);
           })
@@ -80,14 +80,14 @@ export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
 
   private subToAsideStatus() {
     this.subs.add(
-      this.asideService.asideState$.subscribe(state => {
+      this.asideService.asideState$.subscribe((state) => {
         this.asideState = state;
       })
     );
   }
 
   private setIsLoggedIn() {
-    this.isLoggedIn = this.authService.isLoggedIn();
+    this.isLoggedIn = this.authService.isLoggedIn;
   }
 
   changeAsideState() {

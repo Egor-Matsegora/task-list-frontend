@@ -5,19 +5,19 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
-  Router
+  Router,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SystemGuard implements CanActivate, CanActivateChild {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-    if (!this.authService.isLoggedIn()) {
+    if (!this.authService.isLoggedIn) {
       return of(true);
     } else {
       this.router.navigate(['system']);

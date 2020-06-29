@@ -10,16 +10,16 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService, private toastr: ToastrService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isLoggedIn) {
       req = req.clone({
-        setHeaders: { Authorization: this.authService.getToken() }
+        setHeaders: { Authorization: this.authService.getToken() },
       });
     }
     return next.handle(req).pipe(catchError((err: HttpErrorResponse) => this.handleAuthError(err)));
   }
 
   private handleAuthError(err: HttpErrorResponse): Observable<HttpErrorResponse> {
-    if (err.status === 401 && this.authService.isLoggedIn()) {
+    if (err.status === 401 && this.authService.isLoggedIn) {
       this.authService.logout();
       this.toastr.warning('Время сессии истекло, авторизируйтесь еще раз');
     }

@@ -1,5 +1,5 @@
-@import 'variables';
-@import 'mixins';
+@import '~src/scss/variables';
+@import '~src/scss/mixins';
 
 .main-header {
   background-color: $bg-color-primary;

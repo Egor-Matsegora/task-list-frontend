@@ -1,9 +1,9 @@
+import { LocalStorageService } from './../local-storage/local-storage.service';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
-// TODO: Add Angular decorator.
-// TODO: Add Angular decorator.
 @Injectable()
 export class AsideStateService implements OnDestroy {
   private subscriptions: Subscription = new Subscription();
@@ -11,7 +11,7 @@ export class AsideStateService implements OnDestroy {
 
   asideState$: Observable<boolean> = this.asideState.asObservable();
 
-  constructor() {
+  constructor(private localStorage: LocalStorageService) {
     this.setDefaultState();
   }
 
@@ -21,14 +21,14 @@ export class AsideStateService implements OnDestroy {
   }
 
   get asideStorageState(): boolean {
-    return !!Number(localStorage.getItem('asideState'));
+    return !!Number(this.localStorage.getItem('asideState'));
   }
 
   setDefaultState(): void {
     this.subscriptions.add(
       this.asideState$
-        .pipe(map(state => (state ? '1' : '0')))
-        .subscribe(state => localStorage.setItem('asideState', state))
+        .pipe(map((state) => (state ? '1' : '0')))
+        .subscribe((state) => this.localStorage.setItem('asideState', state))
     );
   }
 
@@ -37,6 +37,6 @@ export class AsideStateService implements OnDestroy {
   }
 
   removeAsideStorageState() {
-    localStorage.getItem('asideState') && localStorage.removeItem('asideState');
+    this.localStorage.getItem('asideState') && this.localStorage.removeItem('asideState');
   }
 }
