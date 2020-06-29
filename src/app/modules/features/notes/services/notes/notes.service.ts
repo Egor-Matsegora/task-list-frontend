@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { catchError, filter } from 'rxjs/operators';
+import { catchError, filter, tap } from 'rxjs/operators';
 // interfaces
 import { Note } from '@interfaces/note.interface';
 // helpers
@@ -36,7 +36,10 @@ export class NotesService {
   }
 
   deleteNote(id): Observable<any> {
-    return this.http.delete(this.url + id).pipe(catchError((error) => handleHttpError(error)));
+    return this.http.delete(this.url + id).pipe(
+      tap(console.log),
+      catchError((error) => handleHttpError(error))
+    );
   }
 
   updateNote(note: Note): Observable<Note> {

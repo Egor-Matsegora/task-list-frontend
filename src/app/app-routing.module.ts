@@ -7,12 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    loadChildren: () => import('./modules/features/layout/layout.module').then(m => m.LayoutModule)
-  }
+    loadChildren: () => import('./modules/features/layout/layout.module').then((m) => m.LayoutModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
