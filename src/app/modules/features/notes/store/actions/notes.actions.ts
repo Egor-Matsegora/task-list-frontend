@@ -20,6 +20,6 @@ export const updateNoteSuccess = createAction(ActionTypes.UPDATE_NOTE_SUCCESS, p
 
 export const updateNoteFailure = createAction(ActionTypes.UPDATE_NOTE_FAILURE, props<{ error: any }>());
 
-export const deleteNoteSuccess = createAction(ActionTypes.DELETE_NOTE_SUCCESS, props<{ note }>());
+export const deleteNoteSuccess = createAction(ActionTypes.DELETE_NOTE_SUCCESS, props<{ note: Note }>());
 
 export const deleteNoteFailure = createAction(ActionTypes.DELETE_NOTE_FAILURE, props<{ error: any }>());
