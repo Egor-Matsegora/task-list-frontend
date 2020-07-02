@@ -25,3 +25,5 @@ export const getNotesError = createSelector(getNotesFeatureState, (state) => sta
 export const getNotesPageLoading = createSelector(getNotesFeatureState, (state) => state.mainLoading);
 
 export const getNoteitemloading = createSelector(getNotesFeatureState, (state) => state.noteLoading);
+
+export const hasNotes = createSelector(getNotesFeatureState, (state) => !!state.notes.length);

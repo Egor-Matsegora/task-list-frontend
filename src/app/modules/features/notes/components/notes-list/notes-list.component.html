@@ -1,7 +1,7 @@
 <div class="notes-list">
 
-    <ng-container *ngIf="items?.length && !isLoading">
-      <div class="notes-list__item" *ngFor="let item of items" @itemAnimation>
+    <ng-container *ngIf="!isLoading && hasContent">
+      <div class="notes-list__item" *ngFor="let item of items$ | async" @itemAnimation>
         <note
           [note]="item"
           (delete)="onDelete($event)"
@@ -9,7 +9,7 @@
       </div>
     </ng-container>
 
-    <div class="notes-list__message" *ngIf="!items?.length && !isLoading">
+    <div class="notes-list__message" *ngIf="!isLoading && !hasContent">
       еще нет ни одной заметки
     </div>
 

@@ -35,11 +35,8 @@ export class NotesService {
     return this.http.post<Note>(this.url, note).pipe(catchError((error) => handleHttpError(error)));
   }
 
-  deleteNote(id): Observable<any> {
-    return this.http.delete(this.url + id).pipe(
-      tap(console.log),
-      catchError((error) => handleHttpError(error))
-    );
+  deleteNote(note: Note): Observable<any> {
+    return this.http.delete(this.url + note._id).pipe(catchError((error) => handleHttpError(error)));
   }
 
   updateNote(note: Note): Observable<Note> {
