@@ -9,7 +9,7 @@ export interface Note {
 export interface NotesState {
   notes: Note[];
   mainLoading: boolean;
-  error: any | null;
+  error: string | null;
   selectedNote: Note | null;
   noteLoading: boolean;
 }

@@ -10,8 +10,9 @@ import { removeAnimation } from '@app/animations/item.animation';
 // ngrx
 import { Store } from '@ngrx/store';
 import { State, getNotes, getNotesPageLoading, getNotesError, hasNotes } from '@features/notes/store/state';
-import { NotesApiActions } from '@features/notes/store/actions';
+import { NotesApiActions, NotesActions } from '@features/notes/store/actions';
 import { filter } from 'rxjs/operators';
+import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 
 @Component({
   selector: 'notes-list',
@@ -26,7 +27,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
   error$: Observable<any>;
   hasContent: boolean;
 
-  constructor(private toastr: ToastrService, private store: Store<State>) {}
+  constructor(private toastr: ToastrService, private store: Store<State>, private smartModal: NgxSmartModalService) {}
 
   ngOnInit() {
     this.getNotesAsync();
@@ -42,6 +43,13 @@ export class NotesListComponent implements OnInit, OnDestroy {
 
   onDelete(note: Note) {
     this.store.dispatch(NotesApiActions.deleteNote({ note }));
+  }
+
+  onUpdate(note: Note) {
+    const modal: NgxSmartModalComponent = this.smartModal.getModal('noteModal');
+    if (!modal) return;
+    modal.open();
+    this.store.dispatch(NotesActions.selectNote({ note }));
   }
 
   private getLoadingStatus() {

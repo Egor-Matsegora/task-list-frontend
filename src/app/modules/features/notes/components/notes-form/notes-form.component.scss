@@ -17,6 +17,11 @@
   &__form {
     padding: 10px;
   }
+
+  &__loader {
+    display: inline-block;
+    margin-left: -40px;
+  }
 }
 
 .form {

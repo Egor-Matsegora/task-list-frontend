@@ -1,12 +1,12 @@
 <div class="notes-form">
 
   <!-- заголовок при добавлении задачи -->
-  <div class="notes-form__header" *ngIf="modalData">
+  <div class="notes-form__header" *ngIf="!isNoteCreation">
     Редактирование заметки
   </div>
 
   <!-- заголовок при редактировании задачи -->
-  <div class="notes-form__header" *ngIf="!modalData">
+  <div class="notes-form__header" *ngIf="isNoteCreation">
     Добавление заметки
   </div>
 
@@ -75,9 +75,12 @@
         [isDisabled]="form.invalid"
         (click)="createNote()"
         (keyress.enter)="createNote()"
-        *ngIf="!modalData"
+        *ngIf="isNoteCreation"
       >
-        Добавить заметку
+      <span *ngIf="!isLoading">Добавить заметку</span>
+      <span class="notes-form__loader" *ngIf="isLoading">
+        <loader></loader>
+      </span>
       </ui-button>
 
       <ui-button
@@ -85,9 +88,12 @@
         [isDisabled]="form.invalid"
         (click)="updateNote()"
         (keyress.enter)="updateNote()"
-        *ngIf="!!modalData"
+        *ngIf="!isNoteCreation"
       >
-        Редактировать заметку
+        <span *ngIf="!isLoading">Редактировать заметку</span>
+        <span class="notes-form__loader">
+          <loader *ngIf="isLoading"></loader>
+        </span>
       </ui-button>
 
       <ui-button

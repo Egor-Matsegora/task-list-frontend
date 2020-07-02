@@ -5,8 +5,9 @@ import { transition, trigger, useAnimation } from '@angular/animations';
 import { Note } from '@interfaces/note.interface';
 import { enterAnimation, leaveAnimation } from '@app/animations/dynamic-control.animation';
 import { Subscription } from 'rxjs';
-import { NotesService } from '../../services/notes/notes.service';
-import { ToastrService } from 'ngx-toastr';
+import { Store } from '@ngrx/store';
+import { NotesApiActions, NotesActions } from '@features/notes/store/actions';
+import { State, getSelectedNote, getNoteitemloading } from '../../store/state';
 
 @Component({
   selector: 'notes-form',
@@ -15,9 +16,9 @@ import { ToastrService } from 'ngx-toastr';
   animations: [
     trigger('controlAnimation', [
       transition(':enter', [useAnimation(enterAnimation)]),
-      transition(':leave', [useAnimation(leaveAnimation)])
-    ])
-  ]
+      transition(':leave', [useAnimation(leaveAnimation)]),
+    ]),
+  ],
 })
 export class NotesFormComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
@@ -25,26 +26,36 @@ export class NotesFormComponent implements OnInit, OnDestroy {
   noteText: FormControl;
   noteTitle: FormControl;
   titleCheck: FormControl;
-  modalData: Note;
   modal: NgxSmartModalComponent;
-  constructor(
-    private fb: FormBuilder,
-    private smartModal: NgxSmartModalService,
-    private noteService: NotesService,
-    private toastr: ToastrService
-  ) {}
+  selectedNote: Note;
+  isNoteCreation: boolean;
+  isLoading: boolean;
+
+  constructor(private fb: FormBuilder, private smartModal: NgxSmartModalService, private store: Store<State>) {}
 
   ngOnInit() {
     this.initModal();
     this.inintForm();
     this.initFormVariables();
     this.setValidators();
+    this.checkSelectedNote();
+    this.subToNoteLoadingState();
     this.subToCloseModalEvent();
-    this.checkModalData();
   }
 
   ngOnDestroy() {
     this.subscriptions && this.subscriptions.unsubscribe();
+  }
+
+  /**
+   * Подписка на состояние лоадера заметки
+   */
+  private subToNoteLoadingState() {
+    const subToState = this.store.select(getNoteitemloading).subscribe((status) => {
+      this.isLoading = status;
+      !status && this.afterLoadingEnd();
+    });
+    this.subscriptions.add(subToState);
   }
 
   /**
@@ -58,38 +69,40 @@ export class NotesFormComponent implements OnInit, OnDestroy {
    * Подписка на закрытие модалки для сброса формы и данных, приходящих в модалку
    */
   private subToCloseModalEvent() {
-    this.subscriptions.add(
-      this.modal.onAnyCloseEvent.subscribe(() => {
-        this.form.reset();
-        this.modal.removeData();
-      })
-    );
+    const modalEventSub = this.modal.onAnyCloseEvent.subscribe(() => {
+      this.form.reset();
+      this.store.dispatch(NotesActions.unselectNote());
+    });
+    this.subscriptions.add(modalEventSub);
   }
 
   /**
-   * Проверка данных приходящих в модалку
-   * Если данные приходят, значит заметка редактируется
-   * Если их нет, значит заметка создается
+   * Проверка выбраной заметки
    */
-  private checkModalData() {
-    if (!this.modal) return;
-    this.subscriptions.add(
-      this.modal.onOpen.subscribe(() => {
-        this.modalData = this.modal.getData();
-        if (this.modalData) {
-          this.noteText.setValue(this.modalData.text);
-          this.titleCheck.setValue(!!this.modalData.title);
-          this.noteTitle.setValue(this.modalData.title);
-        }
-      })
-    );
+  private checkSelectedNote() {
+    const subToStoreSelectedNote = this.store.select(getSelectedNote).subscribe((note) => {
+      this.selectedNote = note;
+      this.isNoteCreation = !note;
+      note && this.setFormValue(note);
+    });
+    this.subscriptions.add(subToStoreSelectedNote);
+  }
+
+  /**
+   * Установка редактируемых значений выбраной заметки в поля формы
+   * @param note Выбраная заметка
+   */
+  private setFormValue(note) {
+    this.noteText.setValue(note.text);
+    this.titleCheck.setValue(!!note.title);
+    this.noteTitle.setValue(note.title);
   }
 
   /**
    * Установка и удаление валидаторов при динамическом добавлении инпутов
    */
   private setValidators(): void {
-    this.titleCheck.valueChanges.subscribe(value => {
+    const titleCheckValueSub = this.titleCheck.valueChanges.subscribe((value) => {
       if (value) {
         this.noteTitle.setValidators(Validators.required);
         this.noteTitle.updateValueAndValidity();
@@ -99,6 +112,7 @@ export class NotesFormComponent implements OnInit, OnDestroy {
         this.noteTitle.reset();
       }
     });
+    this.subscriptions.add(titleCheckValueSub);
   }
 
   /**
@@ -108,11 +122,11 @@ export class NotesFormComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       text: ['', Validators.required],
       optionsChecks: this.fb.group({
-        title: false
+        title: false,
       }),
       options: this.fb.group({
-        title: ''
-      })
+        title: '',
+      }),
     });
   }
 
@@ -125,30 +139,22 @@ export class NotesFormComponent implements OnInit, OnDestroy {
     this.titleCheck = this.form.controls.optionsChecks.get('title') as FormControl;
   }
 
+  private afterLoadingEnd() {
+    this.form.enable();
+    this.modal && this.modal.close();
+  }
+
   /**
    * Добавление заметки
    */
   createNote() {
     if (this.form.invalid) return;
     this.form.disable();
-    const formValue = {
+    const note = {
       text: this.noteText.value,
-      title: this.titleCheck.value ? this.noteTitle.value : null
+      title: this.titleCheck.value ? this.noteTitle.value : null,
     };
-    this.subscriptions.add(
-      this.noteService.createNote(formValue).subscribe(
-        note => {
-          this.form.enable();
-          this.modal.close();
-          this.noteService.createNoteAction(note);
-          this.toastr.success('Заметка успешно создана');
-        },
-        error => {
-          this.toastr.error('Ошибка в создании заметки');
-          this.form.enable();
-        }
-      )
-    );
+    this.store.dispatch(NotesApiActions.createNote({ note }));
   }
 
   /**
@@ -157,21 +163,11 @@ export class NotesFormComponent implements OnInit, OnDestroy {
   updateNote() {
     if (this.form.invalid) return;
     this.form.disable();
-    this.modalData.text = this.noteText.value;
-    this.modalData.title = this.titleCheck.value ? this.noteTitle.value : null;
-    this.subscriptions.add(
-      this.noteService.updateNote(this.modalData).subscribe(
-        note => {
-          this.form.enable();
-          this.modal.close();
-          this.noteService.updateNoteAction(note);
-          this.toastr.success('Задача успешно обновлена');
-        },
-        error => {
-          this.toastr.error('Ошибка в редактировании задачи');
-          this.form.enable();
-        }
-      )
-    );
+    const note = {
+      ...this.selectedNote,
+      text: this.noteText.value,
+      title: this.titleCheck.value ? this.noteTitle.value : null,
+    };
+    this.store.dispatch(NotesApiActions.updateNote({ note }));
   }
 }

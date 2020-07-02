@@ -12,15 +12,16 @@ import { Subscription, fromEvent, timer } from 'rxjs';
   animations: [
     trigger('menuAnimation', [
       transition(':enter', [useAnimation(enterAnimation)]),
-      transition(':leave', [useAnimation(leaveAnimation)])
-    ])
-  ]
+      transition(':leave', [useAnimation(leaveAnimation)]),
+    ]),
+  ],
 })
 export class NoteComponent implements OnDestroy {
   private clickSubscription: Subscription;
   private timerSubscription: Subscription;
   @Input() note: Note;
   @Output() delete: EventEmitter<Note> = new EventEmitter();
+  @Output() update: EventEmitter<Note> = new EventEmitter();
   isMenuVisible: Boolean = false;
   isDeleted: boolean = false;
 
@@ -70,9 +71,6 @@ export class NoteComponent implements OnDestroy {
   }
 
   onUpdate() {
-    const modal: NgxSmartModalComponent = this.smartModal.getModal('noteModal');
-    if (!modal) return;
-    modal.setData(this.note);
-    modal.open();
+    this.update.emit(this.note);
   }
 }

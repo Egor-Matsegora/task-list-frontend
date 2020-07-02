@@ -43,7 +43,7 @@ const reducer = createReducer<NotesState>(
       noteLoading: false,
     })
   ),
-  on(NotesActions.deleteNoteFailure, (state, error): NotesState => ({ ...state, error, noteLoading: false })),
+  on(NotesActions.deleteNoteFailure, (state, { error }): NotesState => ({ ...state, error, noteLoading: false })),
   // select note for modal
   on(NotesActions.selectNote, (state, { note }): NotesState => ({ ...state, selectedNote: note })),
   on(NotesActions.unselectNote, (state): NotesState => ({ ...state, selectedNote: null }))

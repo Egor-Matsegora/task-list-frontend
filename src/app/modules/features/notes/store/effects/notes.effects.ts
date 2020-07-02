@@ -18,7 +18,7 @@ export class NotesEffects {
       mergeMap(() => {
         return this.notesService.getUserNotes().pipe(
           map((notes) => NotesActions.loadNotesSuccess({ notes })),
-          catchError((error) => of(NotesActions.loadNotesFailure({ error })))
+          catchError((error) => of(NotesActions.loadNotesFailure({ error: 'Ошибка загрузки заметок' })))
         );
       })
     );
@@ -30,7 +30,7 @@ export class NotesEffects {
       concatMap((action) => {
         return this.notesService.createNote(action.note).pipe(
           map((note) => NotesActions.createNoteSuccess({ note })),
-          catchError((error) => of(NotesActions.createNoteFailure({ error })))
+          catchError((error) => of(NotesActions.createNoteFailure({ error: 'Ошибка создания заметок' })))
         );
       })
     );
@@ -42,7 +42,7 @@ export class NotesEffects {
       concatMap((action) => {
         return this.notesService.updateNote(action.note).pipe(
           map((note) => NotesActions.updateNoteSuccess({ note })),
-          catchError((error) => of(NotesActions.updateNoteFailure({ error })))
+          catchError((error) => of(NotesActions.updateNoteFailure({ error: 'Ошибка редактирования заметки' })))
         );
       })
     );
@@ -54,7 +54,7 @@ export class NotesEffects {
       concatMap((action) => {
         return this.notesService.deleteNote(action.note).pipe(
           map(() => NotesActions.deleteNoteSuccess({ note: action.note })),
-          catchError((error) => of(NotesActions.deleteNoteFailure(error)))
+          catchError((error) => of(NotesActions.deleteNoteFailure({ error: 'Ошибка удаления заметки' })))
         );
       })
     );

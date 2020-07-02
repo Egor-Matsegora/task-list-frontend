@@ -10,28 +10,14 @@ import { handleHttpError } from '@helpers/handle-http-error';
 @Injectable()
 export class NotesService {
   private url: string = '/api/notes/';
-  // data subjects
-  private createNoteState: BehaviorSubject<Note> = new BehaviorSubject(null);
-  createNoteState$: Observable<Note> = this.createNoteState.asObservable().pipe(filter((task) => task !== null));
-  private updateNoteState: BehaviorSubject<Note> = new BehaviorSubject(null);
-  updateNoteState$ = this.updateNoteState.asObservable().pipe(filter((note) => note !== null));
 
   constructor(private http: HttpClient) {}
 
-  createNoteAction(note) {
-    this.createNoteState.next(note);
-  }
-
-  updateNoteAction(note) {
-    this.updateNoteState.next(note);
-  }
-
-  // http methods
   getUserNotes(): Observable<Note[]> {
     return this.http.get<Note[]>(this.url).pipe(catchError((error) => handleHttpError(error)));
   }
 
-  createNote(note): Observable<Note> {
+  createNote(note: { title: string; text: string }): Observable<Note> {
     return this.http.post<Note>(this.url, note).pipe(catchError((error) => handleHttpError(error)));
   }
 
