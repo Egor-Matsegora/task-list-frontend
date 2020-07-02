@@ -10,10 +10,11 @@ import { TaskComponent } from './components/task/task.component';
 import { TaskFormComponent } from './components/task-form/task-form.component';
 import { TasksHeaderComponent } from './components/tasks-header/tasks-header.component';
 import { TaskActionsComponent } from './components/task-actions/task-actions.component';
+import { TasksStoreModule } from './store/tasks-store.module';
 
 @NgModule({
   declarations: [TasksLayoutComponent, TaskListComponent, TaskComponent, TaskFormComponent, TasksHeaderComponent, TaskActionsComponent],
-  imports: [CommonModule, TasksRoutingModule, SharedModule],
+  imports: [CommonModule, TasksRoutingModule, SharedModule, TasksStoreModule],
   providers: [TasksService]
 })
 export class TasksModule {}
