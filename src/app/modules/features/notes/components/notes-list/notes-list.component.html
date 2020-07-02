@@ -14,7 +14,7 @@
       еще нет ни одной заметки
     </div>
 
-    <div class="notes-list__loader" *ngIf="isLoading">
+    <div class="notes-list__loader" *ngIf="isLoading && !hasContent">
       <loader></loader>
     </div>
 

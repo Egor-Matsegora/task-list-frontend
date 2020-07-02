@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { Subscription, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 // services
 import { ToastrService } from 'ngx-toastr';
 // interfacess
@@ -11,8 +13,6 @@ import { removeAnimation } from '@app/animations/item.animation';
 import { Store } from '@ngrx/store';
 import { State, getNotes, getNotesPageLoading, getNotesError, hasNotes } from '@features/notes/store/state';
 import { NotesApiActions, NotesActions } from '@features/notes/store/actions';
-import { filter } from 'rxjs/operators';
-import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 
 @Component({
   selector: 'notes-list',
