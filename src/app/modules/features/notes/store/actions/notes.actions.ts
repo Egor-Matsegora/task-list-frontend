@@ -6,8 +6,6 @@ export const selectNote = createAction(ActionTypes.SELECT_NOTE, props<{ note: No
 
 export const unselectNote = createAction(ActionTypes.UNSELECT_NOTE);
 
-export const activateLoadingNotes = createAction(ActionTypes.ACTIVATE_LOADING);
-
 export const loadNotesSuccess = createAction(ActionTypes.LOAD_NOTES_SUCCESS, props<{ notes: Note[] }>());
 
 export const loadNotesFailure = createAction(ActionTypes.LOAD_NOTES_FAILURE, props<{ error: any }>());

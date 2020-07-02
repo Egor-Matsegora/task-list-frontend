@@ -16,6 +16,6 @@ import { NotesStroreModule } from './store/notes-strore.module';
 @NgModule({
   declarations: [NotesLayoutComponent, NotesFormComponent, NoteComponent, NotesListComponent, NotesHeaderComponent],
   imports: [CommonModule, NotesRoutingModule, SharedModule, NotesStroreModule],
-  providers: [NotesService]
+  providers: [NotesService],
 })
 export class NotesModule {}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { mergeMap, map, catchError, tap, concatMap } from 'rxjs/operators';
+import { mergeMap, map, catchError, concatMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { NotesService } from '../../services/notes/notes.service';
@@ -15,7 +15,6 @@ export class NotesEffects {
   loadNotes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(NotesApiActions.loadNotes),
-      tap(() => NotesActions.activateLoadingNotes()),
       mergeMap(() => {
         return this.notesService.getUserNotes().pipe(
           map((notes) => NotesActions.loadNotesSuccess({ notes })),
@@ -28,7 +27,6 @@ export class NotesEffects {
   createNote$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(NotesApiActions.createNote),
-      tap(() => NotesActions.activateLoadingNotes()),
       concatMap((action) => {
         return this.notesService.createNote(action.note).pipe(
           map((note) => NotesActions.createNoteSuccess({ note })),
@@ -41,7 +39,6 @@ export class NotesEffects {
   updateNote$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(NotesApiActions.updateNote),
-      tap(() => NotesActions.activateLoadingNotes()),
       concatMap((action) => {
         return this.notesService.updateNote(action.note).pipe(
           map((note) => NotesActions.updateNoteSuccess({ note })),
@@ -54,7 +51,6 @@ export class NotesEffects {
   deleteNote$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(NotesApiActions.deleteNote),
-      tap(() => NotesActions.activateLoadingNotes()),
       concatMap((action) => {
         return this.notesService.deleteNote(action.note).pipe(
           map(() => NotesActions.deleteNoteSuccess({ note: action.note })),
