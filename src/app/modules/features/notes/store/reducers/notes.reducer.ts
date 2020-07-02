@@ -1,7 +1,7 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { initialNotesState } from '../state';
 import { NotesActions, NotesApiActions } from '../actions';
-import { NotesState } from '../models';
+import { NotesState } from '../state';
 
 const reducer = createReducer<NotesState>(
   initialNotesState,

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Note } from '../models';
+import { Note } from '@interfaces/note.interface';
 import { ActionTypes } from './notes-action-types.enum';
 
 export const loadNotes = createAction(ActionTypes.LOAD_NOTES);

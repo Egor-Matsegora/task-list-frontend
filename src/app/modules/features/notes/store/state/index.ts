@@ -1,6 +1,16 @@
-import { NotesState } from './../models';
-import { RootState } from '@core/store/state/root-state.interface';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { RootState } from '@core/store/state/root-state.interface';
+import { Note } from '@interfaces/note.interface';
+
+export interface NotesState {
+  notes: Note[];
+  mainLoading: boolean;
+  error: string | null;
+  selectedNote: Note | null;
+  noteLoading: boolean;
+  successMessage: string | null;
+  deleteMessage: string | null;
+}
 
 export const initialNotesState: NotesState = {
   notes: [],

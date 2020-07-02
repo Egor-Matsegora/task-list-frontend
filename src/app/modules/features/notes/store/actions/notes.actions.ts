@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Note } from '../models';
+import { Note } from '@interfaces/note.interface';
 import { ActionTypes } from './notes-action-types.enum';
 
 // select note for modal
