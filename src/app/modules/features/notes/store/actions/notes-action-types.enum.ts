@@ -13,4 +13,5 @@ export enum ActionTypes {
   CREATE_NOTE_FAILURE = '[Notes] Create note failure',
   SELECT_NOTE = '[Notes] Select note',
   UNSELECT_NOTE = '[Notes] Unselect note',
+  CLEAR_MESSAGES = '[Notes] Clear all messages',
 }

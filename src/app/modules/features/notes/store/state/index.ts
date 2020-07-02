@@ -8,6 +8,8 @@ export const initialNotesState: NotesState = {
   mainLoading: false,
   error: null,
   noteLoading: false,
+  successMessage: null,
+  deleteMessage: null,
 };
 
 export interface State extends RootState {
@@ -27,3 +29,7 @@ export const getNotesPageLoading = createSelector(getNotesFeatureState, (state) 
 export const getNoteitemloading = createSelector(getNotesFeatureState, (state) => state.noteLoading);
 
 export const hasNotes = createSelector(getNotesFeatureState, (state) => !!state.notes.length);
+
+export const getSuccesMessage = createSelector(getNotesFeatureState, (state) => state.successMessage);
+
+export const getDeleteMessage = createSelector(getNotesFeatureState, (state) => state.deleteMessage);

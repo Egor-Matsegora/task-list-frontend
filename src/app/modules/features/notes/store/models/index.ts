@@ -12,4 +12,6 @@ export interface NotesState {
   error: string | null;
   selectedNote: Note | null;
   noteLoading: boolean;
+  successMessage: string | null;
+  deleteMessage: string | null;
 }

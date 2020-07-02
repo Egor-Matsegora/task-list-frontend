@@ -29,7 +29,7 @@ export class NotesEffects {
       ofType(NotesApiActions.createNote),
       concatMap((action) => {
         return this.notesService.createNote(action.note).pipe(
-          map((note) => NotesActions.createNoteSuccess({ note })),
+          map((note) => NotesActions.createNoteSuccess({ note, successMessage: 'Заметка успешно создана' })),
           catchError((err) => of(NotesActions.createNoteFailure({ error: 'Ошибка создания заметок' })))
         );
       })
@@ -41,7 +41,7 @@ export class NotesEffects {
       ofType(NotesApiActions.updateNote),
       concatMap((action) => {
         return this.notesService.updateNote(action.note).pipe(
-          map((note) => NotesActions.updateNoteSuccess({ note })),
+          map((note) => NotesActions.updateNoteSuccess({ note, successMessage: 'Заметка успешно обновлена' })),
           catchError((err) => of(NotesActions.updateNoteFailure({ error: 'Ошибка редактирования заметки' })))
         );
       })
@@ -53,7 +53,7 @@ export class NotesEffects {
       ofType(NotesApiActions.deleteNote),
       concatMap((action) => {
         return this.notesService.deleteNote(action.note).pipe(
-          map(() => NotesActions.deleteNoteSuccess({ note: action.note })),
+          map(() => NotesActions.deleteNoteSuccess({ note: action.note, deleteMessage: 'Заметка успешно удалена' })),
           catchError((err) => of(NotesActions.deleteNoteFailure({ error: 'Ошибка удаления заметки' })))
         );
       })

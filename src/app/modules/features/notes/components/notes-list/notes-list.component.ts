@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { Subscription, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, mergeMap } from 'rxjs/operators';
 import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 // services
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,15 @@ import { Note } from '@interfaces/note.interface';
 import { removeAnimation } from '@app/animations/item.animation';
 // ngrx
 import { Store } from '@ngrx/store';
-import { State, getNotes, getNotesPageLoading, getNotesError, hasNotes } from '@features/notes/store/state';
+import {
+  State,
+  getNotes,
+  getNotesPageLoading,
+  getNotesError,
+  hasNotes,
+  getDeleteMessage,
+  getSuccesMessage,
+} from '@features/notes/store/state';
 import { NotesApiActions, NotesActions } from '@features/notes/store/actions';
 
 @Component({
@@ -35,6 +43,8 @@ export class NotesListComponent implements OnInit, OnDestroy {
     this.getEmptyContentStatus();
     this.subToError();
     this.dispatchLoadAction();
+    this.subToNotesSuccessMessages();
+    this.subToNotesDeleteMessages();
   }
 
   ngOnDestroy() {
@@ -50,6 +60,28 @@ export class NotesListComponent implements OnInit, OnDestroy {
     if (!modal) return;
     modal.open();
     this.store.dispatch(NotesActions.selectNote({ note }));
+  }
+
+  private subToNotesSuccessMessages() {
+    const notesSuccessMessageSub = this.store
+      .select(getSuccesMessage)
+      .pipe(
+        filter((message) => message !== null),
+        mergeMap((message) => this.toastr.success(message).onHidden)
+      )
+      .subscribe(() => this.store.dispatch(NotesActions.clearNotesMessages()));
+    this.subscriptions.add(notesSuccessMessageSub);
+  }
+
+  private subToNotesDeleteMessages() {
+    const notesSuccessMessageSub = this.store
+      .select(getDeleteMessage)
+      .pipe(
+        filter((message) => message !== null),
+        mergeMap((message) => this.toastr.warning(message).onHidden)
+      )
+      .subscribe(() => this.store.dispatch(NotesActions.clearNotesMessages()));
+    this.subscriptions.add(notesSuccessMessageSub);
   }
 
   private getLoadingStatus() {
