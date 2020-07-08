@@ -7,6 +7,5 @@ import { NotesEffects } from './effects/notes.effects';
 
 @NgModule({
   imports: [CommonModule, StoreModule.forFeature('notes', notesReducer), EffectsModule.forFeature([NotesEffects])],
-  exports: [StoreModule, EffectsModule],
 })
 export class NotesStroreModule {}

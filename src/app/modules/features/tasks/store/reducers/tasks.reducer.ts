@@ -3,7 +3,7 @@ import { Task } from '@interfaces/task.interface';
 import { TasksActions, TasksApiActions } from '../actions';
 
 export interface TasksState {
-  tasks: Task[] | [];
+  tasks: Task[];
   selectedTask: Task | null;
   pageLoading: boolean;
   itemLoading: boolean;
