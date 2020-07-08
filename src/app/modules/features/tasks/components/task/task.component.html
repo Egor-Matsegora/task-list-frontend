@@ -5,7 +5,7 @@
       <button
         *ngIf="!isDeleted"
         class="button button_action"
-        [ngClass]="{'button_action-done': isDone}"
+        [ngClass]="{'button_action-done': task.done}"
         (click)="onDone()"
       >
         <svg viewBox="0 0 512 512">

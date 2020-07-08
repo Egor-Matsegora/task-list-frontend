@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { transition, useAnimation, trigger } from '@angular/animations';
-import { switchMap } from 'rxjs/operators';
-import { Subscription, from } from 'rxjs';
+import { switchMap, mergeMap, filter } from 'rxjs/operators';
+import { Subscription, from, Observable } from 'rxjs';
 // services
 import { TasksService } from '@features/tasks/services/tasks/tasks.service';
 import { ToastrService } from 'ngx-toastr';
@@ -9,25 +9,29 @@ import { ToastrService } from 'ngx-toastr';
 import { Task } from '@interfaces/task.interface';
 // animations
 import { removeAnimation, addAnimation } from '@app/animations/item.animation';
+import { Store } from '@ngrx/store';
+import { TasksState, TasksActions } from './../../store';
+import { TasksApiActions } from '../../store/actions';
 
 @Component({
   selector: 'task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
-  animations: [trigger('itemAnimation', [transition(':leave', [useAnimation(removeAnimation)])])]
+  animations: [trigger('itemAnimation', [transition(':leave', [useAnimation(removeAnimation)])])],
 })
 export class TaskListComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
-  items: Task[] = [];
-  isLoading: boolean = false;
+  items$: Observable<Task[]>;
+  isLoading: boolean;
+  isEmptyContent: boolean;
 
-  constructor(private tasksService: TasksService, private toastr: ToastrService) {}
+  constructor(private tasksService: TasksService, private toastr: ToastrService, private store: Store) {}
 
   ngOnInit() {
     this.getTasks();
-    this.subToAddTaskState();
-    this.subToUpdateTaskState();
-    this.subToDeleteDoneTasksState();
+    this.subToPageLoadingState();
+    this.subToEmptyTasksState();
+    this.subToTaskErrorState();
   }
 
   ngOnDestroy() {
@@ -35,95 +39,44 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   private getTasks() {
-    this.isLoading = true;
-    this.subscriptions.add(
-      this.tasksService.getTasks().subscribe(
-        response => {
-          this.isLoading = false;
-          this.items = response;
-        },
-        error => {
-          this.isLoading = false;
-          this.toastr.error('Ошибка в загрузке задач');
-        }
+    this.store.dispatch(TasksActions.TasksApiActions.loadTasks());
+    this.items$ = this.store.select(TasksState.getTasks);
+  }
+
+  private subToPageLoadingState() {
+    const storeLoadingSub = this.store
+      .select(TasksState.getPageLoading)
+      .subscribe((status) => (this.isLoading = status));
+    this.subscriptions.add(storeLoadingSub);
+  }
+
+  private subToEmptyTasksState() {
+    const storeEmptySub = this.store
+      .select(TasksState.getEmptyTasksState)
+      .subscribe((status) => (this.isEmptyContent = status));
+    this.subscriptions.add(storeEmptySub);
+  }
+
+  private subToTaskErrorState() {
+    const storeErrorSub = this.store
+      .select(TasksState.getError)
+      .pipe(
+        filter((error) => error !== null),
+        mergeMap((error) => this.toastr.error(error).onHidden)
       )
-    );
+      .subscribe(() => this.store.dispatch(TasksActions.TasksActions.clearTasksMessages()));
+    this.subscriptions.add(storeErrorSub);
   }
 
-  private subToAddTaskState() {
-    this.subscriptions.add(
-      this.tasksService.addTaskState$.subscribe(task => {
-        task && this.items.push(task);
-      })
-    );
+  onDone(task: Task) {
+    this.store.dispatch(TasksActions.TasksApiActions.doneTask({ task }));
   }
 
-  private subToUpdateTaskState() {
-    this.subscriptions.add(
-      this.tasksService.updateTaskState$.subscribe(task => {
-        if (!task) return;
-        this.items = this.items.map(item => {
-          const result = task._id === item._id ? task : item;
-          return result;
-        });
-      })
-    );
+  onDelete(task: Task) {
+    this.store.dispatch(TasksActions.TasksApiActions.deleteTask({ task }));
   }
 
-  private subToDeleteDoneTasksState() {
-    this.subscriptions.add(
-      this.tasksService.deleteDoneTasksState$
-        .pipe(
-          switchMap(() => from(this.items.filter(item => item.done))),
-          switchMap(item => this.tasksService.deleteTask(item))
-        )
-        .subscribe(
-          (response: any) => {
-            if (!response.success) return;
-            const doneTasks = this.items.filter(item => item.done);
-            doneTasks.forEach(task => {
-              const index = this.items.indexOf(task);
-              index !== -1 && this.items.splice(index, 1);
-            });
-            this.toastr.warning('Все выполненные задачи удалены');
-          },
-          error => this.toastr.error('Ошибка удаления задач')
-        )
-    );
-  }
-
-  onDone(value) {
-    const task = this.items.find(item => item._id === value.id);
-    task.done = value.done;
-    this.subscriptions.add(
-      this.tasksService.updateTask(task).subscribe(
-        task => {
-          this.items = this.items.map(item => {
-            if (item._id === task._id) item.done = task.done;
-            return item;
-          });
-          this.toastr.success(`Задача "${task.tytle}" обновлена`);
-        },
-        error => {
-          this.toastr.error('Ошибка в обновлении заачи');
-        }
-      )
-    );
-  }
-
-  onDelete(id) {
-    const task = this.items.find(item => item._id === id);
-    const index = this.items.indexOf(task);
-    if (index === -1) return;
-    this.subscriptions.add(
-      this.tasksService.deleteTask(task).subscribe(
-        response => {
-          if (!response.success) return;
-          this.items.splice(index, 1);
-          this.toastr.warning(`Задача "${task.tytle}" удалена`);
-        },
-        error => this.toastr.error('Ошибка в удалении задачи')
-      )
-    );
+  onUpdate(task: Task) {
+    this.store.dispatch(TasksActions.TasksActions.selectTask({ task }));
   }
 }

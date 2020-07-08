@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { trigger, transition, useAnimation } from '@angular/animations';
 
 import { NgxSmartModalService } from 'ngx-smart-modal';
@@ -13,25 +13,23 @@ import { fromEvent, Subscription, timer } from 'rxjs';
   animations: [
     trigger('menuAnimation', [
       transition(':enter', [useAnimation(enterAnimation)]),
-      transition(':leave', [useAnimation(leaveAnimation)])
-    ])
-  ]
+      transition(':leave', [useAnimation(leaveAnimation)]),
+    ]),
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TaskComponent implements OnChanges, OnDestroy {
+export class TaskComponent implements OnDestroy {
   private clickSubscription: Subscription;
   private timerSubscription: Subscription;
   @Input() task: Task;
   @Output() done: EventEmitter<any> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
+  @Output() update: EventEmitter<Task> = new EventEmitter();
   isDone: boolean;
   isDeleted: boolean = false;
   isMenuVisible: boolean = false;
 
-  constructor(private smartModal: NgxSmartModalService) {}
-
-  ngOnChanges() {
-    this.isDone = this.task.done;
-  }
+  constructor() {}
 
   ngOnDestroy(): void {
     this.clickSubscription && this.clickSubscription.unsubscribe();
@@ -56,8 +54,7 @@ export class TaskComponent implements OnChanges, OnDestroy {
   }
 
   onDone() {
-    this.isDone = !this.isDone;
-    this.done.emit({ id: this.task._id, done: this.isDone });
+    this.done.emit(this.task);
   }
 
   changeMenuVisibility() {
@@ -73,16 +70,13 @@ export class TaskComponent implements OnChanges, OnDestroy {
     this.isDeleted = true;
     this.closeMenu();
     this.timerSubscription = timer(3000).subscribe(() => {
-      this.isDeleted && this.delete.emit(this.task._id);
+      this.isDeleted && this.delete.emit(this.task);
     });
   }
 
   onUpdate() {
     this.closeMenu();
-    const taskModal = this.smartModal.getModal('taskModal');
-    if (!taskModal) return;
-    taskModal.setData(this.task);
-    taskModal.open();
+    this.update.emit(this.task);
   }
 
   recoverTask() {

@@ -21,3 +21,5 @@ export const getError = createSelector(getTasksFeatureState, (state) => state.er
 export const getTasksSuccessMessage = createSelector(getTasksFeatureState, (state) => state.successMessage);
 
 export const getTaskDeleteMessage = createSelector(getTasksFeatureState, (state) => state.deleteMessage);
+
+export const getEmptyTasksState = createSelector(getTasksFeatureState, (state) => !state.tasks.length);

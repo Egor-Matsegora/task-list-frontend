@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { TasksService } from '../../services/tasks/tasks.service';
@@ -63,8 +63,14 @@ export class TasksEffects {
   doneTask$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(TasksApiActions.doneTask),
-      mergeMap((action) => {
-        return this.tasksService.updateTask(action.task).pipe(
+      map((action) => {
+        return {
+          ...action.task,
+          done: !action.task.done,
+        };
+      }),
+      mergeMap((task) => {
+        return this.tasksService.updateTask(task).pipe(
           map((task) => TasksActions.doneTaskSuccess({ task })),
           catchError(() => of(TasksActions.createTaskFailure({ error: 'Ошибка обновления задачи' })))
         );

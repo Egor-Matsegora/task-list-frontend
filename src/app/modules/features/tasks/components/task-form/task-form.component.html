@@ -1,12 +1,12 @@
 <div class="task-form">
 
   <!-- заголовок при добавлении задачи -->
-  <div class="task-form__header" *ngIf="modalData">
+  <div class="task-form__header" *ngIf="taskForUpdate">
     Редактирование задачи
   </div>
 
   <!-- заголовок при редактировании задачи -->
-  <div class="task-form__header" *ngIf="!modalData">
+  <div class="task-form__header" *ngIf="!taskForUpdate">
     Добавление задачи
   </div>
 
@@ -78,7 +78,7 @@
         [isDisabled]="form.invalid"
         (click)="createTask()"
         (keyress.enter)="createTask()"
-        *ngIf="!modalData"
+        *ngIf="!taskForUpdate"
       >
         Добавить задачу
       </ui-button>
@@ -88,7 +88,7 @@
         [isDisabled]="form.invalid"
         (click)="updateTask()"
         (keyress.enter)="updateTask()"
-        *ngIf="modalData"
+        *ngIf="taskForUpdate"
       >
         Редактировать задачу
       </ui-button>

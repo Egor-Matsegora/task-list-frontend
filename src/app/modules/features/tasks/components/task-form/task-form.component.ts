@@ -11,6 +11,9 @@ import { enterAnimation, leaveAnimation } from '@app/animations/dynamic-control.
 import { Task } from '@interfaces/task.interface';
 // smart modal
 import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
+import { Store } from '@ngrx/store';
+import { TasksState } from '../../store';
+import { TasksActions, TasksApiActions } from '../../store/actions';
 
 @Component({
   selector: 'task-form',
@@ -28,7 +31,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   options: FormGroup;
   optionsChecks: FormGroup;
   taskTytle: FormControl;
-  modalData: Task;
+  taskForUpdate: Task;
   private modal: NgxSmartModalComponent;
   private subscriptions: Subscription = new Subscription();
 
@@ -36,7 +39,8 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     private smartModal: NgxSmartModalService,
     private fb: FormBuilder,
     private tasksService: TasksService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -44,7 +48,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.inintForm();
     this.setFormVariables();
     this.setValidators();
-    this.checkModalData();
+    this.checkSelectedTaskState();
     this.subToCloseEvent();
   }
 
@@ -111,7 +115,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.modal.onAnyCloseEvent.subscribe(() => {
         this.form.reset();
-        this.modal.removeData();
+        this.taskForUpdate && this.store.dispatch(TasksActions.unselectTask());
       })
     );
   }
@@ -122,17 +126,20 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * Устанавливаем значение инпутов на основе полученных данных
    * Если их нет, значит задача создается
    */
-  private checkModalData(): void {
-    this.subscriptions.add(
-      this.modal.onOpen.subscribe(() => {
-        this.modalData = this.modal.getData();
-        if (!!this.modalData) {
-          this.taskTytle.setValue(this.modalData.tytle);
-          this.optionsChecks.controls.description.setValue(!!this.modalData.description);
-          this.options.controls.description.setValue(this.modalData.description);
+  private checkSelectedTaskState(): void {
+    const selectedTaskStateSub = this.store
+      .select(TasksState.getSelectedTask)
+      .pipe()
+      .subscribe((task) => {
+        this.taskForUpdate = task;
+        if (task) {
+          this.modal.open();
+          this.taskTytle.setValue(task.tytle);
+          this.optionsChecks.controls.description.setValue(!!task.description);
+          this.options.controls.description.setValue(task.description);
         }
-      })
-    );
+      });
+    this.subscriptions.add(selectedTaskStateSub);
   }
 
   /**
@@ -169,24 +176,13 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    */
   updateTask(): void {
     if (this.form.valid) {
+      const result: Task = {
+        ...this.taskForUpdate,
+        tytle: this.taskTytle.value,
+        description: this.optionsChecks.controls.description.value ? this.options.controls.description.value : null,
+      };
       this.form.disable();
-      this.modalData.tytle = this.taskTytle.value;
-      this.modalData.description = this.optionsChecks.controls.description.value
-        ? this.options.controls.description.value
-        : null;
-      this.subscriptions.add(
-        this.tasksService.updateTask(this.modalData).subscribe(
-          (task) => {
-            this.form.enable();
-            this.toastr.success(`Задача "${this.modalData.tytle}" успешно обновлена`);
-            this.modal.close();
-          },
-          (error) => {
-            this.form.enable();
-            this.toastr.error('Ошибка в обновлении задачи');
-          }
-        )
-      );
+      this.store.dispatch(TasksApiActions.updateTask({ task: result }));
     }
   }
 

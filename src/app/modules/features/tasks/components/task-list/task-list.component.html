@@ -1,20 +1,21 @@
 <div class="task-list">
 
-  <ng-container *ngIf="items?.length && !isLoading">
+  <ng-container *ngIf="!isEmptyContent && !isLoading">
     <div
       class="task-list__item"
-      *ngFor="let item of items"
+      *ngFor="let item of items$ | async"
       @itemAnimation
     >
       <task
         [task]="item"
         (done)="onDone($event)"
         (delete)="onDelete($event)"
+        (update)="onUpdate($event)"
       ></task>
     </div>
   </ng-container>
 
-  <div class="task-list__message" *ngIf="!items?.length && !isLoading">
+  <div class="task-list__message" *ngIf="isEmptyContent && !isLoading">
     еще нет ни одной задачи
   </div>
 
