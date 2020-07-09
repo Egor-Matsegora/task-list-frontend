@@ -13,21 +13,21 @@
   <form class="task-form__form form" [formGroup]="form">
 
     <div class="form__control">
-      <label class="form__label" for="task-tytle">Заголовок</label>
+      <label class="form__label" for="task-title">Заголовок</label>
       <textarea
         class="form__input form__input_textarea"
         type="text"
-        name="tytle"
-        id="task-tytle"
-        formControlName="tytle"
-        [ngClass]="{'form__input_error': taskTytle.invalid && taskTytle.touched}"
+        name="title"
+        id="task-title"
+        formControlName="title"
+        [ngClass]="{'form__input_error': taskTitle.invalid && taskTitle.touched}"
         rows="2"
       >
 
       </textarea>
       <div
         class="form__error-message"
-        *ngIf="taskTytle.invalid && taskTytle.touched"
+        *ngIf="taskTitle.invalid && taskTitle.touched"
       >
         Поле должно быть заполненно
       </div>
@@ -80,7 +80,8 @@
         (keyress.enter)="createTask()"
         *ngIf="!taskForUpdate"
       >
-        Добавить задачу
+        <loader *ngIf="isLoading"></loader>
+        {{ !isLoading ? 'Добавить задачу' : '' }}
       </ui-button>
 
       <ui-button
@@ -90,7 +91,8 @@
         (keyress.enter)="updateTask()"
         *ngIf="taskForUpdate"
       >
-        Редактировать задачу
+        <loader *ngIf="isLoading"></loader>
+        {{ !isLoading ? 'Редактировать задачу' : '' }}
       </ui-button>
 
       <ui-button

@@ -4,7 +4,7 @@ import { Task } from '@interfaces/task.interface';
 
 export const loadTasks = createAction(TasksActionTypes.LOAD_TASKS);
 
-export const createTask = createAction(TasksActionTypes.CREATE_TASK, props<{ task: Task }>());
+export const createTask = createAction(TasksActionTypes.CREATE_TASK, props<{ title: string; description?: string }>());
 
 export const updateTask = createAction(TasksActionTypes.UPDATE_TASK, props<{ task: Task }>());
 

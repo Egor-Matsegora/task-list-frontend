@@ -30,9 +30,9 @@
 
     <div
       class="task__title"
-      [ngClass]="{'task__title_done': isDone, 'task__title_deleted': isDeleted}"
+      [ngClass]="{'task__title_done': task.done, 'task__title_deleted': isDeleted}"
     >
-      {{ task.tytle }}
+      {{ task.title }}
     </div>
 
     <div class="task__button task__button_menu">

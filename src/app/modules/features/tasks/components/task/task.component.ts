@@ -25,7 +25,6 @@ export class TaskComponent implements OnDestroy {
   @Output() done: EventEmitter<any> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
   @Output() update: EventEmitter<Task> = new EventEmitter();
-  isDone: boolean;
   isDeleted: boolean = false;
   isMenuVisible: boolean = false;
 
@@ -50,7 +49,7 @@ export class TaskComponent implements OnDestroy {
   }
 
   deleteNow() {
-    this.delete.emit(this.task._id);
+    this.delete.emit(this.task);
   }
 
   onDone() {

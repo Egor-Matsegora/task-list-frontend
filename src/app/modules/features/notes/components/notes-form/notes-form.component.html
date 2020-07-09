@@ -50,12 +50,12 @@
         *ngIf="titleCheck.value"
         @controlAnimation
       >
-        <label class="form__label" for="notes-tytle">Заголовок</label>
+        <label class="form__label" for="notes-title">Заголовок</label>
         <input
           class="form__input"
           type="text"
           name="title"
-          id="notes-tytle"
+          id="notes-title"
           formControlName="title"
           [ngClass]="{'form__input_error': noteTitle.invalid && noteTitle.touched}"
         >

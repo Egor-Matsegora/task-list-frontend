@@ -32,7 +32,7 @@ const reducer = createReducer(
   ),
   on(TasksActions.loadTasksFailure, (state, { error }): TasksState => ({ ...state, error, pageLoading: false })),
   // create task
-  on(TasksApiActions.createTask, (state, { task }): TasksState => ({ ...state, itemLoading: true })),
+  on(TasksApiActions.createTask, (state, { title, description }): TasksState => ({ ...state, itemLoading: true })),
   on(
     TasksActions.createTaskSuccess,
     (state, { task, successMessage }): TasksState => {
@@ -41,7 +41,7 @@ const reducer = createReducer(
         successMessage,
         itemLoading: false,
         error: null,
-        tasks: [task, ...state.tasks],
+        tasks: [...state.tasks, task],
       };
     }
   ),

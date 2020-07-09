@@ -28,7 +28,7 @@ export class TasksEffects {
     return this.actions$.pipe(
       ofType(TasksApiActions.createTask),
       mergeMap((action) => {
-        return this.tasksService.createTask(action.task).pipe(
+        return this.tasksService.createTask({ title: action.title, description: action.description }).pipe(
           map((task) => TasksActions.createTaskSuccess({ task, successMessage: 'Задача успешно создана' })),
           catchError((err) => of(TasksActions.createTaskFailure({ error: 'Ошибка создания задачи' })))
         );
@@ -52,6 +52,7 @@ export class TasksEffects {
     return this.actions$.pipe(
       ofType(TasksApiActions.deleteTask),
       mergeMap((action) => {
+        console.log(action.task);
         return this.tasksService.deleteTask(action.task).pipe(
           map(() => TasksActions.deleteTasksSuccess({ task: action.task, deleteMessage: 'Заметка успешно удалена' })),
           catchError(() => of(TasksActions.deleteTasksFailure({ error: 'Ошибка удаления задачи' })))
