@@ -19,6 +19,7 @@ import {
   hasNotes,
   getDeleteMessage,
   getSuccesMessage,
+  getAnimationState,
 } from '@features/notes/store/state';
 import { NotesApiActions, NotesActions } from '@features/notes/store/actions';
 
@@ -34,6 +35,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   error$: Observable<any>;
   hasContent: boolean;
+  disableAnimation: boolean;
 
   constructor(private toastr: ToastrService, private store: Store<State>, private smartModal: NgxSmartModalService) {}
 
@@ -45,6 +47,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
     this.dispatchLoadAction();
     this.subToNotesSuccessMessages();
     this.subToNotesDeleteMessages();
+    this.getAnimationState();
   }
 
   ngOnDestroy() {
@@ -52,6 +55,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(note: Note) {
+    this.store.dispatch(NotesActions.enableNotesAnimation());
     this.store.dispatch(NotesApiActions.deleteNote({ note }));
   }
 
@@ -107,5 +111,16 @@ export class NotesListComponent implements OnInit, OnDestroy {
 
   private dispatchLoadAction() {
     this.store.dispatch(NotesApiActions.loadNotes());
+  }
+
+  private getAnimationState() {
+    const animationStateSub = this.store
+      .select(getAnimationState)
+      .subscribe((status) => (this.disableAnimation = status));
+    this.subscriptions.add(animationStateSub);
+  }
+
+  captureAnimationEvent() {
+    !this.disableAnimation && this.store.dispatch(NotesActions.disableNotesAnimation());
   }
 }

@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { transition, useAnimation, trigger } from '@angular/animations';
-import { switchMap, mergeMap, filter } from 'rxjs/operators';
-import { Subscription, from, Observable } from 'rxjs';
+import { mergeMap, filter } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
 // services
-import { TasksService } from '@features/tasks/services/tasks/tasks.service';
 import { ToastrService } from 'ngx-toastr';
 // interfaces
 import { Task } from '@interfaces/task.interface';
@@ -11,7 +10,6 @@ import { Task } from '@interfaces/task.interface';
 import { removeAnimation, addAnimation } from '@app/animations/item.animation';
 import { Store } from '@ngrx/store';
 import { TasksState, TasksActions } from './../../store';
-import { TasksApiActions } from '../../store/actions';
 
 @Component({
   selector: 'task-list',
@@ -24,14 +22,17 @@ export class TaskListComponent implements OnInit, OnDestroy {
   items$: Observable<Task[]>;
   isLoading: boolean;
   isEmptyContent: boolean;
+  disableAnimation: boolean;
 
-  constructor(private tasksService: TasksService, private toastr: ToastrService, private store: Store) {}
+  constructor(private toastr: ToastrService, private store: Store) {}
 
   ngOnInit() {
     this.getTasks();
     this.subToPageLoadingState();
     this.subToEmptyTasksState();
     this.subToTaskErrorState();
+    this.subToMessagesState();
+    this.subToAnimationState();
   }
 
   ngOnDestroy() {
@@ -68,11 +69,43 @@ export class TaskListComponent implements OnInit, OnDestroy {
     this.subscriptions.add(storeErrorSub);
   }
 
+  private subToMessagesState() {
+    const successMsgStateSub = this.store
+      .select(TasksState.getTasksSuccessMessage)
+      .pipe(
+        filter((message) => message !== null),
+        mergeMap((message) => this.toastr.success(message).onHidden)
+      )
+      .subscribe(() => this.store.dispatch(TasksActions.TasksActions.clearTasksMessages()));
+
+    const delMsgStateSub = this.store
+      .select(TasksState.getTaskDeleteMessage)
+      .pipe(
+        filter((message) => message !== null),
+        mergeMap((message) => this.toastr.warning(message).onHidden)
+      )
+      .subscribe(() => this.store.dispatch(TasksActions.TasksActions.clearTasksMessages()));
+
+    this.subscriptions.add(successMsgStateSub).add(delMsgStateSub);
+  }
+
+  private subToAnimationState() {
+    const animationStateSub = this.store
+      .select(TasksState.getAnimationState)
+      .subscribe((state) => (this.disableAnimation = state));
+    this.subscriptions.add(animationStateSub);
+  }
+
+  captureAnimationDone() {
+    !this.disableAnimation && this.store.dispatch(TasksActions.TasksActions.disableTasksAnimations());
+  }
+
   onDone(task: Task) {
     this.store.dispatch(TasksActions.TasksApiActions.doneTask({ task }));
   }
 
   onDelete(task: Task) {
+    this.store.dispatch(TasksActions.TasksActions.enableTasksAnimations());
     this.store.dispatch(TasksActions.TasksApiActions.deleteTask({ task }));
   }
 

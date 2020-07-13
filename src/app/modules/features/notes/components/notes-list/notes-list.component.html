@@ -1,7 +1,12 @@
-<div class="notes-list">
+<div class="notes-list" [@.disabled]="disableAnimation">
 
     <ng-container *ngIf="!isLoading && hasContent">
-      <div class="notes-list__item" *ngFor="let item of items$ | async" @itemAnimation>
+      <div
+        class="notes-list__item"
+        *ngFor="let item of items$ | async"
+        @itemAnimation
+        (@itemAnimation.done)="captureAnimationEvent()"
+      >
         <note
           [note]="item"
           (delete)="onDelete($event)"

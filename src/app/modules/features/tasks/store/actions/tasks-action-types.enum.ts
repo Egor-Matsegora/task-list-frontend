@@ -17,4 +17,6 @@ export enum TasksActionTypes {
   SELECT_TASK = '[Tasks] Select Task',
   UNSELECT_TASK = '[Tasks] Unselect Tasks',
   CLEAR_TASK_MESSAGES = '[Task] Clear Tasks messages',
+  DISABLE_TASKS_ANIMATIONS = '[Tasks] Disable animations',
+  ENABLE_TASKS_ANIMATIONS = '[Tasks] Enable animations',
 }

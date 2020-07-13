@@ -10,6 +10,7 @@ export interface NotesState {
   noteLoading: boolean;
   successMessage: string | null;
   deleteMessage: string | null;
+  disableAnimation: boolean;
 }
 
 export const initialNotesState: NotesState = {
@@ -20,6 +21,7 @@ export const initialNotesState: NotesState = {
   noteLoading: false,
   successMessage: null,
   deleteMessage: null,
+  disableAnimation: true,
 };
 
 export interface State extends RootState {
@@ -43,3 +45,5 @@ export const hasNotes = createSelector(getNotesFeatureState, (state) => !!state.
 export const getSuccesMessage = createSelector(getNotesFeatureState, (state) => state.successMessage);
 
 export const getDeleteMessage = createSelector(getNotesFeatureState, (state) => state.deleteMessage);
+
+export const getAnimationState = createSelector(getNotesFeatureState, (state) => state.disableAnimation);

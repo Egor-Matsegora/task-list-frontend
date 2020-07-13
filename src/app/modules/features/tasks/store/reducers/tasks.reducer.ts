@@ -1,6 +1,7 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { Task } from '@interfaces/task.interface';
 import { TasksActions, TasksApiActions } from '../actions';
+import { TasksState } from '..';
 
 export interface TasksState {
   tasks: Task[];
@@ -10,6 +11,7 @@ export interface TasksState {
   error: string | null;
   successMessage: string | null;
   deleteMessage: string | null;
+  disableAnimation: boolean;
 }
 
 export const initialTasksState: TasksState = {
@@ -20,6 +22,7 @@ export const initialTasksState: TasksState = {
   error: null,
   successMessage: null,
   deleteMessage: null,
+  disableAnimation: true,
 };
 
 const reducer = createReducer(
@@ -68,7 +71,12 @@ const reducer = createReducer(
   on(
     TasksActions.deleteTasksSuccess,
     (state, { task, deleteMessage }): TasksState => {
-      return { ...state, deleteMessage, error: null, tasks: state.tasks.filter((item) => item._id !== task._id) };
+      return {
+        ...state,
+        deleteMessage,
+        error: null,
+        tasks: state.tasks.filter((item) => item._id !== task._id),
+      };
     }
   ),
   on(TasksActions.deleteTasksFailure, (state, { error }): TasksState => ({ ...state, error })),
@@ -93,7 +101,10 @@ const reducer = createReducer(
   on(
     TasksActions.clearTasksMessages,
     (state): TasksState => ({ ...state, successMessage: null, deleteMessage: null, error: null })
-  )
+  ),
+  // animations
+  on(TasksActions.disableTasksAnimations, (state): TasksState => ({ ...state, disableAnimation: true })),
+  on(TasksActions.enableTasksAnimations, (state): TasksState => ({ ...state, disableAnimation: false }))
 );
 
 export function tasksReducer(state: TasksState | undefined, action: Action) {

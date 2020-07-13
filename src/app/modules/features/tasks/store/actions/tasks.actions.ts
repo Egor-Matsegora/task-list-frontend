@@ -43,3 +43,7 @@ export const unselectTask = createAction(TasksActionTypes.UNSELECT_TASK);
 
 // clear task success and delete messages
 export const clearTasksMessages = createAction(TasksActionTypes.CLEAR_TASK_MESSAGES);
+
+// animations
+export const disableTasksAnimations = createAction(TasksActionTypes.DISABLE_TASKS_ANIMATIONS);
+export const enableTasksAnimations = createAction(TasksActionTypes.ENABLE_TASKS_ANIMATIONS);

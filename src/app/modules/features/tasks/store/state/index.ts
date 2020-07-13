@@ -23,3 +23,5 @@ export const getTasksSuccessMessage = createSelector(getTasksFeatureState, (stat
 export const getTaskDeleteMessage = createSelector(getTasksFeatureState, (state) => state.deleteMessage);
 
 export const getEmptyTasksState = createSelector(getTasksFeatureState, (state) => !state.tasks.length);
+
+export const getAnimationState = createSelector(getTasksFeatureState, (state) => state.disableAnimation);

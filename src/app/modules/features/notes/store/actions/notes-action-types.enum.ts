@@ -14,4 +14,6 @@ export enum ActionTypes {
   SELECT_NOTE = '[Notes] Select note',
   UNSELECT_NOTE = '[Notes] Unselect note',
   CLEAR_MESSAGES = '[Notes] Clear all messages',
+  DISABLE_NOTES_ANIMATION = '[Notes] Disable notes animation',
+  ENABLE_NOTES_ANIMATION = '[Notes] Enable notes animation',
 }

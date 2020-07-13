@@ -61,7 +61,12 @@ const reducer = createReducer<NotesState>(
   on(NotesActions.selectNote, (state, { note }): NotesState => ({ ...state, selectedNote: note })),
   on(NotesActions.unselectNote, (state): NotesState => ({ ...state, selectedNote: null })),
   // clear all messages
-  on(NotesActions.clearNotesMessages, (state) => ({ ...state, successMessage: null, deleteMessage: null, error: null }))
+  on(NotesActions.clearNotesMessages, (state) => {
+    return { ...state, successMessage: null, deleteMessage: null, error: null };
+  }),
+  // animations
+  on(NotesActions.disableNotesAnimation, (state): NotesState => ({ ...state, disableAnimation: true })),
+  on(NotesActions.enableNotesAnimation, (state): NotesState => ({ ...state, disableAnimation: false }))
 );
 
 export function notesReducer(state: NotesState | undefined, action: Action) {

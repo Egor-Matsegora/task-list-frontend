@@ -38,3 +38,8 @@ export const deleteNoteFailure = createAction(ActionTypes.DELETE_NOTE_FAILURE, p
 
 // clear messages
 export const clearNotesMessages = createAction(ActionTypes.CLEAR_MESSAGES);
+
+// animation
+export const disableNotesAnimation = createAction(ActionTypes.DISABLE_NOTES_ANIMATION);
+
+export const enableNotesAnimation = createAction(ActionTypes.ENABLE_NOTES_ANIMATION);

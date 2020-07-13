@@ -146,7 +146,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * создание задачи
    */
   createTask(): void {
-    if (this.form.valid) {
+    if (this.form.valid && !this.taskForUpdate) {
       this.form.disable();
       const task = {
         title: this.taskTitle.value,
@@ -160,7 +160,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    * обновление задачи
    */
   updateTask(): void {
-    if (this.form.valid) {
+    if (this.form.valid && this.taskForUpdate) {
       const result: Task = {
         ...this.taskForUpdate,
         title: this.taskTitle.value,

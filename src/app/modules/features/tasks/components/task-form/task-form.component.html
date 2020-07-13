@@ -10,7 +10,11 @@
     Добавление задачи
   </div>
 
-  <form class="task-form__form form" [formGroup]="form">
+  <form
+    class="task-form__form form"
+    [formGroup]="form"
+    (keydown.control.enter)="taskForUpdate ? updateTask() : createTask()"
+  >
 
     <div class="form__control">
       <label class="form__label" for="task-title">Заголовок</label>
@@ -77,7 +81,6 @@
         [classList]="['button_submit', 'button_block']"
         [isDisabled]="form.invalid"
         (click)="createTask()"
-        (keyress.enter)="createTask()"
         *ngIf="!taskForUpdate"
       >
         <loader *ngIf="isLoading"></loader>
@@ -88,7 +91,6 @@
         [classList]="['button_submit', 'button_block']"
         [isDisabled]="form.invalid"
         (click)="updateTask()"
-        (keyress.enter)="updateTask()"
         *ngIf="taskForUpdate"
       >
         <loader *ngIf="isLoading"></loader>

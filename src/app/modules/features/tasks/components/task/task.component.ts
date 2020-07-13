@@ -16,7 +16,6 @@ import { fromEvent, Subscription, timer } from 'rxjs';
       transition(':leave', [useAnimation(leaveAnimation)]),
     ]),
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskComponent implements OnDestroy {
   private clickSubscription: Subscription;
