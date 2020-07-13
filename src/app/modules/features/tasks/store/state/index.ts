@@ -25,3 +25,7 @@ export const getTaskDeleteMessage = createSelector(getTasksFeatureState, (state)
 export const getEmptyTasksState = createSelector(getTasksFeatureState, (state) => !state.tasks.length);
 
 export const getAnimationState = createSelector(getTasksFeatureState, (state) => state.disableAnimation);
+
+export const getDoneTasksState = createSelector(getTasksFeatureState, (state) =>
+  state.tasks.filter((task) => task.done)
+);

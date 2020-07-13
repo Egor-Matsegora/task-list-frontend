@@ -28,4 +28,8 @@ export class TasksService {
   deleteTask(task): Observable<any> {
     return this.http.delete(this.url + task._id).pipe(catchError((error) => handleHttpError(error)));
   }
+
+  deleteMultipleTasks(ids: string[]): Observable<any> {
+    return this.http.post(this.url + 'delete_multiple', { ids });
+  }
 }

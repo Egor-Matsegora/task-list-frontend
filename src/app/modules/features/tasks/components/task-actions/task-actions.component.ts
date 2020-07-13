@@ -1,4 +1,8 @@
+import { Task } from '@interfaces/task.interface';
+import { getDoneTasksState } from './../../store/state/index';
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { TasksApiActions, TasksActions } from '../../store/actions';
 
 @Component({
   selector: 'task-actions',
@@ -6,9 +10,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./task-actions.component.scss'],
 })
 export class TaskActionsComponent implements OnInit {
-  constructor() {}
+  doneTasks: Task[];
 
-  ngOnInit() {}
+  constructor(private store: Store) {}
 
-  deleteCompleted() {}
+  ngOnInit() {
+    this.getDoneTasks();
+  }
+
+  private getDoneTasks() {
+    this.store.select(getDoneTasksState).subscribe((tasks) => (this.doneTasks = tasks));
+  }
+
+  deleteCompleted() {
+    if (!this.doneTasks.length) return;
+    this.store.dispatch(TasksActions.enableTasksAnimations());
+    this.store.dispatch(TasksApiActions.deleteMultipleTasks({ tasks: this.doneTasks }));
+  }
 }

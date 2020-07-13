@@ -48,14 +48,28 @@ export class TasksEffects {
     );
   });
 
-  daleteTask$ = createEffect(() => {
+  deleteTask$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(TasksApiActions.deleteTask),
       mergeMap((action) => {
-        console.log(action.task);
         return this.tasksService.deleteTask(action.task).pipe(
-          map(() => TasksActions.deleteTasksSuccess({ task: action.task, deleteMessage: 'Заметка успешно удалена' })),
+          map(() => TasksActions.deleteTasksSuccess({ task: action.task, deleteMessage: 'Задача успешно удалена' })),
           catchError(() => of(TasksActions.deleteTasksFailure({ error: 'Ошибка удаления задачи' })))
+        );
+      })
+    );
+  });
+
+  deleteMultipleTasks = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(TasksApiActions.deleteMultipleTasks),
+      mergeMap((action) => {
+        return this.tasksService.deleteMultipleTasks(action.tasks.map((task) => task._id)).pipe(
+          map(() => {
+            const tasks = action.tasks;
+            return TasksActions.deleteMultipleTasksSuccess({ tasks, deleteMessage: 'Выполненные задачи удалены' });
+          }),
+          catchError(() => of(TasksActions.deleteMultipleTasksFailure({ error: 'Ошибка удаления задач' })))
         );
       })
     );

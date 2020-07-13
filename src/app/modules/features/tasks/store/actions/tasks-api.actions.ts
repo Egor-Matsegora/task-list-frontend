@@ -11,3 +11,5 @@ export const updateTask = createAction(TasksActionTypes.UPDATE_TASK, props<{ tas
 export const doneTask = createAction(TasksActionTypes.DONTE_TASK, props<{ task: Task }>());
 
 export const deleteTask = createAction(TasksActionTypes.DELETE_TASK, props<{ task: Task }>());
+
+export const deleteMultipleTasks = createAction(TasksActionTypes.DELETE_MULTIPLE_TASKS, props<{ tasks: Task[] }>());

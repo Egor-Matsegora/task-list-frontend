@@ -80,6 +80,19 @@ const reducer = createReducer(
     }
   ),
   on(TasksActions.deleteTasksFailure, (state, { error }): TasksState => ({ ...state, error })),
+  // delete multiple tasks
+  on(
+    TasksActions.deleteMultipleTasksSuccess,
+    (state, { tasks, deleteMessage }): TasksState => {
+      return {
+        ...state,
+        deleteMessage,
+        tasks: state.tasks.filter((task) => !task.done),
+        error: null,
+      };
+    }
+  ),
+  on(TasksActions.deleteMultipleTasksFailure, (state, { error }): TasksState => ({ ...state, error })),
   // done task
   on(
     TasksActions.doneTaskSuccess,

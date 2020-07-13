@@ -36,6 +36,17 @@ export const deleteTasksSuccess = createAction(
 
 export const deleteTasksFailure = createAction(TasksActionTypes.DELETE_TASK_FAILURE, props<{ error: string }>());
 
+// delete multiple tasks
+export const deleteMultipleTasksSuccess = createAction(
+  TasksActionTypes.DELETE_MULTIPLE_TASKS_SUCCESS,
+  props<{ tasks: Task[]; deleteMessage: string }>()
+);
+
+export const deleteMultipleTasksFailure = createAction(
+  TasksActionTypes.DELETE_MULTIPLE_TASKS_FAILURE,
+  props<{ error: string }>()
+);
+
 // select task for modal
 export const selectTask = createAction(TasksActionTypes.SELECT_TASK, props<{ task: Task }>());
 
@@ -46,4 +57,5 @@ export const clearTasksMessages = createAction(TasksActionTypes.CLEAR_TASK_MESSA
 
 // animations
 export const disableTasksAnimations = createAction(TasksActionTypes.DISABLE_TASKS_ANIMATIONS);
+
 export const enableTasksAnimations = createAction(TasksActionTypes.ENABLE_TASKS_ANIMATIONS);
