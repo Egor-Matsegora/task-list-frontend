@@ -10,7 +10,11 @@
     Добавление заметки
   </div>
 
-  <form class="notes-form__form form" [formGroup]="form">
+  <form
+    class="notes-form__form form"
+    [formGroup]="form"
+    (keydown.control.enter)="isNoteCreation ? createNote() : updateNote()"
+  >
 
     <div class="form__control">
       <label class="form__label" for="notes-text">Заметка</label>
@@ -74,7 +78,6 @@
         [classList]="['button_submit', 'button_block']"
         [isDisabled]="form.invalid"
         (click)="createNote()"
-        (keyress.enter)="createNote()"
         *ngIf="isNoteCreation"
       >
       <span *ngIf="!isLoading">Добавить заметку</span>
@@ -87,7 +90,6 @@
         [classList]="['button_submit', 'button_block']"
         [isDisabled]="form.invalid"
         (click)="updateNote()"
-        (keyress.enter)="updateNote()"
         *ngIf="!isNoteCreation"
       >
         <span *ngIf="!isLoading">Редактировать заметку</span>
