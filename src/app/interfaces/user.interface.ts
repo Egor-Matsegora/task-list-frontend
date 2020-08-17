@@ -3,5 +3,5 @@ export interface User {
   firstName: string;
   lastName: string;
   imageUrl?: string;
-  id?: string;
+  _id?: string;
 }

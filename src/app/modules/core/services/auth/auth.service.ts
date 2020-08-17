@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 // rxjs
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 // services
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 // helpers
 import { handleHttpError } from '@helpers/handle-http-error';
 // interfaces
-import { RegistretionUser } from '@interfaces/registration-user.inerface';
+import { RegistrationUser } from '@interfaces/registration-user.inerface';
 import { LoginUser } from '@interfaces/login-user.interface';
 import { LoginRequest } from '@interfaces/login-request.interface';
 
@@ -23,20 +23,19 @@ export class AuthService {
   login(user: LoginUser): Observable<LoginRequest> {
     return this.http.post<LoginRequest>(`${this.url}login`, user).pipe(
       map((req) => {
-        if (req && req.token) {
-          // console.log(req);
-          localStorage.setItem('token', req.token);
-          this.setToken(req.token);
-          this.asideState.setDefaultState();
-          return { success: req.success, user: req.user };
-        }
-        return { success: req.success, message: req.message };
+        localStorage.setItem('token', req.token);
+        this.setToken(req.token);
+        this.asideState.setDefaultState();
+        return { ...req };
       }),
-      catchError((error) => handleHttpError(error))
+      catchError((error) => {
+        handleHttpError(error);
+        return of({ success: error.success, message: error.message });
+      })
     );
   }
 
-  registration(user: RegistretionUser): Observable<any> {
+  registration(user: RegistrationUser): Observable<any> {
     return this.http.post(`${this.url}registration`, user).pipe(catchError((error) => handleHttpError(error)));
   }
 
