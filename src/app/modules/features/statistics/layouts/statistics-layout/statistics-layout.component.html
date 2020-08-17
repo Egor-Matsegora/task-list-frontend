@@ -1,13 +1,13 @@
 <div class="statistics">
-  <ng-container *ngIf="!isLoading && statistics">
+  <ng-container *ngIf="!(isLoading$ | async) && (statistics$ | async)">
     <div class="statistics__item">
-      <notes-stat [statistic]="statistics.notes"></notes-stat>
+      <notes-stat [statistic]="(statistics$ | async).notes"></notes-stat>
     </div>
     <div class="statistics__item">
-      <tasks-stat [statistic]="statistics.tasks"></tasks-stat>
+      <tasks-stat [statistic]="(statistics$ | async).tasks"></tasks-stat>
     </div>
   </ng-container>
-  <div class="statistics__loader" *ngIf="isLoading">
+  <div class="statistics__loader" *ngIf="isLoading$ | async">
     <loader></loader>
   </div>
 </div>

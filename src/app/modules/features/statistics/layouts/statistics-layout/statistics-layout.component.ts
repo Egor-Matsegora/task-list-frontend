@@ -1,8 +1,11 @@
-import { ToastrService } from 'ngx-toastr';
-import { StatisticsService } from './../../services/statistics.service';
+import { mergeMap } from 'rxjs/operators';
+import { loadStatisticsAction, clearStatisticsErrorsAction } from './../../store/actions/statistics.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription, empty } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { ToastrService } from 'ngx-toastr';
+import { getStatistics, getStatisticsLoading, getStatisticsError } from './../../store/state/statistics.state';
 import { Statistics } from '@interfaces/statistics.interface';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'statistics-layout',
@@ -10,33 +13,32 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./statistics-layout.component.scss'],
 })
 export class StatisticsLayoutComponent implements OnInit, OnDestroy {
-  statistics: Statistics;
-  isLoading: boolean = false;
-  private subscriptions: Subscription = new Subscription();
+  statistics$: Observable<Statistics>;
+  isLoading$: Observable<boolean>;
+  errorSub: Subscription;
 
-  constructor(private statisticsService: StatisticsService, private toastr: ToastrService) {}
+  constructor(private store: Store, private toastr: ToastrService) {}
 
   ngOnInit() {
-    this.getStatistics();
+    this.store.dispatch(loadStatisticsAction());
+    this.getStatisticsValues();
   }
 
   ngOnDestroy() {
-    this.subscriptions && this.subscriptions.unsubscribe();
+    this.errorSub && this.errorSub.unsubscribe();
   }
 
-  private getStatistics() {
-    this.isLoading = true;
-    this.subscriptions.add(
-      this.statisticsService.getStatistics().subscribe(
-        (response) => {
-          this.statistics = response;
-          this.isLoading = false;
-        },
-        (error) => {
-          this.toastr.error('Ошибка загрузки статистики');
-          this.isLoading = false;
-        }
+  private getStatisticsValues() {
+    this.statistics$ = this.store.select(getStatistics);
+    this.isLoading$ = this.store.select(getStatisticsLoading);
+    this.errorSub = this.store
+      .pipe(
+        select(getStatisticsError),
+        mergeMap((error) => {
+          if (error) return this.toastr.error(error).onHidden;
+          return empty();
+        })
       )
-    );
+      .subscribe(() => this.store.dispatch(clearStatisticsErrorsAction()));
   }
 }
