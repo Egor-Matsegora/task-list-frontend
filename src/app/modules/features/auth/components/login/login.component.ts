@@ -1,37 +1,62 @@
-import { AuthService } from '../../../../core/services/auth/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { clearAuthMessageAction } from './../../store/actions/auth.actions';
+import { mergeMap, filter } from 'rxjs/operators';
+import { getAuthLoading, getAuthError, getAuthMessage } from './../../store/state/auth.state';
+import { Store, select } from '@ngrx/store';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LoginActions } from '../../store/actions';
+import { Observable, Subscription, empty } from 'rxjs';
+import { clearAuthErrorAction } from '../../store/actions/auth.actions';
 
 @Component({
   selector: 'login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   formHeader: string = 'Вход';
-  loading: boolean = false;
+  loading$: Observable<boolean>;
   form: FormGroup;
   email: FormControl;
   password: FormControl;
+  private subscriptions: Subscription = new Subscription();
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private toastr: ToastrService
-  ) {}
+  constructor(private fb: FormBuilder, private store: Store, private toastr: ToastrService) {}
 
   ngOnInit() {
+    this.initStoreValues();
     this.initForm();
     this.initFormVars();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
+  private initStoreValues() {
+    this.loading$ = this.store.select(getAuthLoading);
+    const errorStoreSub = this.store
+      .pipe(
+        select(getAuthError),
+        filter((error) => error !== null),
+        mergeMap((error) => (error ? this.toastr.error(error).onHidden : empty()))
+      )
+      .subscribe(() => this.store.dispatch(clearAuthErrorAction()));
+    const messageStoreSub = this.store
+      .pipe(
+        select(getAuthMessage),
+        filter((message) => message !== null),
+        mergeMap((message) => (message ? this.toastr.info(message).onHidden : empty()))
+      )
+      .subscribe(() => this.store.dispatch(clearAuthMessageAction()));
+    this.subscriptions.add(errorStoreSub);
   }
 
   private initForm(): void {
     this.form = this.fb.group({
       email: this.fb.control('', [Validators.email, Validators.required]),
-      password: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)])
+      password: this.fb.control('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
     });
   }
 
@@ -42,25 +67,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.form.valid) {
-      this.form.disable();
-      this.loading = true;
-      this.authService.login(this.form.value).subscribe(
-        req => {
-          if (req.success) {
-            const userName = req.user.firstName + ' ' + req.user.lastName;
-            this.toastr.info(`Добро пожаловать ${userName}`);
-            this.form.reset();
-            this.loading = false;
-            this.form.enable();
-            this.router.navigate(['system']);
-          }
-        },
-        error => {
-          this.toastr.error(`Ошибка авторизации: ${error}`);
-          this.loading = false;
-          this.form.enable();
-        }
-      );
+      this.store.dispatch(LoginActions.loginAction({ request: this.form.value }));
     }
   }
 }

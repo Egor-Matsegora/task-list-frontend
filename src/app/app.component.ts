@@ -1,16 +1,15 @@
-import { AuthService } from './modules/core/services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { GetUserActions } from './modules/features/auth/store/actions';
 
 @Component({
   selector: 'app-root',
-  template: `
-    <router-outlet></router-outlet>
-  `
+  template: ` <router-outlet></router-outlet> `,
 })
 export class AppComponent implements OnInit {
-  constructor(private authService: AuthService) {}
+  constructor(private store: Store) {}
 
   ngOnInit() {
-    this.authService.checkToken();
+    this.store.dispatch(GetUserActions.getUserAction());
   }
 }

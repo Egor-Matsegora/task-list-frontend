@@ -1,26 +1,44 @@
+import { StorageService } from './../../shared/services/storage.service';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from '../services/auth/auth.service';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { getAuthToken, getAuthLoginStatus } from '@features/auth/store/state/auth.state';
+import { LoginActions, GetUserActions } from '@app/modules/features/auth/store/actions';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private toastr: ToastrService) {}
+export class TokenInterceptor implements HttpInterceptor, OnDestroy {
+  private token: string;
+  private isLoggedIn: boolean;
+  private subscriptions: Subscription = new Subscription();
+  constructor(private store: Store, private toastr: ToastrService, private storageService: StorageService) {}
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
-    if (this.authService.isLoggedIn()) {
+    this.setStoreVariables();
+    if (this.token) {
       req = req.clone({
-        setHeaders: { Authorization: this.authService.getToken() }
+        setHeaders: { Authorization: this.token },
       });
     }
     return next.handle(req).pipe(catchError((err: HttpErrorResponse) => this.handleAuthError(err)));
   }
 
+  private setStoreVariables() {
+    // const tokenStoreSub = this.store.select(getAuthToken).subscribe((token) => (this.token = token));
+    this.token = this.storageService.get('token');
+    const loginStatusStoreSub = this.store.select(getAuthLoginStatus).subscribe((status) => (this.isLoggedIn = status));
+    this.subscriptions.add(loginStatusStoreSub);
+  }
+
   private handleAuthError(err: HttpErrorResponse): Observable<HttpErrorResponse> {
-    if (err.status === 401 && this.authService.isLoggedIn()) {
-      this.authService.logout();
+    if (err.status === 401 && this.isLoggedIn) {
+      this.store.dispatch(LoginActions.logoutAction());
       this.toastr.warning('Время сессии истекло, авторизируйтесь еще раз');
     }
 

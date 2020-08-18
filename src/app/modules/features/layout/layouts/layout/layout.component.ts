@@ -12,11 +12,11 @@ import { enterPage, livePage } from 'src/app/animations/routing.animation';
         query(':enter, :leave', style({ position: 'fixed', width: '100%' }), { optional: true }),
         group([
           query(':enter', [useAnimation(enterPage)], { optional: true }),
-          query(':leave', [useAnimation(livePage)], { optional: true })
-        ])
-      ])
-    ])
-  ]
+          query(':leave', [useAnimation(livePage)], { optional: true }),
+        ]),
+      ]),
+    ]),
+  ],
 })
 export class LayoutComponent implements AfterViewInit {
   isLoggedIn: boolean = false;

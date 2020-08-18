@@ -2,14 +2,15 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { trigger, transition, useAnimation } from '@angular/animations';
 // rxjs
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 // services
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
-import { AuthService } from '@core/services/auth/auth.service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 // animations
 import { enterAnimation, liveAnimation } from './header-btn.animation';
+import { getAuthLoginStatus } from '@features/auth/store/state/auth.state';
 
 @Component({
   selector: 'main-header',
@@ -18,20 +19,20 @@ import { enterAnimation, liveAnimation } from './header-btn.animation';
   animations: [
     trigger('btnAnimation', [
       transition(':enter', [useAnimation(enterAnimation)]),
-      transition(':leave', [useAnimation(liveAnimation)])
-    ])
-  ]
+      transition(':leave', [useAnimation(liveAnimation)]),
+    ]),
+  ],
 })
 export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
   private subs: Subscription = new Subscription();
-  isLoggedIn: boolean = false;
+  isLoggedIn$: Observable<boolean>;
   isAuth: boolean = false;
   disableAnimation: boolean = true;
   asideState: boolean;
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    private store: Store,
     private asideService: AsideStateService,
     private smartModal: NgxSmartModalService
   ) {}
@@ -60,13 +61,10 @@ export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
     this.checkAuthUrl(url);
     this.subs.add(
       this.router.events
-        .pipe(
-          filter(event => event instanceof NavigationStart),
-          tap((event: NavigationStart) => {
-            this.checkAuthUrl(event.url);
-          })
-        )
-        .subscribe(() => this.setIsLoggedIn())
+        .pipe(filter((event) => event instanceof NavigationStart))
+        .subscribe((event: NavigationStart) => {
+          this.checkAuthUrl(event.url);
+        })
     );
   }
 
@@ -80,14 +78,14 @@ export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
 
   private subToAsideStatus() {
     this.subs.add(
-      this.asideService.asideState$.subscribe(state => {
+      this.asideService.asideState$.subscribe((state) => {
         this.asideState = state;
       })
     );
   }
 
   private setIsLoggedIn() {
-    this.isLoggedIn = this.authService.isLoggedIn();
+    this.isLoggedIn$ = this.store.select(getAuthLoginStatus);
   }
 
   changeAsideState() {

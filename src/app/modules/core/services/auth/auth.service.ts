@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 // rxjs
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 // services
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
@@ -10,8 +10,8 @@ import { AsideStateService } from '@core/services/aside-state/aside-state.servic
 import { handleHttpError } from '@helpers/handle-http-error';
 // interfaces
 import { RegistrationUser } from '@interfaces/registration-user.inerface';
-import { LoginUser } from '@interfaces/login-user.interface';
-import { LoginRequest } from '@interfaces/login-request.interface';
+import { LoginRequest } from '@app/interfaces/login-request.interface';
+import { LoginResponse } from '@app/interfaces/login-response.interface';
 
 @Injectable()
 export class AuthService {
@@ -20,47 +20,19 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router, private asideState: AsideStateService) {}
 
-  login(user: LoginUser): Observable<LoginRequest> {
-    return this.http.post<LoginRequest>(`${this.url}login`, user).pipe(
-      map((req) => {
-        localStorage.setItem('token', req.token);
-        this.setToken(req.token);
+  login(user: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.url}login`, user).pipe(
+      map((res) => {
         this.asideState.setDefaultState();
-        return { ...req };
-      }),
-      catchError((error) => {
-        handleHttpError(error);
-        return of({ success: error.success, message: error.message });
+        return {
+          token: res.token,
+          user: res.user,
+        };
       })
     );
   }
 
   registration(user: RegistrationUser): Observable<any> {
     return this.http.post(`${this.url}registration`, user).pipe(catchError((error) => handleHttpError(error)));
-  }
-
-  setToken(token) {
-    this.token = token;
-  }
-
-  getToken(): string {
-    return this.token;
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.token;
-  }
-
-  logout() {
-    localStorage.removeItem('token');
-    this.setToken(null);
-    this.router.navigate(['']);
-    this.asideState.removeAsideStorageState();
-  }
-
-  checkToken() {
-    const token = localStorage.getItem('token');
-
-    token && this.setToken(token);
   }
 }

@@ -3,7 +3,7 @@
   <!-- кнопка управления боковым меню -->
   <div
     class="main-header__btn main-header__item"
-    *ngIf="isLoggedIn"
+    *ngIf="isLoggedIn$ | async"
     [ngClass]="{'main-header__btn_active': !asideState}"
     (click)="changeAsideState()"
     @btnAnimation
@@ -27,7 +27,7 @@
   <a
     [routerLink]="['/', 'auth']"
     class="main-header__btn main-header__item"
-    *ngIf="!isLoggedIn && !isAuth"
+    *ngIf="!(isLoggedIn$ | async) && !isAuth"
     @btnAnimation
   >
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -32 512.016 512" class="main-header__btn-img">
@@ -56,7 +56,7 @@
   <!-- выход -->
   <div
     class="main-header__btn main-header__item"
-    *ngIf="isLoggedIn"
+    *ngIf="isLoggedIn$ | async"
     @btnAnimation
     (click)="openLogoutModal()"
   >

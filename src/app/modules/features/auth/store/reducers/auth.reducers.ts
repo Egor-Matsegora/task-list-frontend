@@ -1,13 +1,14 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { initialAuthState } from './../state/auth.state';
-import { AuthActions, AuthApiActions } from './../actions';
+import { LoginActions, AuthActions, GetUserActions } from './../actions';
 import { AuthState } from './../state/auth-state.interface';
 
 const reducers = createReducer(
   initialAuthState,
+  // login
   on(
-    AuthApiActions.loginAction,
-    (state, { user }): AuthState => {
+    LoginActions.loginAction,
+    (state, { request }): AuthState => {
       return {
         ...state,
         authLoading: true,
@@ -15,7 +16,7 @@ const reducers = createReducer(
     }
   ),
   on(
-    AuthActions.loginSuccessAction,
+    LoginActions.loginSuccessAction,
     (state, { response }): AuthState => {
       const authMessage = `Добро пожаловать ${response.user.firstName} ${response.user.lastName}`;
       return {
@@ -23,68 +24,61 @@ const reducers = createReducer(
         authLoading: false,
         authError: null,
         authMessage,
-        loginStaus: response.success,
-        token: response.token,
         user: response.user,
+        token: response.token,
+        loginStaus: true,
       };
     }
   ),
   on(
-    AuthActions.loginFailureAction,
-    (state, { success, message }): AuthState => {
+    LoginActions.loginFailureAction,
+    (state, { error }): AuthState => {
       return {
         ...state,
         authLoading: false,
-        authError: message,
+        authError: error,
         authMessage: null,
-        loginStaus: success,
-        token: null,
-        user: null,
+        loginStaus: false,
       };
     }
   ),
   on(
-    AuthApiActions.registrationAction,
-    (state, { user }): AuthState => {
-      return {
-        ...state,
-        authLoading: true,
-      };
-    }
-  ),
-  on(
-    AuthActions.registrationSuccessAction,
-    (state, { success }): AuthState => {
+    LoginActions.logoutAction,
+    (state): AuthState => {
       return {
         ...state,
         authLoading: false,
-        authMessage: 'Регистрация прошла успешно, теперь вы можете войти',
+      };
+    }
+  ),
+  // get user info
+  on(
+    GetUserActions.getUserSuccessAction,
+    (state, { user, token }): AuthState => {
+      return {
+        ...state,
+        user,
+        token,
+        loginStaus: true,
         authError: null,
       };
     }
   ),
   on(
-    AuthActions.registrationFailureAction,
-    (state, { success, message }): AuthState => {
-      return {
-        ...state,
-        authLoading: false,
-        authMessage: null,
-        authError: message,
-      };
-    }
-  ),
-  on(
-    AuthActions.logoutAction,
-    (state): AuthState => {
+    GetUserActions.getUserFailureAction,
+    (state, { error }): AuthState => {
       return {
         ...state,
         user: null,
         token: null,
         loginStaus: false,
+        authError: error,
       };
     }
-  )
+  ),
+  // messages
+  on(AuthActions.clearAuthErrorAction, (state): AuthState => ({ ...state, authError: null })),
+  on(AuthActions.clearAuthMessageAction, (state): AuthState => ({ ...state, authMessage: null }))
 );
 
 export function authReducer(state: AuthState, action: Action) {

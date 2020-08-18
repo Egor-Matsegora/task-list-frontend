@@ -1,9 +1,10 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AuthService } from '@core/services/auth/auth.service';
+import { Store } from '@ngrx/store';
 import { UserService } from '@features/user/services/user.service';
 import { User } from '@interfaces/user.interface';
+import { LoginActions } from '@features/auth/store/actions';
 
 @Component({
   selector: 'user-layout',
@@ -13,7 +14,7 @@ import { User } from '@interfaces/user.interface';
 export class UserLayoutComponent implements OnInit {
   user: User;
   private subscriptions: Subscription = new Subscription();
-  constructor(private userService: UserService, private toastr: ToastrService, private authService: AuthService) {}
+  constructor(private userService: UserService, private toastr: ToastrService, private store: Store) {}
 
   ngOnInit() {
     this.subOnUserInfo();
@@ -45,7 +46,7 @@ export class UserLayoutComponent implements OnInit {
         (user) => {
           if (!user) return;
           this.toastr.success('Данные успешно обновлены, войдите под новым паролем');
-          this.authService.logout();
+          this.store.dispatch(LoginActions.logoutAction());
         },
         (error) => this.toastr.error('Ошибка обновления данных')
       )

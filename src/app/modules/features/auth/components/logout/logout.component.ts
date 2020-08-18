@@ -1,22 +1,19 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/modules/core/services/auth/auth.service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
+import { Store } from '@ngrx/store';
+import { LoginActions } from '../../store/actions';
 
 @Component({
   selector: 'logout',
   templateUrl: './logout.component.html',
-  styleUrls: ['./logout.component.scss']
+  styleUrls: ['./logout.component.scss'],
 })
 export class LogoutComponent {
-  constructor(
-    private authService: AuthService,
-    private smartModal: NgxSmartModalService,
-    private toastr: ToastrService
-  ) {}
+  constructor(private store: Store, private smartModal: NgxSmartModalService, private toastr: ToastrService) {}
 
   logout() {
-    this.authService.logout();
+    this.store.dispatch(LoginActions.logoutAction());
     this.close();
     this.toastr.info('Жаль что вы уже уходите :(');
   }

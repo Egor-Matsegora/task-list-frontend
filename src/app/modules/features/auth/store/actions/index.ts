@@ -1,4 +1,5 @@
-import * as AuthActions from './auth-actions';
-import * as AuthApiActions from './auth-api.actions';
+import * as LoginActions from './login.actions';
+import * as AuthActions from './auth.actions';
+import * as GetUserActions from './get-user.actions';
 
-export { AuthActions, AuthApiActions };
+export { LoginActions, AuthActions, GetUserActions };
