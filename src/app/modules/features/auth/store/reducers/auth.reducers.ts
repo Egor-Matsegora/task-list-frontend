@@ -1,7 +1,14 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { initialAuthState } from './../state/auth.state';
 import { LoginActions, AuthActions, GetUserActions } from './../actions';
 import { AuthState } from './../state/auth-state.interface';
+
+export const initialAuthState: AuthState = {
+  authLoading: false,
+  authError: null,
+  authMessage: null,
+  user: null,
+  isLogedIn: false,
+};
 
 const reducers = createReducer(
   initialAuthState,
@@ -25,8 +32,7 @@ const reducers = createReducer(
         authError: null,
         authMessage,
         user: response.user,
-        token: response.token,
-        loginStaus: true,
+        isLogedIn: true,
       };
     }
   ),
@@ -38,7 +44,7 @@ const reducers = createReducer(
         authLoading: false,
         authError: error,
         authMessage: null,
-        loginStaus: false,
+        isLogedIn: false,
       };
     }
   ),
@@ -54,12 +60,11 @@ const reducers = createReducer(
   // get user info
   on(
     GetUserActions.getUserSuccessAction,
-    (state, { user, token }): AuthState => {
+    (state, { user }): AuthState => {
       return {
         ...state,
         user,
-        token,
-        loginStaus: true,
+        isLogedIn: true,
         authError: null,
       };
     }
@@ -70,15 +75,16 @@ const reducers = createReducer(
       return {
         ...state,
         user: null,
-        token: null,
-        loginStaus: false,
+        isLogedIn: false,
         authError: error,
       };
     }
   ),
   // messages
   on(AuthActions.clearAuthErrorAction, (state): AuthState => ({ ...state, authError: null })),
-  on(AuthActions.clearAuthMessageAction, (state): AuthState => ({ ...state, authMessage: null }))
+  on(AuthActions.clearAuthMessageAction, (state): AuthState => ({ ...state, authMessage: null })),
+  // token
+  on(AuthActions.setAuthStatusAction, (state, { isLogedIn }): AuthState => ({ ...state, isLogedIn }))
 );
 
 export function authReducer(state: AuthState, action: Action) {

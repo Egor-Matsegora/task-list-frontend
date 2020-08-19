@@ -1,12 +1,11 @@
-import { StorageService } from './../../shared/services/storage.service';
 import { ToastrService } from 'ngx-toastr';
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { getAuthToken, getAuthLoginStatus } from '@features/auth/store/state/auth.state';
-import { LoginActions, GetUserActions } from '@app/modules/features/auth/store/actions';
+import { LoginActions } from '@app/modules/features/auth/store/actions';
+import { StorageService } from '@shared/services/storage.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor, OnDestroy {
@@ -30,10 +29,8 @@ export class TokenInterceptor implements HttpInterceptor, OnDestroy {
   }
 
   private setStoreVariables() {
-    // const tokenStoreSub = this.store.select(getAuthToken).subscribe((token) => (this.token = token));
     this.token = this.storageService.get('token');
-    const loginStatusStoreSub = this.store.select(getAuthLoginStatus).subscribe((status) => (this.isLoggedIn = status));
-    this.subscriptions.add(loginStatusStoreSub);
+    this.isLoggedIn = !!this.token;
   }
 
   private handleAuthError(err: HttpErrorResponse): Observable<HttpErrorResponse> {

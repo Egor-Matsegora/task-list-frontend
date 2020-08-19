@@ -6,7 +6,7 @@ import { mergeMap, map, catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { AuthService } from '@core/services/auth/auth.service';
-import { LoginActions } from '../actions';
+import { LoginActions, AuthActions } from '../actions';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
@@ -57,4 +57,14 @@ export class LoginEffects {
     },
     { dispatch: false }
   );
+
+  getAuthStatus$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.getAuthStatusAction),
+      mergeMap(() => {
+        const status = !!this.storageService.get('token');
+        return of(AuthActions.setAuthStatusAction({ isLogedIn: status }));
+      })
+    );
+  });
 }

@@ -9,8 +9,9 @@ import { Store } from '@ngrx/store';
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 // animations
+import { getAuthStatus } from '@features/auth/store/state/auth.state';
 import { enterAnimation, liveAnimation } from './header-btn.animation';
-import { getAuthLoginStatus } from '@features/auth/store/state/auth.state';
+import { AuthActions } from '@app/modules/features/auth/store/actions';
 
 @Component({
   selector: 'main-header',
@@ -41,6 +42,7 @@ export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
     this.changeLinnksVisibility();
     this.setIsLoggedIn();
     this.subToAsideStatus();
+    this.store.dispatch(AuthActions.getAuthStatusAction());
   }
 
   ngAfterViewInit() {
@@ -85,7 +87,7 @@ export class HeaderComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   private setIsLoggedIn() {
-    this.isLoggedIn$ = this.store.select(getAuthLoginStatus);
+    this.isLoggedIn$ = this.store.select(getAuthStatus);
   }
 
   changeAsideState() {

@@ -12,17 +12,15 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 @Injectable()
 export class GetUserEffects {
-  constructor(private actions$: Actions, private userService: UserService, private storageService: StorageService) {}
+  constructor(private actions$: Actions, private userService: UserService) {}
 
   getUser$ = createEffect(() => {
-    let token: string | null;
     return this.actions$.pipe(
       ofType(GetUserActions.getUserAction),
-      tap(() => (token = this.storageService.get('token'))),
       mergeMap(() => {
         return this.userService.getUserInfo().pipe(
           map((user) => {
-            return GetUserActions.getUserSuccessAction({ user, token });
+            return GetUserActions.getUserSuccessAction({ user });
           }),
           catchError(({ error }) => {
             return of(GetUserActions.getUserFailureAction({ error: handleHttpError(error) }));
