@@ -55,6 +55,7 @@ const reducers = createReducer(
       return {
         ...state,
         authLoading: false,
+        isLogedIn: false,
       };
     }
   ),

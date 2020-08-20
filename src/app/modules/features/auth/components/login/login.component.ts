@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const messageStoreSub = this.store
       .pipe(
         select(getAuthMessage),
-        filter((message) => message !== null),
+        filter((message) => !!message),
         mergeMap((message) => (message ? this.toastr.info(message).onHidden : empty()))
       )
       .subscribe(() => this.store.dispatch(clearAuthMessageAction()));

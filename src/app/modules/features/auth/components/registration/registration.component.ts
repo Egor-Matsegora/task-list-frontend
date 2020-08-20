@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, empty } from 'rxjs';
 import { switchMap, filter, tap } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
@@ -51,14 +51,14 @@ export class RegistrationComponent implements OnInit, OnDestroy {
       .pipe(
         select(getAuthError),
         filter((error) => !!error),
-        switchMap((error) => this.toastr.error(error).onHidden)
+        switchMap((error) => (error ? this.toastr.error(error).onHidden : empty()))
       )
       .subscribe(() => this.store.dispatch(AuthActions.clearAuthErrorAction()));
     const messageStoreSub = this.store
       .pipe(
         select(getAuthMessage),
         filter((message) => !!message),
-        switchMap((message) => this.toastr.success(message).onHidden)
+        switchMap((message) => (message ? this.toastr.info(message).onHidden : empty()))
       )
       .subscribe(() => this.store.dispatch(AuthActions.clearAuthMessageAction()));
     this.subscriptions.add(errorStoreSub).add(messageStoreSub);
