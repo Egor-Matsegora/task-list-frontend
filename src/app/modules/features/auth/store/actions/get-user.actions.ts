@@ -1,7 +1,6 @@
 import { User } from '@interfaces/user.interface';
 import { AuthActionTypes } from './auth-action-types.enum';
 import { createAction, props } from '@ngrx/store';
-import { LoginRequest } from '@interfaces/login-request.interface';
 
 export const getUserAction = createAction(AuthActionTypes.GET_USER);
 

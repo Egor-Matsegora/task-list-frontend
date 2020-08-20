@@ -3,11 +3,11 @@ export enum AuthActionTypes {
   LOGIN_SUCESS = '[Auth] Login success',
   LOGIN_FAILURE = '[Auth] Login failure',
 
+  LOGOUT = '[Auth] Logout',
+
   REGISTRATION = '[Auth] Registration',
   REGISTRATION_SUCESS = '[Auth] Registration success',
   REGISTRATION_FAILURE = '[Auth] Registration failure',
-
-  LOGOUT = '[Auth] Logout',
 
   GET_USER = '[Auth] GetUser',
   GET_USER_SUCCESS = '[Auth] Get user success',

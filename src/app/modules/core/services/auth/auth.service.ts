@@ -33,6 +33,6 @@ export class AuthService {
   }
 
   registration(user: RegistrationUser): Observable<any> {
-    return this.http.post(`${this.url}registration`, user).pipe(catchError((error) => handleHttpError(error)));
+    return this.http.post(`${this.url}registration`, user).pipe(map((response) => response));
   }
 }

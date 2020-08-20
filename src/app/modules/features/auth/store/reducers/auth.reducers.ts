@@ -1,6 +1,7 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { LoginActions, AuthActions, GetUserActions } from './../actions';
+import { LoginActions, AuthActions, GetUserActions, RegistrationActions } from './../actions';
 import { AuthState } from './../state/auth-state.interface';
+import { state } from '@angular/animations';
 
 export const initialAuthState: AuthState = {
   authLoading: false,
@@ -76,6 +77,37 @@ const reducers = createReducer(
         ...state,
         user: null,
         isLogedIn: false,
+        authError: error,
+      };
+    }
+  ),
+  // registration
+  on(
+    RegistrationActions.registrationAction,
+    (state, { user }): AuthState => {
+      return {
+        ...state,
+        authLoading: true,
+      };
+    }
+  ),
+  on(
+    RegistrationActions.registrationSuccessAction,
+    (state, { message }): AuthState => {
+      return {
+        ...state,
+        authLoading: false,
+        authMessage: message,
+        authError: null,
+      };
+    }
+  ),
+  on(
+    RegistrationActions.registrationFailureAction,
+    (state, { error }): AuthState => {
+      return {
+        ...state,
+        authLoading: true,
         authError: error,
       };
     }

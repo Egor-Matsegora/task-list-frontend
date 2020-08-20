@@ -170,12 +170,12 @@
     <div class="auth-form__buttons">
       <ui-button
         [classList]="['button_submit', 'button_block']"
-        [isDisabled]="form.invalid"
+        [isDisabled]="form.invalid || (loading$ | async)"
         [buttonType]="'submit'"
       >
-        <span *ngIf="!loading">Зарегистрироваться</span>
+        <span *ngIf="!(loading$ | async)">Зарегистрироваться</span>
         <div class="auth-form__loader">
-          <loader *ngIf="loading"></loader>
+          <loader *ngIf="loading$ | async"></loader>
         </div>
       </ui-button>
     </div>

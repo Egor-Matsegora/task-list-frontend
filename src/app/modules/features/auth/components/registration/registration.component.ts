@@ -1,11 +1,13 @@
-import { ExistingEmailValidator } from '@validators/existing-email.validator';
-import { Router } from '@angular/router';
-import { AuthService } from '@core/services/auth/auth.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { passwordMatchValidator } from 'src/app/validators/replay-password.validator';
+import { Subscription, Observable } from 'rxjs';
+import { switchMap, filter, tap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { passwordMatchValidator } from '@validators/replay-password.validator';
+import { ExistingEmailValidator } from '@validators/existing-email.validator';
+import { getAuthLoading, getAuthError, getAuthMessage } from './../../store/state/auth.state';
+import { AuthActions, RegistrationActions } from '../../store/actions';
 
 @Component({
   selector: 'registration',
@@ -15,7 +17,7 @@ import { Subscription } from 'rxjs';
 })
 export class RegistrationComponent implements OnInit, OnDestroy {
   formHeader: string = 'Регистрация';
-  loading: boolean = false;
+  loading$: Observable<boolean>;
   form: FormGroup;
   firstName: FormControl;
   lastName: FormControl;
@@ -26,14 +28,14 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
 
   constructor(
-    private authService: AuthService,
+    private store: Store,
     private fb: FormBuilder,
-    private router: Router,
     private existingEmailValidator: ExistingEmailValidator,
     private toastr: ToastrService
   ) {}
 
   ngOnInit() {
+    this.initStoreVariables();
     this.initForm();
     this.initFormVars();
     this.replayPasswordChangeAcces();
@@ -41,6 +43,25 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions && this.subscriptions.unsubscribe();
+  }
+
+  private initStoreVariables() {
+    this.loading$ = this.store.select(getAuthLoading);
+    const errorStoreSub = this.store
+      .pipe(
+        select(getAuthError),
+        filter((error) => !!error),
+        switchMap((error) => this.toastr.error(error).onHidden)
+      )
+      .subscribe(() => this.store.dispatch(AuthActions.clearAuthErrorAction()));
+    const messageStoreSub = this.store
+      .pipe(
+        select(getAuthMessage),
+        filter((message) => !!message),
+        switchMap((message) => this.toastr.success(message).onHidden)
+      )
+      .subscribe(() => this.store.dispatch(AuthActions.clearAuthMessageAction()));
+    this.subscriptions.add(errorStoreSub).add(messageStoreSub);
   }
 
   private initForm() {
@@ -88,33 +109,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     );
   }
 
-  private subToRegistration() {
-    this.subscriptions.add(
-      this.authService.registration(this.user.value).subscribe(
-        (res) => {
-          if (res && res.success) {
-            this.toastr.success('Вы успешно зарегестрировались, можете войти');
-            this.form.enable();
-            this.form.reset();
-            this.loading = false;
-            this.router.navigate(['auth', 'login']);
-          }
-        },
-        (err) => {
-          this.toastr.error('Ошибка регистрации');
-          this.form.enable();
-          this.loading = false;
-          console.error(err);
-        }
-      )
-    );
-  }
-
   registration(): void {
     if (this.form.valid) {
-      this.form.disable();
-      this.loading = true;
-      this.subToRegistration();
+      this.store.dispatch(RegistrationActions.registrationAction({ user: this.user.value }));
     }
   }
 }
