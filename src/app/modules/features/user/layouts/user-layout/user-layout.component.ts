@@ -4,7 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { UserService } from '@features/user/services/user.service';
 import { User } from '@interfaces/user.interface';
-import { LoginActions } from '@features/auth/store/actions';
+import { LoginActions, ChangeUserActions } from '@features/auth/store/actions';
 import { getAuthUser } from '@app/modules/features/auth/store/state/auth.state';
 
 @Component({
@@ -15,7 +15,7 @@ import { getAuthUser } from '@app/modules/features/auth/store/state/auth.state';
 export class UserLayoutComponent implements OnInit {
   user$: Observable<User>;
   private subscriptions: Subscription = new Subscription();
-  constructor(private userService: UserService, private toastr: ToastrService, private store: Store) {}
+  constructor(private toastr: ToastrService, private store: Store) {}
 
   ngOnInit() {
     this.subOnUserInfo();
@@ -26,37 +26,14 @@ export class UserLayoutComponent implements OnInit {
   }
 
   onChangeUser(user: User) {
-    this.subscriptions.add(
-      this.userService.updateUser(user).subscribe(
-        (user) => {
-          this.userService.dispatchUserUpdateState(user);
-          this.toastr.success('Данные успешно обновлены');
-        },
-        (error) => this.toastr.error('Ошибка обновления данных')
-      )
-    );
+    this.store.dispatch(ChangeUserActions.changeUserAction({ user }));
   }
 
   onChangeUserPassword(password: string) {
-    this.subscriptions.add(
-      this.userService.updatePassword(password).subscribe(
-        (user) => {
-          if (!user) return;
-          this.toastr.success('Данные успешно обновлены, войдите под новым паролем');
-          this.store.dispatch(LoginActions.logoutAction());
-        },
-        (error) => this.toastr.error('Ошибка обновления данных')
-      )
-    );
+    this.store.dispatch(ChangeUserActions.changeUserPasswordAction({ password }));
   }
 
   onChangeUserImage(image: File) {
-    this.subscriptions.add(
-      this.userService.updateImage(image).subscribe((user) => {
-        if (!user) return;
-        this.userService.dispatchUserUpdateState(user);
-        this.toastr.success('Данные успешно обновлены');
-      })
-    );
+    this.store.dispatch(ChangeUserActions.changeUserImageAction({ image }));
   }
 }

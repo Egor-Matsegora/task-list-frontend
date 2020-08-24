@@ -1,4 +1,4 @@
-import { GetUserEffects, LoginEffects, RegistrationEffects } from './effects';
+import { GetUserEffects, LoginEffects, RegistrationEffects, ChangeUserEffects } from './effects';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
@@ -9,7 +9,7 @@ import { authReducer } from './reducers/auth.reducers';
   imports: [
     CommonModule,
     StoreModule.forFeature('auth', authReducer),
-    EffectsModule.forFeature([LoginEffects, GetUserEffects, RegistrationEffects]),
+    EffectsModule.forFeature([LoginEffects, GetUserEffects, RegistrationEffects, ChangeUserEffects]),
   ],
 })
 export class AuthStoreModule {}

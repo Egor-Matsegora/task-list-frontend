@@ -1,3 +1,4 @@
 export * from './get-user.effects';
 export * from './login.effects';
 export * from './registration.effects';
+export * from './change-user.effects';
