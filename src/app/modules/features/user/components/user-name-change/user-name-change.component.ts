@@ -33,14 +33,12 @@ export class UserNameChangeComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.initForm();
     this.initControlsVariables();
+    this.setValidators();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.setValidators(changes.user);
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 
-  private setValidators(currentChange: SimpleChange) {
-    if (!currentChange.currentValue && !this.form) return;
+  private setValidators() {
     this.firstName.setValidators([match(this.user.firstName), Validators.required]);
     this.firstName.updateValueAndValidity();
     this.lastName.setValidators([match(this.user.lastName), Validators.required]);
@@ -82,9 +80,7 @@ export class UserNameChangeComponent implements OnInit, OnChanges {
 
   onSubmit() {
     if (this.form.invalid) return;
-    let newUser = { ...this.user, ...this.form.value };
-    this.changeUserName.emit(newUser);
-    newUser = null;
+    this.changeUserName.emit({ ...this.user, ...this.form.value });
     this.form.reset();
   }
 }

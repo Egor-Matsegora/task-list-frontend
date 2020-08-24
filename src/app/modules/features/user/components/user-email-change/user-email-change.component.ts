@@ -30,18 +30,16 @@ export class UserEmailChangeComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.initForm();
+    this.setValidators();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.setValidators(changes.user);
-  }
+  ngOnChanges(changes: SimpleChanges) {}
 
   private initForm() {
     this.email = this.fb.control('');
   }
 
-  private setValidators(currentChange: SimpleChange) {
-    if (!currentChange.currentValue && !this.email) return;
+  private setValidators() {
     this.email.setValidators([Validators.required, Validators.email, match(this.user.email)]);
     this.email.updateValueAndValidity();
   }
@@ -62,8 +60,7 @@ export class UserEmailChangeComponent implements OnInit, OnChanges {
 
   onSubmit() {
     if (this.email.invalid) return;
-    let newUser = { ...this.user, email: this.email.value };
-    this.changeUserEmail.emit(newUser);
+    this.changeUserEmail.emit({ ...this.user, email: this.email.value });
     this.email.reset();
   }
 }

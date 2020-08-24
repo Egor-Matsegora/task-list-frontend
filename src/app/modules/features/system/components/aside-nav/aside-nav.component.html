@@ -5,13 +5,13 @@
 
   <div class="aside__user user">
     <a class="user__avatar" routerLink="user">
-      <img class="user__avatar-image" [src]="user?.imageUrl" alt="avatar" *ngIf="user?.imageUrl">
+      <img class="user__avatar-image" [src]="(user$ | async).imageUrl" alt="avatar" *ngIf="(user$ | async).imageUrl">
     </a>
     <div class="user__info user__info_name">
-      {{ user?.firstName }} {{ user?.lastName }}
+      {{(user$ | async).firstName }} {{ (user$ | async).lastName }}
     </div>
     <div class="user__info user__info_email">
-      {{ user?.email }}
+      {{ (user$ | async).email }}
     </div>
     <div class="user__buttons">
       <a class="user__button" (click)="onExit()" [routerLink]="['/']">

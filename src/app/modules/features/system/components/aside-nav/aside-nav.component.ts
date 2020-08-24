@@ -1,13 +1,14 @@
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 // services
 import { UserService } from '@features/user/services/user.service';
 // interfaces
 import { User } from '@interfaces/user.interface';
 import { LoginActions } from '@app/modules/features/auth/store/actions';
+import { getAuthUser } from '@app/modules/features/auth/store/state/auth.state';
 
 @Component({
   selector: 'aside-nav',
@@ -17,7 +18,7 @@ import { LoginActions } from '@app/modules/features/auth/store/actions';
 export class AsideNavComponent implements OnInit {
   asideState: boolean;
   subscriptions: Subscription = new Subscription();
-  user: User;
+  user$: Observable<User>;
 
   constructor(
     private asideService: AsideStateService,
@@ -29,7 +30,6 @@ export class AsideNavComponent implements OnInit {
   ngOnInit() {
     this.subToAsideState();
     this.subToUserInfo();
-    this.subToUserUpdateState();
   }
 
   private subToAsideState() {
@@ -41,11 +41,7 @@ export class AsideNavComponent implements OnInit {
   }
 
   private subToUserInfo() {
-    this.subscriptions.add(this.userService.getUserInfo().subscribe((user) => (this.user = user)));
-  }
-
-  private subToUserUpdateState() {
-    this.userService.userUpdateState$.subscribe((user) => (this.user = { ...this.user, ...user }));
+    this.user$ = this.store.select(getAuthUser);
   }
 
   onExit() {
