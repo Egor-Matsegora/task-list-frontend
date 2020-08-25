@@ -1,9 +1,9 @@
-import { GetUserEffects, LoginEffects, RegistrationEffects, ChangeUserEffects } from './effects';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { authReducer } from './reducers/auth.reducers';
+import { GetUserEffects, LoginEffects, RegistrationEffects, ChangeUserEffects } from './effects';
+import { authReducer } from './reducers';
 
 @NgModule({
   imports: [

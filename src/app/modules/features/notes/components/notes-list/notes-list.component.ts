@@ -20,8 +20,8 @@ import {
   getDeleteMessage,
   getSuccesMessage,
   getAnimationState,
-} from '@features/notes/store/state';
-import { NotesApiActions, NotesActions } from '@features/notes/store/actions';
+} from '@app/modules/features/notes/store/state/notes.state';
+import * as NotesActions from '@features/notes/store/actions';
 
 @Component({
   selector: 'notes-list',
@@ -55,15 +55,15 @@ export class NotesListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(note: Note) {
-    this.store.dispatch(NotesActions.enableNotesAnimation());
-    this.store.dispatch(NotesApiActions.deleteNote({ note }));
+    this.store.dispatch(NotesActions.enableNotesAnimationAction());
+    this.store.dispatch(NotesActions.deleteNoteAction({ note }));
   }
 
   onUpdate(note: Note) {
     const modal: NgxSmartModalComponent = this.smartModal.getModal('noteModal');
     if (!modal) return;
     modal.open();
-    this.store.dispatch(NotesActions.selectNote({ note }));
+    this.store.dispatch(NotesActions.selectNoteAction({ note }));
   }
 
   private subToNotesSuccessMessages() {
@@ -73,7 +73,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
         filter((message) => message !== null),
         mergeMap((message) => this.toastr.success(message).onHidden)
       )
-      .subscribe(() => this.store.dispatch(NotesActions.clearNotesMessages()));
+      .subscribe(() => this.store.dispatch(NotesActions.clearNotesMessagesAction()));
     this.subscriptions.add(notesSuccessMessageSub);
   }
 
@@ -84,7 +84,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
         filter((message) => message !== null),
         mergeMap((message) => this.toastr.warning(message).onHidden)
       )
-      .subscribe(() => this.store.dispatch(NotesActions.clearNotesMessages()));
+      .subscribe(() => this.store.dispatch(NotesActions.clearNotesMessagesAction()));
     this.subscriptions.add(notesSuccessMessageSub);
   }
 
@@ -110,7 +110,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
   }
 
   private dispatchLoadAction() {
-    this.store.dispatch(NotesApiActions.loadNotes());
+    this.store.dispatch(NotesActions.loadNotesAction());
   }
 
   private getAnimationState() {
@@ -121,6 +121,6 @@ export class NotesListComponent implements OnInit, OnDestroy {
   }
 
   captureAnimationEvent() {
-    !this.disableAnimation && this.store.dispatch(NotesActions.disableNotesAnimation());
+    !this.disableAnimation && this.store.dispatch(NotesActions.disableNotesAnimationAction());
   }
 }

@@ -4,12 +4,13 @@ import { trigger, transition, useAnimation } from '@angular/animations';
 // rxjs
 import { Subscription, Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
 // services
 import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
-// animations
+// store
+import { Store } from '@ngrx/store';
 import { getAuthStatus } from '@features/auth/store/state/auth.state';
+// animations
 import { enterAnimation, liveAnimation } from './header-btn.animation';
 import { AuthActions } from '@app/modules/features/auth/store/actions';
 

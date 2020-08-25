@@ -1,14 +1,24 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { initialNotesState } from '../state';
-import { NotesActions, NotesApiActions } from '../actions';
+import * as NotesActions from '../actions';
 import { NotesState } from '../state';
+
+export const initialNotesState: NotesState = {
+  notes: [],
+  selectedNote: null,
+  mainLoading: false,
+  error: null,
+  noteLoading: false,
+  successMessage: null,
+  deleteMessage: null,
+  disableAnimation: true,
+};
 
 const reducer = createReducer<NotesState>(
   initialNotesState,
   // load notes
-  on(NotesApiActions.loadNotes, (state) => ({ ...state, mainLoading: true })),
+  on(NotesActions.loadNotesAction, (state) => ({ ...state, mainLoading: true })),
   on(
-    NotesActions.loadNotesSuccess,
+    NotesActions.loadNotesSuccessAction,
     (state, { notes }): NotesState => ({
       ...state,
       notes,
@@ -16,11 +26,11 @@ const reducer = createReducer<NotesState>(
       error: null,
     })
   ),
-  on(NotesActions.loadNotesFailure, (state, { error }): NotesState => ({ ...state, error, mainLoading: false })),
+  on(NotesActions.loadNotesFailureAction, (state, { error }): NotesState => ({ ...state, error, mainLoading: false })),
   // create note
-  on(NotesApiActions.createNote, (state, { note }) => ({ ...state, noteLoading: true })),
+  on(NotesActions.createNoteAction, (state, { note }) => ({ ...state, noteLoading: true })),
   on(
-    NotesActions.createNoteSuccess,
+    NotesActions.createNoteSuccessAction,
     (state, { note, successMessage }): NotesState => ({
       ...state,
       notes: [...state.notes, note],
@@ -29,11 +39,11 @@ const reducer = createReducer<NotesState>(
       successMessage,
     })
   ),
-  on(NotesActions.createNoteFailure, (state, { error }): NotesState => ({ ...state, error, noteLoading: false })),
+  on(NotesActions.createNoteFailureAction, (state, { error }): NotesState => ({ ...state, error, noteLoading: false })),
   // update note
-  on(NotesApiActions.updateNote, (state, { note }): NotesState => ({ ...state, noteLoading: true })),
+  on(NotesActions.updateNoteAction, (state, { note }): NotesState => ({ ...state, noteLoading: true })),
   on(
-    NotesActions.updateNoteSuccess,
+    NotesActions.updateNoteSuccessAction,
     (state, { note, successMessage }): NotesState => ({
       ...state,
       notes: state.notes.map((item) => (item._id === note._id ? note : item)),
@@ -43,11 +53,11 @@ const reducer = createReducer<NotesState>(
       successMessage,
     })
   ),
-  on(NotesActions.updateNoteFailure, (state, { error }): NotesState => ({ ...state, error, noteLoading: false })),
+  on(NotesActions.updateNoteFailureAction, (state, { error }): NotesState => ({ ...state, error, noteLoading: false })),
   // delete note
-  on(NotesApiActions.deleteNote, (state, { note }): NotesState => ({ ...state, noteLoading: true })),
+  on(NotesActions.deleteNoteAction, (state, { note }): NotesState => ({ ...state, noteLoading: true })),
   on(
-    NotesActions.deleteNoteSuccess,
+    NotesActions.deleteNoteSuccessAction,
     (state, { note, deleteMessage }): NotesState => ({
       ...state,
       notes: state.notes.filter((item) => item._id !== note._id),
@@ -56,17 +66,17 @@ const reducer = createReducer<NotesState>(
       deleteMessage,
     })
   ),
-  on(NotesActions.deleteNoteFailure, (state, { error }): NotesState => ({ ...state, error, noteLoading: false })),
+  on(NotesActions.deleteNoteFailureAction, (state, { error }): NotesState => ({ ...state, error, noteLoading: false })),
   // select note for modal
-  on(NotesActions.selectNote, (state, { note }): NotesState => ({ ...state, selectedNote: note })),
-  on(NotesActions.unselectNote, (state): NotesState => ({ ...state, selectedNote: null })),
+  on(NotesActions.selectNoteAction, (state, { note }): NotesState => ({ ...state, selectedNote: note })),
+  on(NotesActions.unselectNoteAction, (state): NotesState => ({ ...state, selectedNote: null })),
   // clear all messages
-  on(NotesActions.clearNotesMessages, (state) => {
+  on(NotesActions.clearNotesMessagesAction, (state) => {
     return { ...state, successMessage: null, deleteMessage: null, error: null };
   }),
   // animations
-  on(NotesActions.disableNotesAnimation, (state): NotesState => ({ ...state, disableAnimation: true })),
-  on(NotesActions.enableNotesAnimation, (state): NotesState => ({ ...state, disableAnimation: false }))
+  on(NotesActions.disableNotesAnimationAction, (state): NotesState => ({ ...state, disableAnimation: true })),
+  on(NotesActions.enableNotesAnimationAction, (state): NotesState => ({ ...state, disableAnimation: false }))
 );
 
 export function notesReducer(state: NotesState | undefined, action: Action) {

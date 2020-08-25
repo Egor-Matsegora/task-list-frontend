@@ -1,13 +1,16 @@
-import { NgxSmartModalComponent, NgxSmartModalService } from 'ngx-smart-modal';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { transition, trigger, useAnimation } from '@angular/animations';
-import { Note } from '@interfaces/note.interface';
 import { enterAnimation, leaveAnimation } from '@app/animations/dynamic-control.animation';
 import { Subscription } from 'rxjs';
+// plugins
+import { NgxSmartModalComponent, NgxSmartModalService } from 'ngx-smart-modal';
+// store
 import { Store } from '@ngrx/store';
-import { NotesApiActions, NotesActions } from '@features/notes/store/actions';
-import { State, getSelectedNote, getNoteitemloading } from '../../store/state';
+import * as NotesActions from '@features/notes/store/actions';
+import { State, getSelectedNote, getNoteitemloading } from '../../store/state/notes.state';
+// interfaces
+import { Note } from '@interfaces/note.interface';
 
 @Component({
   selector: 'notes-form',
@@ -71,7 +74,7 @@ export class NotesFormComponent implements OnInit, OnDestroy {
   private subToCloseModalEvent() {
     const modalEventSub = this.modal.onAnyCloseEvent.subscribe(() => {
       this.form.reset();
-      this.store.dispatch(NotesActions.unselectNote());
+      this.store.dispatch(NotesActions.unselectNoteAction());
     });
     this.subscriptions.add(modalEventSub);
   }
@@ -154,7 +157,7 @@ export class NotesFormComponent implements OnInit, OnDestroy {
       text: this.noteText.value,
       title: this.titleCheck.value ? this.noteTitle.value : null,
     };
-    this.store.dispatch(NotesApiActions.createNote({ note }));
+    this.store.dispatch(NotesActions.createNoteAction({ note }));
   }
 
   /**
@@ -168,6 +171,6 @@ export class NotesFormComponent implements OnInit, OnDestroy {
       text: this.noteText.value,
       title: this.titleCheck.value ? this.noteTitle.value : null,
     };
-    this.store.dispatch(NotesApiActions.updateNote({ note }));
+    this.store.dispatch(NotesActions.updateNoteAction({ note }));
   }
 }
