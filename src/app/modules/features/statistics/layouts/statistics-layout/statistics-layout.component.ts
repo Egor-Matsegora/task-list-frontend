@@ -1,10 +1,10 @@
 import { mergeMap } from 'rxjs/operators';
-import { loadStatisticsAction, clearStatisticsErrorsAction } from './../../store/actions/statistics.actions';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription, empty } from 'rxjs';
-import { Store, select } from '@ngrx/store';
 import { ToastrService } from 'ngx-toastr';
-import { getStatistics, getStatisticsLoading, getStatisticsError } from './../../store/state/statistics.state';
+import { Store, select } from '@ngrx/store';
+import { loadStatisticsAction, clearStatisticsErrorsAction } from './../../store/actions';
+import { getStatistics, getStatisticsLoading, getStatisticsError } from './../../store/state';
 import { Statistics } from '@interfaces/statistics.interface';
 
 @Component({

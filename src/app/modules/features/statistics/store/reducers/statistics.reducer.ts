@@ -3,9 +3,9 @@ import {
   loadStatisticsSuccessAction,
   loadStatisticsFailureAction,
   clearStatisticsErrorsAction,
-} from './../actions/statistics.actions';
+} from './../actions';
 import { createReducer, on, Action } from '@ngrx/store';
-import { StatisticsState } from './../state/statistics.state';
+import { StatisticsState } from './../state';
 
 export const InitialStatisticsState: StatisticsState = {
   loading: false,

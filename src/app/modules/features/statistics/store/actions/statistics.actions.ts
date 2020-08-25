@@ -1,6 +1,6 @@
-import { Statistics } from '@app/interfaces/statistics.interface';
-import { StatisticsActionTypes } from './statistics-action-types.enum';
 import { createAction, props } from '@ngrx/store';
+import { Statistics } from '@interfaces/statistics.interface';
+import { StatisticsActionTypes } from './statistics-action-types.enum';
 
 export const loadStatisticsAction = createAction(StatisticsActionTypes.GET_STATISTICS);
 

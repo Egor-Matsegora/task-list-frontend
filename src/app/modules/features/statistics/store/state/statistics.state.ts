@@ -1,12 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { RootState } from '@core/store/state/root-state.interface';
-import { Statistics } from '@app/interfaces/statistics.interface';
-
-export interface StatisticsState {
-  loading: boolean;
-  error: string | null;
-  statistics: Statistics | null;
-}
+import { StatisticsState } from './';
 
 export interface State extends RootState {
   statistics: StatisticsState;

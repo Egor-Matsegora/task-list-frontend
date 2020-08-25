@@ -6,11 +6,7 @@ import { of } from 'rxjs';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { StatisticsService } from './../../services/statistics.service';
-import {
-  loadStatisticsAction,
-  loadStatisticsSuccessAction,
-  loadStatisticsFailureAction,
-} from './../actions/statistics.actions';
+import { loadStatisticsAction, loadStatisticsSuccessAction, loadStatisticsFailureAction } from './../actions';
 
 @Injectable()
 export class StatisticsEffects {

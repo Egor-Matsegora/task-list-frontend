@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { statisticsReducer } from './reducers/statistics.reducer';
-import { StatisticsEffects } from './effects/statistics.effect';
+import { statisticsReducer } from './reducers';
+import { StatisticsEffects } from './effects';
 
 @NgModule({
   imports: [
