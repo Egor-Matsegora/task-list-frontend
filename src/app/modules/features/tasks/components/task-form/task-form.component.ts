@@ -9,8 +9,8 @@ import { Task } from '@interfaces/task.interface';
 // smart modal
 import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 import { Store } from '@ngrx/store';
-import { TasksState } from '../../store';
-import { TasksActions, TasksApiActions } from '../../store/actions';
+import { getSelectedTask, getTaskLoading } from '../../store/state';
+import { createTaskAction, updateTaskAction, unselectTaskAction } from '../../store/actions';
 
 @Component({
   selector: 'task-form',
@@ -108,7 +108,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.modal.onAnyCloseEvent.subscribe(() => {
         this.form.reset();
-        this.taskForUpdate && this.store.dispatch(TasksActions.unselectTask());
+        this.taskForUpdate && this.store.dispatch(unselectTaskAction());
       })
     );
   }
@@ -118,7 +118,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
    */
   private checkSelectedTaskState(): void {
     const selectedTaskStateSub = this.store
-      .select(TasksState.getSelectedTask)
+      .select(getSelectedTask)
       .pipe()
       .subscribe((task) => {
         this.taskForUpdate = task;
@@ -133,7 +133,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
   }
 
   private subToTaskLoadingState() {
-    this.store.select(TasksState.getTaskLoading).subscribe((state) => {
+    this.store.select(getTaskLoading).subscribe((state) => {
       this.isLoading = state;
       if (!state) {
         this.form.enable();
@@ -152,7 +152,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         title: this.taskTitle.value,
         description: this.optionsChecks.controls.description ? this.options.controls.description.value : null,
       };
-      this.store.dispatch(TasksApiActions.createTask(task));
+      this.store.dispatch(createTaskAction(task));
     }
   }
 
@@ -167,7 +167,7 @@ export class TaskFormComponent implements OnInit, OnDestroy {
         description: this.optionsChecks.controls.description.value ? this.options.controls.description.value : null,
       };
       this.form.disable();
-      this.store.dispatch(TasksApiActions.updateTask({ task: result }));
+      this.store.dispatch(updateTaskAction({ task: result }));
     }
   }
 

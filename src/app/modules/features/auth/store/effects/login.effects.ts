@@ -1,15 +1,16 @@
-import { StorageService } from './../../../../shared/services/storage.service';
-import { handleHttpError } from '@helpers/handle-http-error';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { mergeMap, map, catchError, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { mergeMap, map, catchError, tap } from 'rxjs/operators';
 
+import { StorageService } from '@shared/services/storage.service';
 import { AuthService } from '@core/services/auth/auth.service';
-import { LoginActions, AuthActions } from '../actions';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Router } from '@angular/router';
+import { LoginActions, AuthActions } from '../actions';
+
+import { handleHttpError } from '@helpers/handle-http-error';
 
 @Injectable()
 export class LoginEffects {

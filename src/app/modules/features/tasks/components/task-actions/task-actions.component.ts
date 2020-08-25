@@ -1,8 +1,8 @@
-import { Task } from '@interfaces/task.interface';
-import { getDoneTasksState } from './../../store/state/index';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TasksApiActions, TasksActions } from '../../store/actions';
+import { getDoneTasksState } from './../../store/state';
+import { enableTasksAnimationsAction, deleteMultipleTasksAction } from '../../store/actions';
+import { Task } from '@interfaces/task.interface';
 
 @Component({
   selector: 'task-actions',
@@ -24,7 +24,7 @@ export class TaskActionsComponent implements OnInit {
 
   deleteCompleted() {
     if (!this.doneTasks.length) return;
-    this.store.dispatch(TasksActions.enableTasksAnimations());
-    this.store.dispatch(TasksApiActions.deleteMultipleTasks({ tasks: this.doneTasks }));
+    this.store.dispatch(enableTasksAnimationsAction());
+    this.store.dispatch(deleteMultipleTasksAction({ tasks: this.doneTasks }));
   }
 }

@@ -1,14 +1,14 @@
-import { NgxSmartModalService } from 'ngx-smart-modal';
-import { AsideStateService } from '@core/services/aside-state/aside-state.service';
 import { Component, OnInit } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
 // services
-import { UserService } from '@features/user/services/user.service';
+import { AsideStateService } from '@core/services/aside-state/aside-state.service';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 // interfaces
 import { User } from '@interfaces/user.interface';
-import { LoginActions } from '@app/modules/features/auth/store/actions';
-import { getAuthUser } from '@app/modules/features/auth/store/state/auth.state';
+// store
+import { Store } from '@ngrx/store';
+import { LoginActions } from '@features/auth/store/actions';
+import { getAuthUser } from '@features/auth/store/state';
 
 @Component({
   selector: 'aside-nav',
@@ -23,7 +23,6 @@ export class AsideNavComponent implements OnInit {
   constructor(
     private asideService: AsideStateService,
     private store: Store,
-    private userService: UserService,
     private smartModal: NgxSmartModalService
   ) {}
 

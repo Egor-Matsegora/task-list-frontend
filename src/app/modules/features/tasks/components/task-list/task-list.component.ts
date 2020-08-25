@@ -9,7 +9,8 @@ import { Task } from '@interfaces/task.interface';
 // animations
 import { removeAnimation, addAnimation } from '@app/animations/item.animation';
 import { Store } from '@ngrx/store';
-import { TasksState, TasksActions } from './../../store';
+import * as TasksActions from '../../store/actions';
+import * as TasksState from '../../store/state';
 
 @Component({
   selector: 'task-list',
@@ -40,7 +41,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   private getTasks() {
-    this.store.dispatch(TasksActions.TasksApiActions.loadTasks());
+    this.store.dispatch(TasksActions.loadTasksAction());
     this.items$ = this.store.select(TasksState.getTasks);
   }
 
@@ -65,7 +66,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         filter((error) => error !== null),
         mergeMap((error) => this.toastr.error(error).onHidden)
       )
-      .subscribe(() => this.store.dispatch(TasksActions.TasksActions.clearTasksMessages()));
+      .subscribe(() => this.store.dispatch(TasksActions.clearTasksMessagesAction()));
     this.subscriptions.add(storeErrorSub);
   }
 
@@ -76,7 +77,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         filter((message) => message !== null),
         mergeMap((message) => this.toastr.success(message).onHidden)
       )
-      .subscribe(() => this.store.dispatch(TasksActions.TasksActions.clearTasksMessages()));
+      .subscribe(() => this.store.dispatch(TasksActions.clearTasksMessagesAction()));
 
     const delMsgStateSub = this.store
       .select(TasksState.getTaskDeleteMessage)
@@ -84,7 +85,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         filter((message) => message !== null),
         mergeMap((message) => this.toastr.warning(message).onHidden)
       )
-      .subscribe(() => this.store.dispatch(TasksActions.TasksActions.clearTasksMessages()));
+      .subscribe(() => this.store.dispatch(TasksActions.clearTasksMessagesAction()));
 
     this.subscriptions.add(successMsgStateSub).add(delMsgStateSub);
   }
@@ -97,19 +98,19 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   captureAnimationDone() {
-    !this.disableAnimation && this.store.dispatch(TasksActions.TasksActions.disableTasksAnimations());
+    !this.disableAnimation && this.store.dispatch(TasksActions.disableTasksAnimationsAction());
   }
 
   onDone(task: Task) {
-    this.store.dispatch(TasksActions.TasksApiActions.doneTask({ task }));
+    this.store.dispatch(TasksActions.doneTaskAction({ task }));
   }
 
   onDelete(task: Task) {
-    this.store.dispatch(TasksActions.TasksActions.enableTasksAnimations());
-    this.store.dispatch(TasksActions.TasksApiActions.deleteTask({ task }));
+    this.store.dispatch(TasksActions.enableTasksAnimationsAction());
+    this.store.dispatch(TasksActions.deleteTaskAction({ task }));
   }
 
   onUpdate(task: Task) {
-    this.store.dispatch(TasksActions.TasksActions.selectTask({ task }));
+    this.store.dispatch(TasksActions.selectTaskAction({ task }));
   }
 }

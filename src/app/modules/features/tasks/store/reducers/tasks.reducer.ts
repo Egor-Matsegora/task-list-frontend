@@ -1,18 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
-import { Task } from '@interfaces/task.interface';
-import { TasksActions, TasksApiActions } from '../actions';
-import { TasksState } from '..';
-
-export interface TasksState {
-  tasks: Task[];
-  selectedTask: Task | null;
-  pageLoading: boolean;
-  itemLoading: boolean;
-  error: string | null;
-  successMessage: string | null;
-  deleteMessage: string | null;
-  disableAnimation: boolean;
-}
+import * as TasksActions from '../actions';
+import { TasksState } from '../state';
 
 export const initialTasksState: TasksState = {
   tasks: [],
@@ -28,16 +16,16 @@ export const initialTasksState: TasksState = {
 const reducer = createReducer(
   initialTasksState,
   // load tasks
-  on(TasksApiActions.loadTasks, (state) => ({ ...state, pageLoading: true })),
+  on(TasksActions.loadTasksAction, (state) => ({ ...state, pageLoading: true })),
   on(
-    TasksActions.loadTasksSuccess,
+    TasksActions.loadTasksSuccessAction,
     (state, { tasks }): TasksState => ({ ...state, tasks, pageLoading: false, error: null })
   ),
-  on(TasksActions.loadTasksFailure, (state, { error }): TasksState => ({ ...state, error, pageLoading: false })),
+  on(TasksActions.loadTasksFailureAction, (state, { error }): TasksState => ({ ...state, error, pageLoading: false })),
   // create task
-  on(TasksApiActions.createTask, (state, { title, description }): TasksState => ({ ...state, itemLoading: true })),
+  on(TasksActions.createTaskAction, (state, { title, description }): TasksState => ({ ...state, itemLoading: true })),
   on(
-    TasksActions.createTaskSuccess,
+    TasksActions.createTaskSuccessAction,
     (state, { task, successMessage }): TasksState => {
       return {
         ...state,
@@ -48,11 +36,11 @@ const reducer = createReducer(
       };
     }
   ),
-  on(TasksActions.createTaskFailure, (state, { error }): TasksState => ({ ...state, error, itemLoading: false })),
+  on(TasksActions.createTaskFailureAction, (state, { error }): TasksState => ({ ...state, error, itemLoading: false })),
   // update task
-  on(TasksApiActions.updateTask, (state, { task }): TasksState => ({ ...state, itemLoading: true })),
+  on(TasksActions.updateTaskAction, (state, { task }): TasksState => ({ ...state, itemLoading: true })),
   on(
-    TasksActions.updateTaskSuccess,
+    TasksActions.updateTaskSuccessAction,
     (state, { task, successMessage }): TasksState => {
       return {
         ...state,
@@ -66,10 +54,10 @@ const reducer = createReducer(
       };
     }
   ),
-  on(TasksActions.updateTaskFailure, (state, { error }): TasksState => ({ ...state, error, itemLoading: false })),
+  on(TasksActions.updateTaskFailureAction, (state, { error }): TasksState => ({ ...state, error, itemLoading: false })),
   // delete task
   on(
-    TasksActions.deleteTasksSuccess,
+    TasksActions.deleteTasksSuccessAction,
     (state, { task, deleteMessage }): TasksState => {
       return {
         ...state,
@@ -79,10 +67,10 @@ const reducer = createReducer(
       };
     }
   ),
-  on(TasksActions.deleteTasksFailure, (state, { error }): TasksState => ({ ...state, error })),
+  on(TasksActions.deleteTasksFailureAction, (state, { error }): TasksState => ({ ...state, error })),
   // delete multiple tasks
   on(
-    TasksActions.deleteMultipleTasksSuccess,
+    TasksActions.deleteMultipleTasksSuccessAction,
     (state, { tasks, deleteMessage }): TasksState => {
       return {
         ...state,
@@ -92,10 +80,10 @@ const reducer = createReducer(
       };
     }
   ),
-  on(TasksActions.deleteMultipleTasksFailure, (state, { error }): TasksState => ({ ...state, error })),
+  on(TasksActions.deleteMultipleTasksFailureAction, (state, { error }): TasksState => ({ ...state, error })),
   // done task
   on(
-    TasksActions.doneTaskSuccess,
+    TasksActions.doneTaskSuccessAction,
     (state, { task }): TasksState => {
       return {
         ...state,
@@ -106,18 +94,18 @@ const reducer = createReducer(
       };
     }
   ),
-  on(TasksActions.doneTaskFailure, (state, { error }): TasksState => ({ ...state, error })),
+  on(TasksActions.doneTaskFailureAction, (state, { error }): TasksState => ({ ...state, error })),
   // select/unselect task for modal
-  on(TasksActions.selectTask, (state, { task }): TasksState => ({ ...state, selectedTask: task })),
-  on(TasksActions.unselectTask, (state): TasksState => ({ ...state, selectedTask: null })),
+  on(TasksActions.selectTaskAction, (state, { task }): TasksState => ({ ...state, selectedTask: task })),
+  on(TasksActions.unselectTaskAction, (state): TasksState => ({ ...state, selectedTask: null })),
   // clear messages
   on(
-    TasksActions.clearTasksMessages,
+    TasksActions.clearTasksMessagesAction,
     (state): TasksState => ({ ...state, successMessage: null, deleteMessage: null, error: null })
   ),
   // animations
-  on(TasksActions.disableTasksAnimations, (state): TasksState => ({ ...state, disableAnimation: true })),
-  on(TasksActions.enableTasksAnimations, (state): TasksState => ({ ...state, disableAnimation: false }))
+  on(TasksActions.disableTasksAnimationsAction, (state): TasksState => ({ ...state, disableAnimation: true })),
+  on(TasksActions.enableTasksAnimationsAction, (state): TasksState => ({ ...state, disableAnimation: false }))
 );
 
 export function tasksReducer(state: TasksState | undefined, action: Action) {
